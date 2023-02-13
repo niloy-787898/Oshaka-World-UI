@@ -1,0 +1,292 @@
+<main *ngIf="footerOnHide">
+  <div class="footer-offer">
+    <div class="container">
+      <div class="footer-offer-main">
+        <div class="offer-left">
+          <h3>Get Latest Newsletter</h3>
+          <p>Feel Free To Subscribe Here</p>
+        </div>
+        <div class="offer-right">
+          <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+            <div class="email-area">
+              <div class="email-input">
+                <input formControlName="email" type="email" value="" placeholder="Enter Your Email Address" required>
+              </div>
+              <div class="email-btn">
+                <button type="submit"><i class="fa-solid fa-at"></i>Subscribe</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!----services-area-->
+  <div class="service-area">
+    <div class="container">
+      <div class="service-main">
+        <!--service-details-->
+        <div class="service-details">
+          <div class="service-icon">
+            <span><i class="fas fa-truck"></i></span>
+          </div>
+          <div class="service-text">
+            <h3>Free Home Delivery</h3>
+            <p>Orders Over ৳ 0</p>
+          </div>
+        </div><!--service-details-end-->
+        <!--service-details-->
+        <div class="service-details">
+          <div class="service-icon">
+            <span><i class="fas fa-sync-alt"></i></span>
+          </div>
+          <div class="service-text">
+            <h3>Best Warranty Policy</h3>
+            <p>With A 30 Day</p>
+          </div>
+        </div><!--service-details-end-->
+        <!--service-details-->
+        <div class="service-details">
+          <div class="service-icon">
+            <span><i class="fas fa-headset"></i></span>
+          </div>
+          <div class="service-text">
+            <h3>Quick Support System</h3>
+            <p>You will get instant service</p>
+          </div>
+        </div><!--service-details-end-->
+        <!--service-details-->
+        <div class="service-details">
+          <div class="service-icon">
+            <span><i class="fas fa-lock"></i></span>
+          </div>
+          <div class="service-text">
+            <h3>Get Best Offers</h3>
+            <p>Enter Now</p>
+          </div>
+        </div><!--service-details-end-->
+
+      </div>
+    </div>
+  </div>
+
+  <!---footer-area-->
+  <div class="footer-area">
+    <div class="container">
+      <!---footer-main-->
+      <div class="footer-main">
+        <div class="footer-details">
+          <div class="footer-logo">
+            <a href="#"><img checkImageDefault [src]="shopInfo?.siteLogo" alt=""></a>
+          </div>
+          <div class="footer-discription">
+            <p>{{shopInfo?.shortDescription ? shopInfo?.shortDescription : 'N/A'}}</p>
+          </div>
+          <div class="footer-social">
+            <ul>
+              <li *ngIf="facebookLink"><a [href]="facebookLink" target="_blank"><i class="fab fa-facebook-f"></i></a>
+              </li>
+              <li *ngIf="twitterLink"><a [href]="twitterLink" target="_blank"><i class="fab fa-twitter"></i></a></li>
+              <li *ngIf="linkedinLink"><a [href]="linkedinLink" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+              <li *ngIf="instagramLink"><a [href]="instagramLink" target="_blank"><i class="fab fa-instagram"></i></a>
+              </li>
+              <li *ngIf="youtubeLink"><a [href]="youtubeLink" target="_blank"><i class="fab fa-youtube"></i></a></li>
+            </ul>
+          </div>
+        </div>
+        <!---footer-address-->
+        <div class="footer-address">
+          <div class="footer-title">
+            <h3>Contact Us</h3>
+          </div>
+          <ul>
+            <li>
+              <div>
+                <span><i class="fa-solid fa-at"></i></span>
+              </div>
+              <div>
+                <p *ngFor="let data of shopInfo?.emails">{{data?.value}}</p>
+                <!-- <p>carrer@example.com</p> -->
+              </div>
+            </li>
+            <li>
+              <div>
+                <span><i class="fa-solid fa-phone"></i></span>
+              </div>
+              <div>
+                <p *ngFor="let data of shopInfo?.phones">{{data?.value}}</p>
+                <!-- <p>+120 279 532 14</p> -->
+              </div>
+            </li>
+            <li>
+              <div>
+                <span><i class="fa-solid fa-location-dot"></i></span>
+              </div>
+              <div>
+                <p *ngFor="let data of shopInfo?.addresses">{{data?.value}}</p>
+              </div>
+            </li>
+          </ul>
+        </div><!---end-->
+        <div class="footer-link">
+          <div class="footer-title">
+            <h3>Quick Links</h3>
+          </div>
+          <ul>
+<!--            <li><a routerLink="/pages/why-shop-online-with-us">Why Shop With Us</a></li>-->
+            <li><a routerLink="/pages/warranty-policy">Warranty Policy</a></li>
+            <li><a routerLink="/pages/return-&-refund-policy">Return & Refund Policy</a></li>
+            <li><a routerLink="/pages/privacy-policy">Privacy Policy</a></li>
+            <li><a routerLink="/pages/terms-and-conditions">Terms and Conditions</a></li>
+            <li><a routerLink="/pages/about-us">About us</a></li>
+            <li><a routerLink="/pages/work-with-us">Work With Us</a></li>
+
+          </ul>
+        </div>
+
+        <div class="footer-link">
+          <div class="footer-title">
+            <h3>USEFUL LINKS</h3>
+          </div>
+          <ul>
+            <!--            <li><a routerLink="/pages/why-shop-online-with-us">Why Shop With Us</a></li>-->
+            <li><a routerLink="/pages/why-shop-online-with-us">Why Shop Online with Us</a></li>
+            <li><a routerLink="/pages/online-purchase-procedure">Online Purchase Procedure</a></li>
+            <li><a routerLink="/pages/online-payment-methods">online Payment Methods</a></li>
+            <li><a routerLink="/pages/online-payment-security">Online Payment Security</a></li>
+            <li><a routerLink="/pages/contact-service-center">Contact Service Center</a></li>
+            <li><a routerLink="/pages/after-sales-support">After Sales Support</a></li>
+            <li><a routerLink="/pages/faq">Faq</a></li>
+          </ul>order
+        </div>
+<!--        <div class="app-download">-->
+<!--          <div class="footer-title">-->
+<!--            <h3>Download App</h3>-->
+<!--          </div>-->
+<!--          <div class="footer-discription">-->
+<!--            <p>{{shopInfo?.downloadAppDescription}}</p>-->
+<!--          </div>-->
+<!--          <ul>-->
+<!--            <li><a href="#"><img src="./assets/images/brand/png/google-store.png" alt=""></a></li>-->
+<!--            <li><a href="#"><img src="./assets/images/brand/png/app-store.png" alt=""></a></li>-->
+<!--          </ul>-->
+<!--        </div>-->
+
+      </div><!---end-->
+      <div class="ntt">
+        <div class="ntt-main">
+          <div class="ntt-left">
+            <h3>© All Copyrights Reserved by <a href="#">Oshaka World</a></h3>
+          </div>
+          <!--<div class="ntt-right">
+            <ul>
+              <li><img src="./assets/images/brand/png/01.jpg" alt=""></li>
+              <li><img src="./assets/images/brand/png/02.jpg" alt=""></li>
+              <li><img src="./assets/images/brand/png/03.jpg" alt=""></li>
+              <li><img src="./assets/images/brand/png/04.jpg" alt=""></li>
+            </ul>
+          </div>-->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!---********** footer-bottom-area *********-->
+
+  <footer class="footer-bottom-area">
+    <div class="container">
+      <!------***** footer-bottom-description ********-->
+
+      <div class="footer-bottom-description">
+        <p>{{footerData?.aboutEsquire}}
+        </p>
+      </div>
+      <!---***** footer-bottomMidle-area ******-->
+
+      <div class="footer-bottomMidle-area">
+
+        <!----****** footer-bottomMidle-title *******-->
+
+        <div class="footer-bottomMidle-title">
+          <h2>Why Esquire Electronics for online buying?</h2>
+        </div>
+        <!---******** footer-midle-main-area *********-->
+
+        <div class="footer-midle-main">
+
+          <!------******** footer-midle-other-details1 *******-------->
+          <div class="footer-midle-other-detaits">
+            <!------********* other-detail ******* --->
+            <div class="other-detail">
+              <h3>{{footerData?.title1}}</h3>
+              <p>{{footerData?.title1Des}}</p>
+            </div>
+
+          </div>
+
+          <!------******** footer-midle-other-details2 *******-------->
+          <div class="footer-midle-other-detaits">
+            <!------********* other-detail ******* --->
+            <div class="other-detail">
+              <h3>{{footerData?.title2}}</h3>
+              <p>{{footerData?.title2Des}}
+              </p>
+            </div>
+
+            <!------********* other-detail ******* --->
+            <div class="other-detail">
+              <h3>{{footerData?.title3}}</h3>
+              <p>{{footerData?.title3Des}}</p>
+            </div>
+          </div>
+
+          <!------******** footer-midle-other-details3 *******-------->
+          <div class="footer-midle-other-detaits">
+            <!------********* other-detail ******* --->
+            <div class="other-detail">
+              <h3>{{footerData?.title4}}</h3>
+              <p>{{footerData?.title4Des}}</p>
+            </div>
+            <div class="other-detail">
+              <h3>{{footerData?.title5}}
+              </h3>
+              <p>{{footerData?.title5Des}}
+              </p>
+            </div>
+
+          </div>
+
+
+        </div>
+      </div>
+      <!---Buy original electronics product by Category-->
+
+      <div class="footer-buy-detail">
+        <div class="footer-buy-title">
+          <h2>Buy original electronics product by Category</h2>
+        </div>
+        <div class="footer-buy-description" >
+          <p >So, <a *ngFor="let data of footerData?.socialLinks" href="{{data?.value}}">{{data?.type}}</a>
+          </p> <br>
+          <h3>Keep in Touch with the most trusted Electronics Store – Esquire Electronics Bangladesh. In case of any query, feel free to write us at ecommerce@esquirebd.com or call on 09610001010. You can also find your desired products in our showrooms: Store Locator.</h3>
+        </div>
+      </div>
+      <div class=footer-payment-system>
+        <ul>
+          <li><span>Easy Payment</span></li>
+          <li><a href="javascript:"><img src="/assets/images/junk/mastercard.png" alt=""></a></li>
+          <li><a href="javascript:"><img src="/assets/images/junk/visa.png" alt=""></a></li>
+          <li><a href="javascript:"><img src="/assets/images/junk/amex.png new.png" alt=""></a></li>
+          <li><a href="javascript:"><img src="/assets/images/junk/bkash.png" alt=""></a></li>
+          <li><a href="javascript:"><img src="/assets/images/junk/rocket.png" alt=""></a></li>
+          <li><a href="javascript:"><img src="/assets/images/junk/cash on delivery.png" alt=""></a></li>
+        </ul>
+      </div>
+
+
+    </div>
+  </footer>
+  <!---------foooter-area-end-------------->
+</main>

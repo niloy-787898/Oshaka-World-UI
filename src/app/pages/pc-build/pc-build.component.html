@@ -1,0 +1,119 @@
+<div class="container">
+<div class="header">
+  <div class="btn-groups">
+    <div class="left"></div>
+    <div class="right">
+      <button
+        mat-raised-button
+        color="primary"
+        printSectionId="print-section"
+        styleSheetFile="../../../assets/css/print-pos.css"
+        ngxPrint
+
+      >
+        <mat-icon> print </mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="build-table">
+  <table id="customers">
+    <tr>
+      <th>Component</th>
+      <th>Image</th>
+      <th>Product Name</th>
+      <th>Price</th>
+      <th>Action</th>
+    </tr>
+    <tr *ngFor="let pc of pcBuildTools">
+      <td>
+        <div class="ttl-img">
+          <img [src]="pc.componentIcon" alt="" />
+          <p>{{ pc.component }}</p>
+        </div>
+      </td>
+      <td class="product-image">
+        <img [src]="pc.image" alt="" />
+      </td>
+      <td>{{ pc.productName }}</td>
+      <td>{{ pc.price }} {{ pc.price !== null ? "৳" : "" }}</td>
+      <td class="pcbuiders-actions">
+        <button
+          class="pcbuiders-actions-del"
+          *ngIf="pc.productName !== null"
+          mat-mini-fab
+          color="warn"
+          (click)="deleteProductToBuildToolsItem(pc._id)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button
+          class="pcbuiders-actions-choose"
+          (click)="
+            navigateTo('choose/' + pc._id + '/' + pc.tag + '/' + pc.component)
+          "
+          mat-raised-button
+          color="primary"
+          style="margin-left: 15px; background: #70c332; color: #fff"
+        >
+          Choose
+        </button>
+        <!--        <button mat-mini-fab color="primary" style="margin-left: 15px;"><mat-icon>add</mat-icon></button>-->
+      </td>
+    </tr>
+    <!-- END BODY -->
+    <tfoot>
+    <tr>
+      <td>Total</td>
+      <td></td>
+      <td></td>
+      <td>{{ totalSale }} ৳</td>
+      <td></td>
+    </tr>
+    </tfoot>
+    <!-- END FOOTER -->
+  </table>
+</div>
+
+<!-- PRINT AREA -->
+
+<div class="print-table-container" id="print-section" style="display: none">
+  <div class="header-table">
+    <img src="/assets/images/logo/logo-roc.png" alt="" />
+    <div class="info">
+      <div class="small">
+        <p>{{ contactInfoData?.address }}</p>
+        <p>
+          <b>Phone</b>: {{ contactInfoData?.phoneNo }}, <b>Email</b>:
+          {{ contactInfoData?.email }}
+        </p>
+        <p>https://ronecomputersbd.com</p>
+      </div>
+    </div>
+  </div>
+  <table class="print-table">
+    <tr>
+      <th>Component</th>
+      <th>Product Name</th>
+      <th>Price</th>
+    </tr>
+    <tr *ngFor="let pc of pcBuildTools">
+      <td>
+        {{ pc.component }}
+      </td>
+      <td>{{ pc.productName }}</td>
+      <td>{{ pc.price }} {{ pc.price !== null ? "৳" : "" }}</td>
+    </tr>
+    <!-- END BODY -->
+    <tfoot>
+    <tr>
+      <td>Total</td>
+      <td></td>
+      <td>{{ totalSale }} ৳</td>
+    </tr>
+    </tfoot>
+    <!-- END FOOTER -->
+  </table>
+</div>
+</div>

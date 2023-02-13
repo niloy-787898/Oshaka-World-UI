@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <div class="offer-card">
+    <div class="title">
+      <h2>{{coupon?.name}}</h2>
+    </div>
+    <div class="offer-img">
+      <img checkImageDefault [src]="coupon?.bannerImage" alt="">
+    </div>
+    <div class="offer-card-body">
+      <div class="offer-name">
+        <h3>{{coupon?.couponCode}}</h3>
+      </div>
+      <div class="expire">
+        <p>Expire In: {{coupon?.endDateTime | date : 'medium'}}</p>
+      </div>
+      <div class="copy">
+        <span (click)="copyCouponCode($event, coupon)">
+          {{selectedCoupon && selectedCoupon === coupon._id ? 'Copied' : 'Copy'}}
+        </span>
+      </div>
+    </div>
+
+    <div class="desc-main">
+      <div class="description" [innerHTML]="coupon?.description | safeHtmlCustom"></div>
+    </div>
+  </div>
+</div>

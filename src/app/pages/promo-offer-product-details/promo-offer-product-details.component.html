@@ -1,0 +1,355 @@
+<!--&lt;!&ndash;banner-area&ndash;&gt;-->
+<!--<div class="banner-area">-->
+<!--  <div class="container">-->
+<!--    <div class="banner-main">-->
+<!--      <h1>{{product?.name}}</h1>-->
+<!--      <ul>-->
+<!--        <li><a routerLink="/">Home</a></li>-->
+<!--        <li><span>/</span></li>-->
+<!--        <li><a routerLink="/products">All products</a></li>-->
+<!--        <li><span>/</span></li>-->
+<!--        <li><a [routerLink]="['/products']"-->
+<!--               [queryParams]="{categories: product?.category?.slug}">{{product?.category?.name}}</a></li>-->
+<!--        <li><span>/</span></li>-->
+<!--        <li><a [routerLink]="['/products']"-->
+<!--               [queryParams]="{categories: product?.category?.slug, subCategories: product?.subCategory?.slug}">{{product?.subCategory?.name}}</a>-->
+<!--        </li>-->
+
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!---product-area-->
+<main class="product-area">
+  <!---section1-->
+  <div class="section1">
+    <div class="container">
+      <!---section1-main-->
+      <div class="section1-main carousel">
+        <!---section1-left-->
+        <div class="section1-left">
+          <!---product-img-->
+          <div class="product-img-area">
+            <img [src]="image" alt="" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseLeave($event)">
+            <div class="tag">
+              <!--              <ul>-->
+              <!--                <li><span class="new">New</span></li>-->
+              <!--                <li><span class="discount">-{{product | price: 'discountAmount' | number : '': 'bn' }}Tk</span></li>-->
+              <!--              </ul>-->
+            </div>
+          </div><!---end-->
+          <div class="product-slide">
+            <swiper [slidesPerView]="3" [spaceBetween]="13" [autoplay]="true" [loop]="false" [grabCursor]="true" [navigation]="true"
+              [breakpoints]="{
+                            '520': {
+                                slidesPerView: 3
+                            },
+                            '768': {
+                                slidesPerView: 3.5
+                            },
+                            '900': {
+                                slidesPerView: 5
+                            },
+                            '1000': {
+                                slidesPerView: 5
+                            }
+                            }" class="mySwiper">
+              <ng-template swiperSlide *ngFor="let data of product?.images">
+                <div class="slide-img">
+                  <img (click)="selectImage(data)" [src]="data.length ? data : './assets/images/temp/products/01.jpg'"
+                    alt="">
+                </div>
+              </ng-template>
+            </swiper>
+
+
+
+          </div>
+        </div><!--section1-left-end-->
+        <!----section1-right-->
+        <div class="section1-right">
+          <!---product-details-->
+          <div style="z-index: 9;" #zoomViewer>
+            <div *ngIf="zoomImage" class="zoom-viewer" [ngStyle]="{'background-image': 'url(' + zoomImage + ')'}"></div>
+          </div> <!-- END IMAGE ZOOM VIEW -->
+          <div class="product-details">
+            <!---product-title-->
+            <div class="product-title">
+              <a>{{product?.name}}</a>
+            </div><!---end-->
+
+            <div class="product-left-main">
+              <div class="product-other-info">
+                <div class="product-sku">
+                  <ul>
+                    <li *ngIf="product?.unit"><a style="font-weight: 600; font-size: 16px">{{product?.unit}}</a></li>
+                    <li><a>Product Code: {{product?.sku}}</a></li>
+                    <li><a [routerLink]="['/products']" [queryParams]="{brands: product?.brand?.slug}">BRAND:
+                        {{product?.brand?.name}}</a></li>
+                  </ul>
+                </div>
+                <!---product-review-->
+                <div class="product-rate">
+                  <ul>
+                    <li><span><i class="fa fa-star"></i></span></li>
+                    <li><span><i class="fa fa-star"></i></span></li>
+                    <li><span><i class="fa fa-star"></i></span></li>
+                    <li><span><i class="fa fa-star"></i></span></li>
+                    <li><span><i class="fa fa-star"></i></span></li>
+                    <li><a href="javascript:">(3 Reviews)</a></li>
+                  </ul>
+                </div><!---end-->
+                <!---product-price-->
+                <div class="product-price">
+                  <h3>
+                    <del *ngIf="product?.discountAmount && product?.discountAmount > 0">৳ {{product?.salePrice}}</del>
+                    <span>৳{{product | price: 'salePrice' | number : '' : 'bn'}}
+                      <!--                           <small>/Per Kilo</small>-->
+                    </span>
+                  </h3>
+
+                  <h3 *ngIf="product?.discountAmount" style="{margin-top: 30px;}">
+                    Discount :
+                    <span *ngIf="product?.offerDiscountType===2" >
+                     ৳{{product?.offerDiscountAmount}}
+                    </span>
+                    <span *ngIf="product?.offerDiscountType===1" >
+                     {{product?.offerDiscountAmount}} %
+                    </span>
+                  </h3>
+                </div><!---end-->
+
+<!--                <div class="share">-->
+<!--                  <ul>-->
+<!--                    <li><span>Share:</span></li>-->
+<!--                    <li><a (click)="createNavigationUrl('facebook')"><i class="fab fa-facebook-f"></i></a></li>-->
+<!--                    <li><a (click)="createNavigationUrl('twitter')"><i class="fab fa-twitter"></i></a></li>-->
+<!--                    <li><a (click)="createNavigationUrl('whatsapp')"><i class="fab fa-whatsapp"></i></a></li>-->
+<!--                    <li><a (click)="createNavigationUrl('linkedin')"><i class="fab fa-linkedin"></i></a></li>-->
+<!--                  </ul>-->
+<!--                </div>&lt;!&ndash;-end&ndash;&gt;-->
+              </div>
+              <div class="product-video" *ngIf="safeURL">
+                <iframe width="100%" [src]="safeURL" title="YouTube video player" frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
+              </div>
+            </div>
+
+
+            <!---product-btn-->
+            <div class="product-btn">
+              <div class="btn-1-container">
+                <div class="btn-1">
+                  <div class="cart-btn" *ngIf="!cart">
+                    <button (click)="onAddToCart($event)"><i class="fa-solid fa-basket-shopping"></i>Add to
+                      cart
+                    </button>
+                  </div>
+                  <div class="cart-action" *ngIf="cart" style="margin-bottom: 0px; height: 42px">
+                    <button class="left" (click)="onDecrementQty($event)">
+                      <span class="material-icons">remove</span>
+                    </button>
+                    <p>{{cart?.selectedQty}} in cart</p>
+                    <button class="right" (click)="onIncrementQty($event)">
+                      <span class="material-icons">add</span>
+                    </button>
+                  </div>
+                </div>
+                <a (click)="onAddToCartAndRedirect($event)" class="buy-now">Buy Now</a>
+              </div>
+              <!-- END CART CONTROL AREA -->
+
+
+              <div class="wish-btn">
+                <ul>
+                  <li>
+                    <button [class.active]="wishlist" (click)="onAddToWishList($event)"><i
+                        class="fa fa-heart"></i>{{wishlist ? 'Remove from wish' : 'Add to wish'}}</button>
+                  </li>
+                  <!--                  <li>-->
+                  <!--                    <button><i class="fa-solid fa-shuffle"></i> Compare this</button>-->
+                  <!--                  </li>-->
+                </ul>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div><!--section1-end-->
+
+  <!---section2-->
+  <div class="section-2">
+    <div class="container">
+      <!---section2-filter-->
+      <div class="filter-area">
+        <ul>
+          <!--          <li>-->
+          <!--            <button [class]="step == 1 ?'active-filter-btn':'in'" (click)="stepControl(1)"> SPECIFICATIONS</button>-->
+          <!--          </li>-->
+          <li>
+            <button [class]="step == 1 ?'active-filter-btn':'in'" (click)="stepControl(1)">DESCRIPTIONS</button>
+          </li>
+          <li>
+            <button [class]="step == 2 ?'active-filter-btn':'in'" (click)="stepControl(2)">CUSTOMER REVIEWS
+              ({{allReviews.length}})
+            </button>
+          </li>
+        </ul>
+      </div>
+      <!---section5-main-->
+      <div class="section5-main">
+
+        <!---discription-->
+        <div class="descripiton-area" *ngIf="step == 1">
+          <div class="description-main" [class.d-block-100]="!product?.videoUrl">
+            <!---description-left-->
+            <div>
+              <div class="description-left htmlDes" [innerHTML]="description | safeHtmlCustom">
+                <!--                <p>{{product?.description}}</p>-->
+              </div><!---end-->
+            </div>
+            <!---description-right-->
+
+            <!-- <div class="description-right" *ngIf="product?.videoUrl">
+              <iframe width="100%" [src]="safeURL" title="YouTube video player" frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen></iframe>
+            </div> -->
+
+
+          </div><!---end-->
+        </div><!---end-->
+
+        <!---review-area-->
+        <div class="review-area" *ngIf="step == 2">
+          <div class="review-main-area">
+
+            <div class="add-review-area">
+              <app-rating-and-review [productId]="product?._id" [pageUrl]="router.url"></app-rating-and-review>
+              <div class="line"></div>
+            </div>
+
+            <!---user-review-->
+            <div class="user-review" *ngFor="let data of allReviews">
+              <!---user-data-->
+              <div class="main-review">
+                <div class="user-data">
+                  <div class="user-img">
+                    <img checkImageProfile [src]="data?.user?.profileImg" alt="">
+                  </div>
+                  <div class="user-name">
+                    <a href="#">{{data?.user?.name}}</a>
+                    <span>{{data?.reviewDate | date}}</span>
+                  </div>
+                </div>
+                <!--user-review-rating-->
+                <div class="user-review-rating">
+                  <ul>
+                    <li><i class="fa fa-star"></i></li>
+                    <li><i class="fa fa-star"></i></li>
+                    <li><i class="fa fa-star"></i></li>
+                    <li><i class="fa fa-star"></i></li>
+                    <li><i class="fa fa-star"></i></li>
+                  </ul>
+                  <p>{{data?.review}}</p>
+                </div>
+                <!--                <div class="review-input-area">-->
+                <!--                  <div class="reviewo-input">-->
+                <!--                    <input type="text" value="" placeholder="Replay Your Thoughts">-->
+                <!--                  </div>-->
+                <!--                  <div class="rply-btn">-->
+                <!--                    <button>Replay</button>-->
+                <!--                  </div>-->
+                <!--                </div>-->
+              </div><!---end-->
+              <!---replay-area-->
+              <div class="replay-review-area" *ngIf="data?.reply">
+                <!---replay-review-->
+                <div class="replay-review">
+                  <div class="user-data">
+                    <div class="user-img">
+                      <img src="./assets/images/brand/logo/logo1.png" alt="">
+                    </div>
+                    <div class="user-name">
+                      <a href="#">Heriken</a>
+                      <span>{{data?.replyDate | date}}</span>
+                    </div>
+                  </div>
+                  <!--user-review-rating-->
+                  <div class="user-review-rating">
+                    <p>{{data?.reply}}</p>
+                  </div>
+                  <!--                  <div class="review-input-area">-->
+                  <!--                    <div class="reviewo-input">-->
+                  <!--                      <input type="text" value="" placeholder="Replay Your Thoughts">-->
+                  <!--                    </div>-->
+                  <!--                    <div class="rply-btn">-->
+                  <!--                      <button>Replay</button>-->
+                  <!--                    </div>-->
+                  <!--                  </div>-->
+                </div><!--end-->
+
+
+              </div>
+            </div><!---end-user-reivew-->
+
+
+          </div><!---main-end-->
+        </div><!---end-->
+
+
+      </div><!--end-->
+
+    </div>
+  </div>
+
+
+</main><!---product-area-end-->
+
+<!----Related This Items-->
+<div class="section3" *ngIf="relatedProducts.length">
+  <div class="container">
+    <div class="title-area">
+      <h1>Related This Items</h1>
+    </div>
+    <div class="section3-main">
+      <ng-container *ngIf="isLoadingRelatedProducts">
+        <app-product-card-one [type]="'grid'" *ngFor="let product of  [1,2,3,4,5]"></app-product-card-one>
+      </ng-container>
+      <ng-container *ngIf="!isLoadingRelatedProducts">
+        <app-product-card-one *ngFor="let product of relatedProducts" [data]="product">
+        </app-product-card-one>
+      </ng-container>
+    </div>
+
+    <!--view-btn-->
+    <div class="view-btn">
+      <a [routerLink]="['/products']"
+        [queryParams]="{categories: product?.category?.slug, subCategories: product?.subCategory?.slug}"><i
+          class="fa fa-eye"></i> View All Related</a>
+    </div>
+  </div>
+</div>
+
+<div class="res-bar">
+    <div class="res-bar-main">
+         <ul>
+            <li routerLink="/">
+               <span>
+                <i class="fas fa-store"></i>
+                Store
+              </span>
+            </li>
+            <li>
+               <button (click)="onAddToCartAndRedirect($event)">Buy Now</button>
+            </li>
+            <li>
+              <button (click)="onAddToCart($event)">Add to cart</button>
+           </li>
+         </ul>
+    </div>
+</div>

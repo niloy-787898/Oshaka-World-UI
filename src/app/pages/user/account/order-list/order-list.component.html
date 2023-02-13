@@ -1,0 +1,66 @@
+<section class="admin-data-sec">
+  <div class="top-data-header">
+    <div class="title">
+      <h2>My Orders</h2>
+    </div>
+  </div> <!-- END TOP DATA HEADER -->
+
+  <hr class="center-square">
+
+  <div class="table-wrapper space">
+
+    <table>
+      <tr>
+        <th>Order No</th>
+        <th>Phone No</th>
+        <th>Created Date</th>
+        <th>City</th>
+        <th>Payment Type</th>
+        <th>Payment Status</th>
+        <th>Order Status</th>
+        <th>Grand total</th>
+        <th>Actions</th>
+      </tr>
+      <tr
+        *ngFor="let data of orders | paginate: { itemsPerPage: ordersPerPage, currentPage: currentPage, totalItems: totalOrders } ; let i = index">
+        <td>{{data.orderId}}</td>
+        <td>{{data.phoneNo}}</td>
+        <td>{{data.checkoutDate | date: 'mediumDate'}}</td>
+        <td>{{data.city}}</td>
+        <td>{{data.paymentType | slugToNormal : '_'}}</td>
+        <td>
+          <div [ngClass]="data.paymentStatus === 'paid' ? 'paid' : 'unpaid'">
+            {{data.paymentStatus}}
+          </div>
+        </td>
+        <td [ngClass]="ngClassService.getDeliveryStatusColor(data.orderStatus)">
+          {{data.orderStatus | orderStatus}}
+        </td>
+
+        <td>৳{{data.grandTotal | number : '': 'bn'}}</td>
+        <td class="td-action">
+          <a style="margin-left: 5px;" mat-mini-fab color="primary" [routerLink]="['../','order-details', data._id]"
+             mat-icon-button  matTooltip="View Details">
+            <mat-icon>visibility</mat-icon>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="pagination-container">
+    <pagination-controls
+      class="data-pagination"
+      [autoHide]="true"
+      [maxSize]="15"
+      (pageChange)="onPageChanged($event)">
+    </pagination-controls>
+  </div>     <!-- END PAGINATION -->
+
+
+  <!-- LOADING TEMPLATE -->
+  <ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="medium" color="#fff" type="ball-atom" [fullScreen]="false">
+    <p style="color: white"> Loading... </p>
+  </ngx-spinner>
+
+</section>

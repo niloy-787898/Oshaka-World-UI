@@ -1,0 +1,130 @@
+<div class="container-fluid">
+  <div class="main-view">
+    <div class="sidebar">
+      <mat-accordion displayMode="flat" multi="true">
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h4>Price</h4>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            class="text-muted"
+          >
+            <span
+            >From: <b>৳price rang min</b></span
+            >
+            <span
+            >To: <b>৳price rang max</b></span
+            >
+          </div>
+          <div
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            class="filter-price"
+          >
+            <mat-slider
+              color="primary"
+              max="2000"
+              min="1"
+              thumb-label="true"
+            ></mat-slider>
+            <mat-slider
+              color="warn"
+              max="2000"
+              min="1"
+              thumb-label="true"
+            ></mat-slider>
+          </div>
+        </mat-expansion-panel>
+        <!-- END PRICE FILTER -->
+
+        <mat-expansion-panel expanded *ngFor="let f of [1,2]">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h4>{{ f.title }}</h4>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div fxLayout="column">
+            <mat-checkbox *ngFor="let it of f.components" color="primary">
+              {{ it.key }}
+            </mat-checkbox>
+          </div>
+        </mat-expansion-panel>
+        END CONDITION FILTER
+      </mat-accordion>
+    </div>
+    <!-- END OF SIDEBAR -->
+
+    <!-- <div class="product-container" *ngIf="noProduct === false; else noData"> -->
+    <div class="product-container">
+      <div class="search">
+        <form class="search-form" #searchForm="ngForm">
+          <input
+            #searchInput
+            type="text"
+            placeholder="Search here..."
+            name="searchTerm"
+            autocomplete="off"
+            ngModel
+            required
+          />
+          <div class="icon">
+            <mat-icon>search</mat-icon>
+          </div>
+        </form>
+      </div>
+
+      <br />
+      <mat-card class="m-card" *ngFor="let data of products | paginate: { itemsPerPage: productsPerPage, currentPage: currentPage, totalItems: totalProducts } ; let i = index">
+        <div class="img-thumb">
+          <img  checkImageDefault class="table-image" [src]="data && data?.images ? data.images[0] : ''" alt="" />
+        </div>
+        <div class="desc">
+          <h3>{{ data.name }}</h3>
+          <ul class="features">
+            <li >{{ data.seoDescription }}</li>
+          </ul>
+          <div class="footer">
+            <h3>{{ data.salePrice }}৳</h3>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="onAddToPcBuild(data)"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <!-- END OF PRODUCT LIST -->
+  </div>
+</div>
+
+<div class="pagination-container">
+  <pagination-controls
+    class="data-pagination"
+    [autoHide]="true"
+    [maxSize]="15"
+    (pageChange)="onPageChanged($event)">
+  </pagination-controls>
+</div>
+
+<!-- TEMPLATE -->
+<ngx-spinner
+  bdColor="rgba(0,0,0,0.25)"
+  size="medium"
+  color="#fff"
+  type="ball-clip-rotate"
+  [fullScreen]="true"
+><p style="color: white">Loading...</p></ngx-spinner
+>
+
+<ng-template #noData>
+  <div style="margin-top: 50px; width: 100%; text-align: center">
+    <h2>No Product Found</h2>
+  </div>
+</ng-template>

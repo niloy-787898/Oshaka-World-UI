@@ -1,0 +1,61 @@
+/* You can add global styles to this file, and also import other style files */
+@import'./theme/base';
+/*** swipper-slider ****/
+@import "~swiper/swiper-bundle.min.css";
+@import "~swiper/css/effect-fade";
+@import "~swiper/css/navigation";
+@import "~swiper/css/pagination";
+@import "~swiper/css/effect-coverflow";
+@import'./theme/variables';
+
+.slick-slider {
+    width: 88%;
+    margin: auto;
+    background: rgb(14, 13, 13);
+  }
+
+body .slick-prev,
+body .slick-next {
+    height: 45px;
+    width: 40px;
+    background: grey !important;
+    z-index: 100;
+}
+::selection{
+  color: #fff;
+  background-color: $color-primary;
+}
+.scroll span{
+  border: 3px solid $color-primary;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-primary;
+  color: #fff;
+  box-shadow: 0px 0px 15px 3px rgb(71 254 126 / 50%);
+  font-size: 16px;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 50px;
+  right:10px;
+  cursor: pointer;
+  z-index: 150;
+}
+
+@media only screen and(max-width: 997px) {
+  .scroll span{
+    bottom: 80px;
+  }
+}
+
+// .htmlDes p,.detailmodule_text-image p{
+//   display: block;
+//   color: $text-color;
+//   font-family: $font-en-primary;
+//   font-weight: 400;
+//   font-size: 16px;
+//   line-height: 24px;
+//   // margin-bottom: 10px !important;
+// }

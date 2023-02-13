@@ -1,0 +1,103 @@
+@import "../../../../theme/variables";
+.add-address-area{
+    height: 100%;
+  padding: 25px 15px;
+}
+
+.select_address{
+  padding: 20px 0;
+  display:flex;
+  flex-direction: column;
+  ::ng-deep {
+    .mat-radio-button {
+      padding-right: 15px;
+      padding-bottom: 10px;
+  }
+  .mat-radio-label-content {
+    font-size: 18px;
+  }
+  }
+}
+
+.add-address-main{
+    //background-color: #f9f9f9;
+    //max-width: 700px;
+    width: 100%;
+    //margin: auto;
+    //padding:30px 50px;
+    //box-sizing: border-box;
+    //border-radius: 10px;
+}
+@media(max-width:500px){
+    .add-address-main{
+        padding: 20px;
+    }
+}
+.form-input{
+    display: block;
+    width: 100%;
+}
+.form-input h3{
+    color: $text-color;
+    font-family: $font-en-primary;
+    font-style: normal;
+    font-weight: 500;
+    margin-bottom: 10px!important;
+    font-size: 18px;
+}
+.form-field-area{
+    display: block;
+}
+.form-field{
+    display: block;
+    width: 100%;
+}
+.form-field input{
+    color: $text-color;
+    font-family: $font-en-primary;
+    font-weight: 500;
+    font-size: 16px;
+}
+.form-field mat-label{
+    font-family: $font-en-primary;
+    font-weight: 500;
+    font-size: 15px;
+}
+::ng-deep.form-field .mat-form-field-infix{
+    padding: 1em 0 1em 0!important;
+}
+/*** add-btn ***/
+.add-btn{
+    display: block;
+}
+.add-btn ul{
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+.add-btn ul li{
+    display: inline-block;
+    margin-right: 15px;
+}
+.add-btn ul li:last-child{
+    margin: 0px;
+}
+.add-btn ul li button{
+    background-color: #fff;
+    color: $color-primary;
+    font-family: $font-en-primary;
+    font-weight: 500;
+    font-size: 16px;
+    border: 1px solid $color-primary;
+    padding: 5px 15px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+.save-active{
+    background-color: $color-primary!important;
+    color: #fff!important;
+}
+::ng-deep.form-field .mat-form-field-appearance-outline .mat-form-field-outline{
+    color: #eeeeee;
+}

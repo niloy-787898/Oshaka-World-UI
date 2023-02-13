@@ -1,0 +1,55 @@
+<!--banner-area-->
+<div class="banner-area">
+  <div class="container">
+    <div class="banner-main">
+      <h1>DISCOUNT & OFFERS</h1>
+      <ul>
+        <li><a routerLink="/home">Home</a></li>
+        <li><span>/</span></li>
+        <li><a routerLink="/home">Offer</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!---offer-area-->
+<div class="offer-area">
+  <div class="container">
+    <div class="offer-main">
+      <!--offer-card-->
+      <div class="offer-card"
+           *ngFor="let data of coupons | paginate: { itemsPerPage: couponsPerPage, currentPage: currentPage, totalItems: totalSubCategories } ;
+           let i = index"
+           [routerLink]="['./', data?._id]"
+      >
+        <div class="offer-img">
+          <img checkImageDefault [src]="data?.bannerImage" alt="">
+        </div>
+        <div class="offer-card-body">
+          <div class="offer-name">
+            <h3>{{data?.couponCode}}</h3>
+          </div>
+          <div class="copy">
+            <span (click)="copyCouponCode($event, data)">
+              {{selectedCoupon && selectedCoupon === data._id ? 'Copied' : 'Copy'}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pagination-container">
+  <pagination-controls
+    class="data-pagination"
+    [autoHide]="true"
+    [maxSize]="15"
+    (pageChange)="onPageChanged($event)">
+  </pagination-controls>
+</div>     <!-- END PAGINATION -->
+
+
+<!-- LOADING TEMPLATE -->
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="medium" color="#fff" type="ball-atom" [fullScreen]="false">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>

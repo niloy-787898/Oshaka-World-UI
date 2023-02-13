@@ -1,0 +1,28 @@
+<div class="overlay" *ngIf="categorySlide" (click)="onHideCategory()"></div>
+<!---category-slide-->
+<div class="category-slide" [class]="categorySlide?'category-slide-active':'inactive'">
+      <!---slide-top-->
+      <div class="slide-top">
+          <h3><i class="fas fa-align-left"></i> Categories</h3>
+          <span (click)="onHideCategory()"><i class="fa fa-xmark"></i></span>
+      </div>
+      <div class="category-menu">
+           <ul>
+               <li *ngFor="let data of  categoryMenus">
+                    <a (click)="showSub(data?._id)" [style.border-color]="toggleSub == data?._id?'transparent':''">{{data?.name}}<i class="fa fa-angle-right"></i></a>
+                    <div class="sub-category" *ngIf="toggleSub == data?._id">
+                         <ul>
+                             <li *ngFor="let subData of data?.subCategories" (click)="onHideCategory()">
+                                <a [routerLink]="['/products']" [queryParams]="{categories: data.slug, subCategories: subData?.slug}"><i class="fa fa-minus"></i> {{subData?.name}}</a>
+                            </li>
+                         </ul>
+                    </div>
+               </li>
+           </ul>
+      </div>
+
+      <!--slide-bottom-->
+      <div class="slide-bottom">
+          <p>All Rights Reserved by <a href="#">Heriken</a></p>
+      </div>
+</div>

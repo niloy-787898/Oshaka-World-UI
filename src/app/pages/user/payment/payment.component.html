@@ -1,0 +1,501 @@
+<!--order-process-system-->
+<div class="order-process-system">
+  <!--  <div class="container">-->
+  <!--    <div class="order-process-main">-->
+
+  <!--      <div class="order-process-system-info complate-process" (click)="onCLickCartIcon()">-->
+  <!--        <span><i class="fa fa-shopping-cart"></i></span>-->
+  <!--        <h3>My Cart</h3>-->
+  <!--      </div>-->
+
+  <!--      <div class="order-process-system-info active-process">-->
+  <!--        <span><i class="fa fa-credit-card"></i></span>-->
+  <!--        <h3>Checkout</h3>-->
+  <!--      </div>-->
+
+  <!--      <div class="order-process-system-info ">-->
+  <!--        <span><i class="fa fa-check-circle"></i></span>-->
+  <!--        <h3>Confirmation</h3>-->
+  <!--      </div>-->
+
+  <!--    </div>-->
+  <!--  </div>-->
+</div>
+
+<!------ PAYMENT-AREA ------>
+<!-- <div class="payment-area">
+  <div class="container">
+    <div class="payment-area-main">
+      <div>
+        <div class="payment-left">
+          <div class="step2-title">
+            <h3>Select a Payment Option</h3>
+          </div>
+
+          <div class="online-payment">
+            <div class="method-info active"
+                 *ngFor="let data of paymentMethods"
+                 [class.active]="data.slug === selectedPaymentMethod"
+                 (click)="onSelectPaymentMethod(data)"
+            >
+              <img [src]="data.image" alt="">
+              <span>{{data.name}}</span>
+            </div>
+          </div>
+
+          <div class="payment-check">
+            <mat-checkbox [(ngModel)]="isCheckedTerms" class="mat-check">I agree to the <a routerLink="/pages/terms-and-conditions">Terms and
+              conditions</a>, <a routerLink="/pages/return-&-refund-policy">Return
+              policy</a> & <a routerLink="/pages/privacy-policy">Privacy Policy</a>.
+            </mat-checkbox>
+          </div>
+
+        </div>
+
+        <div class="cart-btn-area pc">
+          <div class="cart-btn-info">
+            <div class="cart-btn-left">
+              <button routerLink="../shipping"><i class="fa fa-arrow-left"></i> Return to Shipping Info</button>
+            </div>
+
+            <div class="cart-btn-right">
+              <button type="button" (click)="onConfirmOrder()">Complete Order</button>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+       <div class="payment-right">
+          <div class="address-area">
+             <h3>অর্ডারটি কনফার্ম করতে আপনার নাম, মোবাইল নম্বর,ঠিকানা লিখে অর্ডার করুন বাটনে ক্লিক করুন।</h3>
+            <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+              <div class="form-input">
+                <h3>নামঃ</h3>
+                <div class="form-field-area">
+                  <mat-form-field appearance="outline" class="form-field">
+                    <input required formControlName="name" matInput placeholder="Enter your name..">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="form-input">
+                <h3>মোবাইল নম্বরঃ</h3>
+                <div class="form-field-area">
+                  <mat-form-field appearance="outline" class="form-field">
+                    <input digitOnly maxlength="11" required formControlName="phone" matInput placeholder="Enter your phone number..">
+                    <mat-error>দয়া করে একটি বৈধ 11 সংখ্যার ফোন নম্বর লিখুন৷</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="form-input">
+                <h3>ঠিকানা</h3>
+                <div class="form-field-area">
+                  <mat-form-field appearance="outline" class="form-field">
+                    <textarea formControlName="address" matInput rows="5" cols="10"
+                              placeholder="Write Your Address.."></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="delivery-charge">
+                   <button>ডেলিভারি চার্জ</button>
+                   <div class="radio-box-area">
+                    <mat-radio-group aria-label="Select an option">
+                      <mat-radio-button value="1">ঢাকার ভিতরে ৬০ টাকা</mat-radio-button>
+                      <mat-radio-button value="2">ঢাকার বাহিরে ১২০ টাকা</mat-radio-button>
+                    </mat-radio-group>
+                   </div>
+              </div>
+
+            </form>
+          </div>
+        <div class="payment-summary">
+          <div class="summary-title">
+            <h3>Summary</h3>
+            <span>{{carts?.length | numMinDigit}} Items</span>
+          </div>
+
+          <div class="product-total">
+            <div class="product-total-title">
+              <span>Product</span>
+              <span>Total</span>
+            </div>
+
+            <div class="product-total-info-main">
+              <div class="product-total-info" *ngFor="let data of carts">
+                <div>
+                  <span style="color: #70c332">{{data?.product?.name}} ({{data?.selectedQty}})</span>
+                </div>
+                <div style="text-align: right;">
+                  <span
+                    style="color: #70c332">{{data?.product | price: 'salePrice' : data?.selectedQty | number : '': 'bn'}}
+                    TK</span>
+                </div>
+              </div>
+
+              <div class="subtotal">
+                <div class="product-total-info">
+                  <span>Subtotal</span>
+                  <span style="color:#e62e04;">{{cartSubTotal | number : '': 'bn'}} Tk</span>
+                </div>
+
+                <div *ngIf="coupon" class="product-total-info">
+                  <span>Coupon ({{coupon?.couponCode}})</span>
+                  <span>(-) {{couponDiscount}}</span>
+                </div>
+
+                <div class="product-total-info">
+                  <span>Delivery Charge ({{selectedAddress?.city === 'Dhaka' ? 'Inside Dhaka' : 'Outside Dhaka'}})</span>
+                  <span>{{deliveryChargeByArea}}TK</span>
+                </div>
+
+                <div class="product-total-info">
+                  <span>Grand Total</span>
+                  <span>{{grandTotal | number : '': 'bn'}} </span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="cuppon-area">
+            <div class="cupon-input">
+              <input [readOnly]="coupon" [(ngModel)]="couponCode" type="text"  placeholder="Have coupon code ? Enter Here..">
+            </div>
+
+            <div *ngIf="!coupon" class="apply-btn" (click)="checkCouponAvailability()">
+              <button>Apply</button>
+            </div>
+
+            <div *ngIf="coupon" class="apply-btn" (click)="onRemoveCoupon()">
+              <button class="danger">Remove</button>
+            </div>
+          </div>
+        </div>
+       </div>
+
+      <div class="cart-btn-area mbl">
+        <div class="cart-btn-info">
+          <div class="cart-btn-left">
+            <button routerLink="/shipping"><i class="fa fa-arrow-left"></i> Go Back</button>
+          </div>
+
+          <div class="cart-btn-right">
+            <button (click)="onConfirmOrder()">Complete Order</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<!------ PAYMENT-AREA ------>
+<div class="payment-area">
+  <div class="container">
+    <div class="payment-area-main">
+      <div class="pay-right">
+        <div class="cart-area">
+          <div class="cart-main">
+
+            <div class="cart-table-area">
+              <div class="cart-table">
+                <div class="table-head">
+                  <div class="table-row">
+                    <div class="table-sl-heading">
+                      <h3>SL</h3>
+                    </div>
+                    <div class="table-heading product">
+                      <h3>Product</h3>
+                    </div>
+                    <div class="table-heading price">
+                      <h3>Price</h3>
+                    </div>
+                    <div class="table-heading price">
+                      <h3>Discount</h3>
+                    </div>
+                    <div class="table-heading  quantity price">
+                      <h3>Quantity</h3>
+                    </div>
+                    <div class="table-heading total">
+                      <h3>Total</h3>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="table-body">
+                  <!---table-row-->
+                  <div class="table-row" *ngFor="let data of carts;let index=index; ">
+                    <div style="padding: 0 15px 0 20px;">
+                      <h3>{{index+1}}</h3>
+                    </div>
+                    <div class="table-data product">
+                      <div class="product-area">
+                        <div class="product-img">
+                          <img checkImageDefault src="{{data?.product?.images?.[0]}}">
+                        </div>
+                        <div class="product-info">
+                          <div class="product-title">
+                            <a [routerLink]="['/products/details',data?.product?.slug]">{{data?.product?.name}}</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="table-data price">
+                      <h3> {{data?.product | price: 'salePrice' | number : '': 'bn'}}TK</h3>
+
+                    </div>
+
+                    <div class="table-data price">
+                      <h3> {{data?.product | price: 'discountAmount' | number : '': 'bn' }}TK</h3>
+                    </div>
+
+                    <div class="table-data quantity">
+                      <div class="quantity-info">
+                        <!--                        <div>-->
+                        <!--                          <button>-</button>-->
+                        <!--                        </div>-->
+                        <div>
+                          <p>{{data?.selectedQty }}</p>
+                        </div>
+                        <!--                        <div>-->
+                        <!--                          <button>+</button>-->
+                        <!--                        </div>-->
+                      </div>
+                    </div>
+
+                    <div class="table-data tax">
+                      <h4>{{data?.product | price: 'salePrice' : data?.selectedQty | number : '': 'bn'}}TK</h4>
+                    </div>
+                  </div>
+
+
+                </div>
+
+              </div>
+            </div>
+            <!-----------------------------
+                  resposive-cart-product-area
+              --------------------------->
+
+          </div>
+        </div><!--end-->
+      </div>
+
+      <div class="payment-right">
+        <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+          <div class="address-area">
+            <h3>অর্ডার কনফার্ম করতে আপনার নাম, মোবাইল নাম্বর,ঠিকানা লিখে " অর্ডার করুন " বাটনে ক্লিক করুন।</h3>
+
+            <div class="form-input">
+              <h3>নামঃ</h3>
+              <!---form-field-->
+              <div class="form-field-area">
+                <mat-form-field appearance="outline" class="form-field">
+                  <input formControlName="name" matInput placeholder="Enter your name..">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="form-input">
+              <h3>মোবাইল নম্বরঃ</h3>
+              <!---form-field-->
+              <div class="form-field-area">
+                <mat-form-field appearance="outline" class="form-field">
+                  <input digitOnly [maxlength]="11" value="" maxlength="11" formControlName="phone" matInput
+                    placeholder="Enter your phone number.." type="text">
+                  <mat-error>দয়া করে একটি বৈধ 11 সংখ্যার ফোন নম্বর লিখুন৷</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="form-input">
+              <h3>ঠিকানা</h3>
+              <!---form-field-->
+              <div class="form-field-area">
+                <mat-form-field appearance="outline" class="form-field">
+                  <!-- <mat-label>Textarea</mat-label> -->
+                  <textarea formControlName="address" matInput rows="5" cols="10"
+                    placeholder="Write Your Address.."></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="delivery-charge">
+              <button type="button">ডেলিভারি চার্জ</button>
+              <div class="radio-box-area">
+                <mat-radio-group aria-label="Select an option" formControlName="deliveryOptions">
+                  <mat-radio-button value='1'>ঢাকার ভিতরে {{shippingCharge?.deliveryInDhaka | engBnNum}}
+                    টাকা</mat-radio-button>
+                  <mat-radio-button value='2'>ঢাকার বাহিরে {{shippingCharge?.deliveryOutsideDhaka | engBnNum}}
+                    টাকা</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+
+
+          </div>
+          <div class="payment-left">
+            <div class="step2-title">
+               <div>
+                <h3>পেমেন্ট মেথড সিলেক্ট করুন</h3>
+               </div>
+                <div>
+                  <button><i class="fa fa-lock"></i>  সম্পুর্ণ নিরাপদ পেমেন্ট</button>
+                </div>
+            </div>
+            <!-- <div class="radio-box-area select-pay">
+            <mat-radio-group aria-label="Select an option" formControlName="paymentOptions">
+                <mat-radio-button value="cash_on_delivery">Cash On Delivery</mat-radio-button>
+              <mat-radio-button value="online_payment">Online Payment</mat-radio-button>
+            </mat-radio-group>
+            <div class="bkash-logo">
+              <span>Online Payment Partners</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3xhfT2zVd7qE4gwd7GTLjBbjdtJSo3Kxan0sVJ3r0RqHyQemhsp1mDCBt42SXgUugEw&usqp=CAU" alt="">
+            </div>
+          </div> -->
+          <div class="pay-area">
+                <mat-radio-group aria-label="Select an option" formControlName="paymentOptions">
+                      <div class="pay-box-area">
+                          <div class="pay-box">
+                            <div class="pay-box-left">
+                              <mat-radio-button value="cash_on_delivery">ক্যাশ অন ডেলিভারি</mat-radio-button>
+                           </div>
+                          <div class="pay-box-right">
+
+                          </div>
+                          </div>
+                          <span><i class="fa fa-check-circle"></i> পণ্য হাতে পেয়ে মূল্য পরিশোধ করুন</span>
+                      </div>
+
+                      <div class="pay-box-area">
+                        <div class="pay-box">
+                          <div class="pay-box-left">
+                            <mat-radio-button value="bkash">বিকাশ</mat-radio-button>
+                         </div>
+                        <div class="pay-box-right">
+                               <img src="https://raw.githubusercontent.com/Shipu/bkash-example/master/bkash_payment_logo.png" alt="">
+                          </div>
+                        </div>
+                        <span><i class="fa fa-check-circle"></i> বিকাশে পেমেন্টে ডেলিভারি চার্জ ফ্রী</span>
+                    </div>
+
+
+                    <div class="pay-box-area">
+                      <div class="pay-box">
+                        <div class="pay-box-left">
+                          <mat-radio-button value="online_payment">অন্যান্য পেমেন্ট মাধ্যম</mat-radio-button>
+                       </div>
+                      <div class="pay-box-right">
+                        <img style="max-width: 150px;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3xhfT2zVd7qE4gwd7GTLjBbjdtJSo3Kxan0sVJ3r0RqHyQemhsp1mDCBt42SXgUugEw&usqp=CAU" alt="">
+                        </div>
+                      </div>
+                  </div>
+
+                </mat-radio-group>
+          </div>
+
+
+
+
+
+
+          </div>
+        </form>
+
+        <div class="payment-summery">
+          <h3>Order-summery</h3>
+          <ul>
+            <li>
+              <div>
+                <span>Sub Total:</span>
+              </div>
+              <div>
+                <span>{{cartSubTotal | number : '': 'bn'}}Tk</span>
+              </div>
+            </li>
+            <li>
+              <!--              <div>-->
+              <!--                <span>Discount:</span>-->
+              <!--              </div>-->
+              <!--              <div>-->
+              <!--                <span>{{cartDiscountAmount | number : '': 'bn'}}Tk</span>-->
+              <!--              </div>-->
+            </li>
+            <li>
+              <div>
+                <span>Delivery Charge:</span>
+              </div>
+              <div>
+                <span>{{this.dataForm.value.deliveryOptions==='1'? this.shippingCharge?.deliveryInDhaka :
+                  this.dataForm.value.deliveryOptions==='2'? this.shippingCharge?.deliveryOutsideDhaka : 0}}TK</span>
+              </div>
+            </li>
+            <hr class="hr">
+            <li>
+              <div>
+                <span>Total</span>
+              </div>
+              <div class="stokced-price">
+                <div class="stock-badge">
+                  <span>Save {{cartDiscountAmount}}</span>
+                </div>
+                <span>{{grandTotal | number: '':'bn'}}Tk</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="order-button">
+            <button (click)="onConfirmOrder()">অর্ডার করুন</button>
+          </div>
+        </div>
+
+        <div class="cart-responsive-product-area">
+
+          <div class="responsive-cart-product" *ngFor="let data of carts;let index=index;">
+            <!--res-cart-left-->
+            <div class="res-cart-left">
+              <div class="responsive-product-img">
+                <img checkImageDefault src="{{data?.product?.images?.[0]}}">
+                <div class="res-cart-delete">
+                  <span><i class="fa fa-trash"></i></span>
+                </div>
+              </div>
+            </div><!--end-->
+            <!---res-cart-right-->
+            <div class="res-cart-right">
+              <div class="res-product-title">
+                <a [routerLink]="['/products/details',data?.product?.slug]">{{data?.product?.name}}</a>
+              </div>
+              <div class="res-cart-right-bottom">
+                <!--cart-price-->
+                <div class="res-cart-price">
+                  <h3> {{data?.product | price: 'salePrice' | number : '': 'bn'}}TK</h3>
+                </div>
+                <!--res-cart-quantity--area-->
+                <div class="res-car-quantity-area">
+                  <div class="quantity-info">
+                    <!--                        <div>-->
+                    <!--                          <button>-</button>-->
+                    <!--                        </div>-->
+                    <div>
+                      <p>Quantity: {{data?.selectedQty }}</p>
+                    </div>
+                    <!--                        <div>-->
+                    <!--                          <button>+</button>-->
+                    <!--                        </div>-->
+                  </div>
+                </div>
+              </div>
+            </div><!---end-->
+
+
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

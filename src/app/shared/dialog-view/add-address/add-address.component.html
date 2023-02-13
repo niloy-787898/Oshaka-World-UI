@@ -1,0 +1,70 @@
+<!---add-address-area--->
+<mat-dialog-content class="mat-typography">
+  <div class="add-address-area">
+    <div class="add-address-main">
+      <form #formElement="ngForm" [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+        <div class="form-input">
+          <h3>Add New Address</h3>
+          <!---form-field-->
+          <div class="select_address">
+            <mat-radio-group
+              formControlName="addressType"
+              aria-labelledby="example-radio-group-label"
+              class="example-radio-group">
+              <mat-radio-button *ngFor="let data of addressTypes" [value]="data" class="example-radio-button">
+                {{data}}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="form-field-area">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Select City</mat-label>
+              <mat-select formControlName="city">
+                <mat-option *ngFor="let data of cities" [value]="data">
+                  {{data}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+        </div>
+        <div class="form-input">
+          <h3>Phone Number</h3>
+          <!---form-field-->
+          <div class="form-field-area">
+            <mat-form-field appearance="outline" class="form-field">
+              <input digitOnly maxlength="11" required formControlName="phone" matInput placeholder="Enter your phone number..">
+              <mat-error>Please enter a valid 11 digit phone number</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-input">
+          <h3>Address</h3>
+          <!---form-field-->
+          <div class="form-field-area">
+            <mat-form-field appearance="outline" class="form-field">
+              <!-- <mat-label>Textarea</mat-label> -->
+              <textarea formControlName="address" matInput rows="5" cols="10"
+                        placeholder="Write Your Address.."></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!---btn-->
+        <div class="add-btn" mat-dialog-actions>
+          <ul>
+            <li>
+              <button mat-dialog-close>Cancel</button>
+            </li>
+            <li>
+              <button class="save-active">Save</button>
+            </li>
+          </ul>
+        </div>
+
+      </form>
+
+
+    </div>
+  </div>
+</mat-dialog-content>

@@ -1,0 +1,315 @@
+<main>
+  <!----header-area -->
+  <header (click)="onClickHeader()" appOutSideClick (outsideClick)="handleOutsideClick()">
+<!--    <div class="header-top-area" [ngClass]="{'header-top-invisible':headerTop == false}">-->
+<!--      <div class="container">-->
+<!--        <div class="header-top-main">-->
+<!--          <div class="header-discount">-->
+<!--            <div>-->
+<!--              <h3>20% Discount All New Customers</h3>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <button routerLink="./registration">Get Register</button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="header-top-close">-->
+<!--            <span (click)="closeHeaderTop()"><i class="fa fa-xmark"></i></span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+    <div class="header-midle" [ngClass]="{'header-fixed': headerFixed == true}">
+      <div class="container">
+
+        <div class="header-midle-main">
+          <div class="header-logo">
+            <a routerLink="/"><img src="./assets/images/logo/okasa.png" alt=""></a>
+          </div>
+          <!---join-->
+          <div class="join" routerLink="../login">
+            <div>
+              <img src="./assets/images/brand/png/user.png" alt="">
+            </div>
+            <div>
+              <a
+                [routerLink]="isUserAuth ? '/account' : '/login'">{{isUserAuth ? user?.name : 'Login/Registration'}}</a>
+            </div>
+          </div>
+
+          <!----search-box-->
+          <div class="search-area">
+            <div class="search">
+              <div (click)="onClickSearchArea($event)">
+                <div class="search-main">
+                  <div class="search-main">
+                    <div class="search-input">
+                      <form #searchForm=ngForm (submit)="onSubmit()">
+                        <input
+                          #searchInput
+                          id="searchInput"
+                          class="tw"
+                          type="text"
+                          placeholder="Search Anything..."
+                          (ngModelChange)="onChangeInput($event)"
+                          (ngModelChangeDebounced)="searchQuery = $event"
+                          [ngModelChangeDebounceTime]="200"
+                          (focus)=handleFocus($event)
+                          name="searchTerm"
+                          autocomplete="off"
+                          ngModel
+                          required>
+                      </form>
+                    </div>
+                    <div class="search-btn">
+                      <button type="button" (click)="onSubmit()"><i (click)="onSubmit()" class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+                <ul id="auto-suggestion" class="auto-complete-box"
+                    [ngClass]=" searchProducts.length > 0 && isOpen ? 'active' : ''">
+                  <li class="list-view" *ngFor="let data of  searchProducts" (click)="onSelectItem(data)">
+
+                    <div class="search-result-left">
+                      <div class="result-product-img">
+                        <img class="img-thumb"
+                             [src]="data.images && data.images.length ? data.images[0] : '/assets/images/placeholder/test.png'">
+                      </div>
+                      <div class="desc">
+                        <h3>{{data?.name}}</h3>
+                      </div>
+                    </div>
+                    <div class="price">
+                      <h5>৳{{data | price: 'salePrice' : 1 | number : '': 'bn'}}</h5>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+
+          <!---icon-menu-->
+          <div class="header-midle-right">
+            <div class="icon-menu">
+              <ul>
+<!--                <li><a href="#"><i class="fa-solid fa-shuffle"></i> <span>0</span></a></li>-->
+                <li><a matTooltip="Wishlist" routerLink="/account/wishlist"><i class="fa fa-heart"></i>
+                  <span>{{wishLists?.length | numMinDigit}}</span>
+                </a></li>
+                <li><a matTooltip="Compare" routerLink="/compare"><mat-icon>compare</mat-icon>
+                  <span>{{compareItemsCount | numMinDigit}}</span>
+                </a></li>
+              <!-- <li (click)="cartSlideShow()"><a>
+                  <i class="fa-solid fa-basket-shopping"></i>
+                  <span>{{carts?.length | numMinDigit}}</span>
+                </a>
+              </li> -->
+              </ul>
+            </div>
+            <!-- <div class="total-price" (click)="cartSlideShow()">
+              <span>Total Price</span>
+              <h3>৳{{cartSubTotal | number: '' : 'bn'}}</h3>
+            </div> -->
+
+          </div>
+        </div>
+
+        <!---header-midle-res--->
+        <div class="header-midle-res">
+          <div class="header-midle-res-main">
+            <div class="join">
+              <div routerLink="../login">
+                <img src="./assets/images/brand/png/user.png" alt="">
+              </div>
+            </div>
+            <div class="header-logo">
+              <a routerLink="/"><img src="./assets/images/logo/okasa.png" alt=""></a>
+            </div>
+            <div class="res-search-icon">
+              <button (click)="resSearchBoxToggle()"><i [class]=" resSearchShow?'fa fa-xmark':'fa fa-search'"></i>
+              </button>
+            </div>
+          </div>
+          <!---search-->
+          <!----search-box-->
+          <div class="search-area" [style.display]="resSearchShow ? 'block' : 'none'">
+            <div class="search">
+              <div>
+                <div class="search-main">
+                  <div class="search-main">
+                    <div class="search-input">
+                      <input
+                        #searchInputMobile
+                        [ngModel]="searchQuery"
+                        (ngModelChange)="onChangeInput($event)"
+                        (ngModelChangeDebounced)="searchQuery = $event"
+                        [ngModelChangeDebounceTime]="200"
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Search Anything...">
+                    </div>
+                    <div class="search-btn">
+                      <button><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div><!---res-end-->
+
+
+      </div>
+    </div>
+    <!---header-bottom-->
+    <div class="header-bottom">
+      <div class="container">
+        <div class="header-bottom-main">
+          <!---header-menu-->
+          <div class="header-menu">
+            <div class="category" (click)="showCategory()" *ngIf="categoryBar">
+              <h3><i class="fa fa-list"></i> <span>TOP CATEGORIES</span></h3>
+            </div>
+            <ul>
+              <li><a routerLink="/">Home </a></li>
+              <li><a routerLink="/products">Products</a></li>
+              <!-- <li><a routerLink="/offers">Offers</a></li>
+              <li><a routerLink="/pages/about-us">About Us</a></li>
+              <li><a routerLink="/contact-us">Contact Us</a></li> -->
+            </ul>
+          </div>
+          <!-- <div class="header-len">
+            <ul>
+              <li>  <button
+                mat-raised-button
+                class="btn-build-pc"
+                routerLink="/pc-builder"
+              >
+                <mat-icon>computer</mat-icon>
+                {{ "Build Your Own Pc" | uppercase }}
+              </button></li>
+            </ul>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!--bottom-nav-->
+  <div class="bottom-nav">
+    <ul>
+      <li>
+        <a routerLink="/">
+          <span><i class="fa fa-home"></i></span>
+          <h4>Home</h4>
+        </a>
+      </li>
+      <li>
+        <a (click)="showCategory()">
+          <span><i class="fas fa-list"></i></span>
+          <h4>category</h4>
+        </a>
+      </li>
+      <li>
+        <a (click)="cartSlideShow()">
+          <span><i class="fas fa-shopping-basket"></i></span>
+          <h4>carts</h4>
+          <small [ngClass]="{'res-cart-box-animate':cartAnimate == true}">{{carts?.length | numMinDigit}}</small>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/">
+          <span><i class="fas fa-heart"></i></span>
+          <h4>wishlist</h4>
+          <small >{{wishLists?.length | numMinDigit}}</small>
+        </a>
+      </li>
+      <li>
+<!--        <a routerLink="/">-->
+<!--          <span><i class="fas fa-random"></i></span>-->
+<!--          <h4>compare</h4>-->
+<!--          <small>0</small>-->
+<!--        </a>-->
+      </li>
+    </ul>
+  </div>
+
+
+  <!--overlay-->
+  <div class="overlay" (click)="cartSlideHide()" *ngIf="cartSlide"></div>
+  <!------------------------------cart-slide-------------------------->
+  <div class="cart-slide-area" [ngClass]="{'cart-slide-active': cartSlide}">
+    <!---cart-slide-top-->
+    <div class="cart-slide-top">
+      <h3><i class="fas fa-shopping-basket"></i> Total Item ({{carts?.length | numMinDigit}})</h3>
+      <span (click)="cartSlideHide()"><i class="fa fa-xmark"></i></span>
+    </div><!---end-->
+    <!---cart-slide-main-->
+    <div class="cart-slide-main">
+      <!---cart-item-->
+      <div class="cart-item" *ngFor="let data of carts; let i = index;">
+        <div class="cart-img">
+          <img checkImageDefault [src]="data?.product?.images?.[0]" alt="">
+          <div class="del" (click)="onDeleteCartItem(data?._id, data?.product?._id)">
+            <span><i class="fa fa-trash-alt"></i></span>
+          </div>
+        </div>
+        <div class="cart-text">
+          <h4>{{data?.product?.name}}</h4>
+          <span>Unit Price - ৳{{data?.product | price: 'salePrice' | number : '': 'bn'}}</span>
+          <div class="quantity-price">
+            <div class="quantity">
+              <div>
+                <button [disabled]="data?.selectedQty<=1" (click)="onDecrementQty(data?._id, i, data?.selectedQty)"><i class="fa fa-minus"></i></button>
+              </div>
+              <div>
+                <input type="text" [value]="data?.selectedQty" readonly>
+              </div>
+              <div>
+                <button (click)="onIncrementQty(data?._id, i)"><i class="fa fa-plus"></i></button>
+              </div>
+            </div>
+            <div class="price">
+              <b>৳{{data?.product | price: 'salePrice' : data?.selectedQty | number : '': 'bn'}}</b>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!--end-->
+    <!---cart-slide-bottom-->
+    <div class="cart-slide-bottom">
+<!--      <h3>Do you have a coupon code?</h3>-->
+      <a (click)="clickProceedToCart()">
+        <p>Proceed To Checkout</p>
+        <span>৳{{cartSubTotal | number: '' : 'bn'}}</span>
+      </a>
+    </div><!---end-->
+  </div>
+
+  <!--category-slide-->
+  <app-category-slide #categorySlide></app-category-slide>
+
+
+<!---cart-fixed-box-->
+<div class="cart-fixed-box " [ngClass]="{'cart-box-animate':cartAnimate == true}">
+  <div class="cart-box" (click)="cartSlideShow()">
+      <!---cart-box-top-->
+       <div class="cart-box-top">
+        <i class="fa-solid fa-basket-shopping"></i>
+          <span>{{carts?.length | numMinDigit}} Items</span>
+       </div>
+       <div class="cart-price">
+          <span>৳{{cartSubTotal | number: '' : 'bn'}}</span>
+       </div>
+  </div>
+</div>
+
+</main>
+
+
+
+
+

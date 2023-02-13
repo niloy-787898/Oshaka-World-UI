@@ -1,0 +1,61 @@
+<!--- Login-area -->
+<section class="login-area">
+  <div class="container">
+    <div class="login-details-start">
+      <!--- login-title -->
+      <div class="login-title clearfix">
+        <div class="login-title-left">
+          <h2>Welcome to Oshaka World, Please Login</h2>
+        </div>
+        <div class="login-title-right">
+          <h3>New member? <a routerLink="/registration">Register Now</a></h3>
+          <h3><a routerLink="/vendor/login">Vendor Login</a></h3>
+        </div>
+      </div>
+      <div class="login-details">
+        <div class="login-form">
+          <form [formGroup]="formData" (ngSubmit)="onSubmitForm()">
+            <div class="login-email">
+              <label>Phone Number or Email <sup>*</sup></label>
+              <input formControlName="username" type="tel" name="Phone No"
+                     placeholder="Please enter your phone number or email">
+              <span class="invalid" *ngIf="username.touched && username.invalid">This field is required</span>
+            </div>
+            <div class="login-pass">
+              <label>Password <sup>*</sup></label>
+              <input type="password" formControlName="password"
+                     placeholder="Minimum 6 characters with a number and latter">
+              <span class="invalid" *ngIf="password.touched && password.invalid">This field is required</span>
+            </div>
+            <div class="forget">
+              <a routerLink="/password-recovery">Forget password?</a>
+            </div>
+            <div class="login-btn">
+              <button type="submit">login</button>
+            </div>
+          </form>
+        </div>
+
+
+        <div class="other-login">
+          <div class="other-login-details">
+            <h3>Or, login with</h3>
+            <ul>
+              <li><a (click)="userService.FacebookAuth()" class="login-facebook"><span><i class="fab fa-facebook-f"></i></span>Facebook</a>
+              </li>
+              <li><a (click)="userService.GoogleAuth()" class="login-google"><span><i class="fab fa-google-plus-g"></i></span>Google</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+
+
+

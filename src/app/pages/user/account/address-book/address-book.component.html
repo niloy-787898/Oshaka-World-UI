@@ -1,0 +1,48 @@
+
+<div class="shipping-area">
+  <div class="container">
+    <div class="shipping-main-area">
+      <div class="shipping-top-area">
+        <div class="title">
+          <h3>Select Delivery Address</h3>
+        </div>
+
+        <div class="add-address-btn">
+          <button (click)="openAddressDialog()" ><span>+</span> Add New Address</button>
+        </div>
+      </div>
+
+      <div class="shipping-address-main" >
+        <div class="shipping-info" [class]="clickActive[i] ? 'active-address' : 'inactive'" (click)="onSelectAddress(data, i)" *ngFor="let data of addressInfo; let i=index">
+          <div class="shipping-place">
+            <div class="shipping-place-left">
+              <h3><i class="fa fa-briefcase"></i> {{data.addressType}}</h3>
+            </div>
+
+            <div class="shipping-place-right">
+              <span><i class="fa fa-check"></i></span>
+              <span><mat-icon (click)="openAddressDialog(data)">edit</mat-icon></span>
+              <span><mat-icon (click)="deleteAddressById(i)" >delete_outline</mat-icon></span>
+            </div>
+          </div>
+          <div class="shipping-info-body" >
+            <div class="name-area">
+              <h3>{{user?.name ? user?.name : 'No Name'}}</h3>
+              <h3>{{data.phone}}</h3>
+            </div>
+
+            <div class="address">
+              <ul>
+                <li>{{data.address}}</li>
+                <li>{{data.city}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!---cart-btn-area-->
+
+    </div>
+  </div>
+</div>

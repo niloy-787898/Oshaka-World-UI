@@ -1,0 +1,9 @@
+<div class="container" *ngIf="pageInfo">
+  <div class="description" [innerHTML]="pageInfo?.description | safeHtmlCustom"></div>
+</div>
+
+<div class="container" *ngIf="!pageInfo">
+  <div class="description" [innerHTML]="msg | safeHtmlCustom"></div>
+</div>
+
+

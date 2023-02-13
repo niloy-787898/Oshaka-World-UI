@@ -1,0 +1,402 @@
+<!---banner-area-->
+<div class="banner-area">
+  <div class="container">
+    <div class="banner-main">
+
+      <div class="category-area">
+        <div class="banner-category">
+          <div class="banner-category-head">
+            <h3><i class="fa fa-bars"></i> TOP CATEGORIES</h3>
+          </div>
+          <div class="category-menu">
+            <ul>
+              <ng-container *ngIf="isLoadingCategoryMenu">
+                <li *ngFor="let data of [1,2,3,4,5,6,7,8]">
+                  <app-category-menu-loader></app-category-menu-loader>
+                </li>
+              </ng-container>
+              <ng-container *ngIf="!isLoadingCategoryMenu">
+                <li *ngFor="let data of categoryMenus">
+                  <a [routerLink]="['/products']" [queryParams]="{categories: data.slug}">
+                    {{data?.name}} <i class="fa fa-angle-right"></i>
+                  </a>
+                  <div class="sub-category">
+                    <h5>{{data?.name}}</h5>
+                    <div class="sub-category-main">
+                      <div class="sub-menu">
+                        <ul>
+                          <li *ngFor="let sub of data.subCategories">
+                            <a [routerLink]="['/products']"
+                              [queryParams]="{categories: data.slug, subCategories: sub?.slug}">{{sub.name}}</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <a routerLink="/categories">All Categories <i class="fa fa-angle-right"></i></a>
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+      </div> <!-- END Category Area -->
+
+
+
+
+      <!---banner-data-->
+      <div class="banner-data">
+        <!--banner-slider-->
+        <div class="banner-slide-area carousel">
+          <swiper [slidesPerView]="1" [spaceBetween]="20" [autoplay]="true" [loop]="false" [pagination]="{
+                    clickable:true
+                }" class="mySwiper">
+            <ng-template swiperSlide *ngFor="let data of carousels">
+              <!---banner-start-->
+              <div class="banner">
+                <div class="banner-left">
+                  <div>
+                    <h3>{{data.title}}</h3>
+                    <button [routerLink]="data.url"><i class="fa-solid fa-basket-shopping"></i>Shop Now</button>
+                  </div>
+                </div>
+                <div class="banner-right">
+                  <img [src]="data.image" [routerLink]="data.url" alt="">
+                </div>
+              </div><!---banner-end-->
+            </ng-template>
+          </swiper>
+        </div><!---banner-slide-area-end-->
+        <!---banner-data-bottom-->
+        <!--<div class="banner-data-bottom">
+          <div class="sub-banner">
+            <a href="#"><img src="./assets/images/temp/banner/04.jpg" alt=""></a>
+          </div>
+          <div class="sub-banner">
+            <a href="#"><img src="./assets/images/temp/banner/05.jpg" alt=""></a>
+          </div>
+        </div> -->
+        <!---banner-bottom-end-->
+
+      </div><!---DATA-END-->
+    </div>
+  </div>
+</div>
+
+<!----services-area-->
+<div class="service-area">
+  <div class="container">
+    <div class="service-main">
+      <!--service-details-->
+      <div class="service-details">
+        <div class="service-icon">
+          <span><i class="fas fa-truck"></i></span>
+        </div>
+        <div class="service-text">
+          <h3>HOME DELIVERY</h3>
+          <p>24-72 Hours</p>
+        </div>
+      </div><!--service-details-end-->
+      <!--service-details-->
+      <div class="service-details">
+        <div class="service-icon">
+          <span><i class="fas fa-sync-alt"></i></span>
+        </div>
+        <div class="service-text">
+          <h3>Best Warranty Policy</h3>
+          <p>With A 30 Day</p>
+        </div>
+      </div><!--service-details-end-->
+      <!--service-details-->
+      <div class="service-details">
+        <div class="service-icon">
+          <span><i class="fas fa-headset"></i></span>
+        </div>
+        <div class="service-text">
+          <h3>SECURE SHOPPING</h3>
+          <p>100% Safe Transactions</p>
+        </div>
+      </div><!--service-details-end-->
+      <!--service-details-->
+      <div class="service-details">
+        <div class="service-icon">
+          <span><i class="fas fa-lock"></i></span>
+        </div>
+        <div class="service-text">
+          <h3>ORDER PLACED</h3>
+          <p>Total 1,84,560 +</p>
+        </div>
+      </div><!--service-details-end-->
+
+    </div>
+  </div>
+</div>
+
+
+<!---section-6-->
+<div class="section-6">
+  <div class="container">
+    <div class="title-area">
+      <h1>Shop By Categories</h1>
+    </div>
+    <div class="section6-main carousel">
+      <swiper [slidesPerView]="2" [spaceBetween]="10" [autoplay]="true" [loop]="false" [navigation]="true"
+              [breakpoints]="{
+                '520': {
+                    slidesPerView: 3,
+                    spaceBetween:15
+                },
+                '768': {
+                    slidesPerView: 3.5
+                },
+                '1000': {
+                    slidesPerView: 5,
+                    spaceBetween:20
+                },
+                '1200': {
+                    slidesPerView: 6,
+                    spaceBetween:25
+                }
+                }" class="mySwiper">
+        <ng-template swiperSlide *ngFor="let data of categories">
+          <!---category-card-->
+          <app-category-card-one [data]="data"></app-category-card-one>
+        </ng-template>
+      </swiper>
+
+    </div>
+    <div class="view-btn">
+      <a routerLink="/categories"><i class="fa fa-eye"></i>View All Category</a>
+    </div>
+  </div>
+</div>
+
+<div class="section-1"  *ngFor="let data of promoOffers" [ngStyle]="getShowOrHide(data)">
+  <div class="container">
+    <div class="section1-top">
+      <!--title-area-->
+      <div class="title-area">
+        <h1>{{data.title}}</h1>
+<!--        <p>{{data.products | json}}</p>-->
+      </div>
+      <!--time-area-->
+      <app-time-counter-one [endDate]="data?.endDateTime"></app-time-counter-one>
+    </div>
+    <!---section4-main-area-->
+    <div class="section1-main">
+
+      <app-product-card-two [data]="data1?.product" *ngFor="let data1 of data?.products"></app-product-card-two>
+    </div>
+    <!--view-btn-->
+    <div class="view-btn">
+      <a [routerLink]="['/',data?.slug]"><i class="fa fa-eye"></i> View All
+        Deals</a>
+    </div>
+  </div>
+</div> <!-- PROMO Offer Section -->
+
+<!---section-4-->
+<div class="section-4">
+  <div class="container">
+    <div class="title-area">
+      <h1>OshakaMall</h1>
+    </div>
+    <div class="section4-main carousel">
+      <swiper [slidesPerView]="1" [spaceBetween]="20" [autoplay]="true" [navigation]="true" [breakpoints]="{
+                '0': {
+                    slidesPerView: 2,
+                    spaceBetween:10
+                },
+                '768': {
+                    slidesPerView: 3
+                },
+                '1000': {
+                    slidesPerView: 4
+                },
+                '1200': {
+                    slidesPerView: 5
+                }
+                }" class="mySwiper">
+        <ng-template swiperSlide *ngFor="let product of newProducts">
+          <ng-container *ngIf="isLoadingFeaturedProducts">
+            <app-product-car-one-loader [type]="'grid'"></app-product-car-one-loader>
+          </ng-container>
+          <ng-container *ngIf="!isLoadingFeaturedProducts">
+            <app-product-card-one [data]="product"></app-product-card-one>
+          </ng-container>
+        </ng-template>
+      </swiper>
+    </div>
+    <!--view-btn-->
+    <div class="view-btn">
+      <a routerLink="../products"><i class="fa fa-eye"></i> View All Item</a>
+    </div>
+  </div>
+</div>
+
+<!---section-2 --->
+<div class="section-2">
+  <div class="container">
+    <div class="title-area">
+      <h1>Our Featured Items</h1>
+    </div>
+    <!---secton2-main-->
+    <div class="section2-main">
+      <ng-container *ngIf="isLoadingFeaturedProducts">
+        <app-product-car-one-loader [type]="'list'" *ngFor="let product of  [1,2,3,4,5,6]"></app-product-car-one-loader>
+      </ng-container>
+      <ng-container *ngIf="!isLoadingFeaturedProducts">
+        <app-feature-card *ngFor="let data of  featureProducts" [product]="data"></app-feature-card>
+      </ng-container>
+    </div>
+    <div class="view-btn">
+      <a routerLink="../products"><i class="fa fa-eye"></i> View All Feature</a>
+    </div>
+  </div>
+</div>
+
+
+
+<!---section-4-->
+<div class="section-4">
+  <div class="container">
+    <div class="title-area">
+      <h1>Collected New Items</h1>
+    </div>
+    <div class="section4-main carousel">
+      <swiper [slidesPerView]="1" [spaceBetween]="20" [autoplay]="true" [navigation]="true" [breakpoints]="{
+                '0': {
+                    slidesPerView: 2,
+                    spaceBetween:10
+                },
+                '768': {
+                    slidesPerView: 3
+                },
+                '1000': {
+                    slidesPerView: 4
+                },
+                '1200': {
+                    slidesPerView: 5
+                }
+                }" class="mySwiper">
+        <ng-template swiperSlide *ngFor="let product of newProducts">
+          <ng-container *ngIf="isLoadingFeaturedProducts">
+            <app-product-car-one-loader [type]="'grid'"></app-product-car-one-loader>
+          </ng-container>
+          <ng-container *ngIf="!isLoadingFeaturedProducts">
+            <app-product-card-one [data]="product"></app-product-card-one>
+          </ng-container>
+        </ng-template>
+      </swiper>
+    </div>
+    <!--view-btn-->
+    <div class="view-btn">
+      <a routerLink="../products"><i class="fa fa-eye"></i> View All Item</a>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!---section5-->
+<div class="section-5">
+  <div class="container">
+    <div class="title-area">
+      <h1>Browse By Top Niche</h1>
+    </div>
+    <!---section5-filter-->
+    <div class="filter-area">
+      <ul>
+        <li>
+          <button (click)="onClickShowNiche('topSales')"
+            [class.active-filter-btn]="selectedProductType === 'topSales'"><i class="fa-solid fa-sack-dollar"></i>Top
+            Sales
+          </button>
+        </li>
+<!--        <li>-->
+<!--          <button (click)="onClickShowNiche('topRating')"-->
+<!--            [class.active-filter-btn]="selectedProductType === 'topRating'"><i class="fa fa-star"></i> Top Rating-->
+<!--          </button>-->
+<!--        </li>-->
+        <li>
+          <button (click)="onClickShowNiche('topDiscount')"
+            [class.active-filter-btn]="selectedProductType === 'topDiscount'"><i class="fa-solid fa-percent"></i> Top
+            Discount
+          </button>
+        </li>
+      </ul>
+    </div>
+    <!---section5-main-->
+    <div class="section5-main" *ngIf="selectedProductType == 'topSales'">
+      <ng-container *ngIf="isLoadingTopSalesProducts">
+        <app-product-car-one-loader [type]="'grid'"></app-product-car-one-loader>
+      </ng-container>
+      <ng-container *ngIf="!isLoadingTopSalesProducts">
+        <app-product-card-one [data]="product" *ngFor="let product of topSalesProducts"></app-product-card-one>
+      </ng-container>
+    </div>
+
+    <div class="section5-main" *ngIf="selectedProductType == 'topRating'">
+      <ng-container *ngIf="isLoadingTopSalesProducts">
+        <app-product-car-one-loader [type]="'grid'"></app-product-car-one-loader>
+      </ng-container>
+      <ng-container *ngIf="!isLoadingTopSalesProducts">
+        <app-product-card-one [data]="product" *ngFor="let product of topRatingProducts"></app-product-card-one>
+      </ng-container>
+    </div>
+
+    <div class="section5-main" *ngIf="selectedProductType == 'topDiscount'">
+      <ng-container *ngIf="isLoadingTopSalesProducts">
+        <app-product-car-one-loader [type]="'grid'"></app-product-car-one-loader>
+      </ng-container>
+      <ng-container *ngIf="!isLoadingTopSalesProducts">
+        <app-product-card-one [data]="product" *ngFor="let product of topDiscountProducts"></app-product-card-one>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<!---section - 7-->
+<div class="section-7">
+  <div class="container">
+    <div class="title-area">
+      <h1>Shop By Brands</h1>
+    </div>
+    <div class="section7-main carousel">
+      <swiper [slidesPerView]="1" [spaceBetween]="10" [autoplay]="true" [loop]="false" [navigation]="true"
+        [breakpoints]="{
+                '380': {
+                        slidesPerView: 2,
+                        spaceBetween:15
+                },
+                '520': {
+                    slidesPerView: 2.5,
+                    spaceBetween:15
+                },
+                '768': {
+                    slidesPerView: 3.5
+                },
+                '1000': {
+                    slidesPerView: 5,
+                    spaceBetween:20
+                },
+                '1200': {
+                    slidesPerView: 7,
+                    spaceBetween:25
+                }
+                }" class="mySwiper">
+        <ng-template swiperSlide *ngFor="let data of brands">
+          <app-brand-card-one [data]="data"></app-brand-card-one>
+        </ng-template>
+      </swiper>
+
+    </div>
+    <!---view-btn-->
+    <div class="view-btn">
+      <a routerLink="/brands"><i class="fa fa-eye"></i>View All Brands</a>
+    </div>
+  </div>
+</div>
