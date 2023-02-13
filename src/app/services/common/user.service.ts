@@ -42,7 +42,7 @@ export class UserService {
    */
 
   userRegistration(data: User, redirectForm?: string) {
-    this.httpClient.post<{ token: string, expiredIn: number }>(API_URL_USER + 'signup', data)
+    this.httpClient.post<{ token: string, tokenExpiredIn: number }>(API_URL_USER + 'signup-and-login', data)
 
       .subscribe(res => {
         const getToken = res.token;
@@ -50,7 +50,7 @@ export class UserService {
         // Make User Auth True..
         this.spinner.hide();
         if (getToken) {
-          this.onSuccessLogin(getToken, res.expiredIn, redirectForm, true);
+          this.onSuccessLogin(getToken, res.tokenExpiredIn, redirectForm, true);
         }
       }, () => {
         this.isUser = false;
@@ -62,13 +62,14 @@ export class UserService {
 
   userLogin(data: { username: string, password: string }, redirectFrom?: string) {
 
-    this.httpClient.post<{ token: string, expiredIn: number }>(API_URL_USER + 'login', data)
+    this.httpClient.post<{ token: string, tokenExpiredIn: number }>(API_URL_USER + 'login', data)
       .subscribe(response => {
         const getToken = response.token;
         this.token = getToken;
         // Make User Auth True..
+        console.log(getToken)
         if (getToken) {
-          this.onSuccessLogin(getToken, response.expiredIn, redirectFrom);
+          this.onSuccessLogin(getToken, response.tokenExpiredIn, redirectFrom);
         }
       }, () => {
         this.isUser = false;
@@ -82,6 +83,7 @@ export class UserService {
    */
 
   private onSuccessLogin(token: string, expiredIn: number, redirectFrom?: string, fromRegistration?: boolean) {
+
     this.isUser = true;
     this.userStatusListener.next(true);
 
@@ -242,7 +244,7 @@ export class UserService {
     // Clear The Token Time..
     clearTimeout(this.tokenTimer);
     // Navigate..
-    this.router.navigate([environment.userBaseUrl]);
+    this.router.navigate([environment.userLoginUrl]);
   }
 
 
