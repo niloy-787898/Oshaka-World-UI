@@ -1,4 +1,5 @@
 import {Category} from './category.interface';
+import {ProductAttribute} from "./product-attribute";
 
 export interface SubCategory {
   _id?: string;
@@ -12,4 +13,5 @@ export interface SubCategory {
   createdAt?: Date;
   updatedAt?: Date;
   select?: boolean;
+  attributes: string[] |  ProductAttribute[];
 }

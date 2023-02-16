@@ -15,4 +15,11 @@ export const DATABASE_KEY = Object.freeze({
   selectedShippingAddress: 'HERIKEN_SELECTED_ADDRESS' + environment.VERSION,
   productLayout: 'HERIKEN_PRODUCT_LAYOUT' + environment.VERSION,
   otpCheck: 'HERIKEN_USER_OTPCHECK_' + environment.VERSION,
+
+  loginTokenAdmin: 'HERIKEN_ADMIN_TOKEN_' + environment.VERSION,
+  loggInSessionAdmin: 'HERIKEN_ADMIN_SESSION_' + environment.VERSION,
+  loginTokenVendor: 'HERIKEN_VENDOR_TOKEN_' + environment.VERSION,
+  loggInSessionVendor: 'HERIKEN_VENDOR_SESSION_' + environment.VERSION,
+  adminRoleData: 'HERIKEN_ADMIN_ROLE_' + environment.VERSION,
+
 });

@@ -12,6 +12,7 @@ export interface ShopInformation {
   navLogo?: string;
   footerLogo?: string;
   othersLogo?: string;
+
 }
 
 export interface ShopObject {

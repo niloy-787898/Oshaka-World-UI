@@ -1,0 +1,207 @@
+<section class="page">
+  <div class="sub-page">
+
+    <!---section-1-->
+    <section class="section1">
+      <!---logo-->
+      <div class="logo">
+        <img src="/assets/brand/rajarhat-logo-black-big.png" alt="Rajarhat">
+      </div>
+      <!---section1-description-->
+      <div class="section1-description">
+        <p>Thank you for your interest in Rajarhat.</p>
+
+        <p>To View your order, visit <span><a href="#">rajarhat.com.bd</a></span> and log in to your account.</p>
+
+      </div>
+    </section>
+
+    <!--section-defualt-->
+    <section class="section-defualt">
+      <!--order-details-heading-->
+      
+      <!---order-details-->
+      <div class="order-details">
+        <!--order-details-main-->
+        <div class="order-details-main grey-bg">
+          <div class="store-details">
+            <h6>Store Details</h6>
+          </div>
+          <div class="customer-details">
+            <h6>Customer Details</h6>
+          </div>
+        </div>
+
+        <div class="order-details-main ">
+          <div class="store-details">
+            <address>
+              <h6>Rajarhat</h6>
+              <p>{{contactInfoData?.addresses[0].value}}</p>
+              <h6>Telephone: <span>{{contactInfoData?.phones[0].value}}</span></h6>
+              <h6>Email: <a href="javascript:">{{contactInfoData?.emails[0].value}}</a></h6>
+              <h6>Store URL: <a href="javascript:">https://rajarhat.com.bd</a></h6>
+            </address>
+          </div>
+          <div class="customer-details">
+            <h6>Order Id: <span>{{order?._id}}</span></h6>
+            <h6>Date Added: <span>{{order?.checkoutDate | date: 'fullDate'}}</span></h6>
+            <h6>Payment Method: <span>{{order?.paymentMethod | slugToNormal: '_'}}</span></h6>
+            <!-- <h6>Shipping Method: <span>{{order?.shippingMethod}</span></h6> -->
+            <h6>E-Mail: <a href="javascript:">{{order?.email ? order.email : 'N/A'}}</a></h6>
+            <h6>Telephone: <span>{{order?.phoneNo}}</span></h6>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!--section-defualt-->
+    <section class="section-defualt">
+      <!---order-details-->
+      <div class="order-details">
+        <!--order-details-main-->
+        <div class="order-details-main grey-bg">
+          <div class="store-details">
+            <h6>Payment Address</h6>
+          </div>
+          <div class="customer-details">
+            <h6>Shipping Address</h6>
+          </div>
+        </div>
+
+        <div class="order-details-main ">
+          <div class="store-details">
+            <address>
+              <p>{{order?.name}}</p>
+              <p>{{order?.phoneNo}}</p>
+              <p>{{order?.alternativePhoneNo ? order?.alternativePhoneNo : 'N/A'}}</p>
+              <p>{{order?.shippingAddress}}</p>
+              <p>{{order?.city}}</p>
+              <p>Bangladesh</p>
+            </address>
+          </div>
+          <div class="customer-details">
+            <address>
+              <p>{{order?.name}}</p>
+              <p>{{order?.phoneNo}}</p>
+              <p>{{order?.alternativePhoneNo ? order?.alternativePhoneNo : 'N/A'}}</p>
+              <p>{{order?.shippingAddress}}</p>
+              <p>{{order?.city}}</p>
+              <p>Bangladesh</p>
+            </address>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!---section-4-->
+    <section class="section-4">
+      <div class="section4-main">
+
+        <div class="order-details-heading">
+          <h6>Order Details</h6>
+        </div>
+        <!--section4-details-->
+        <div class="section4-details grey-bg">
+          <div class="product">
+            <h6>Product</h6>
+          </div>
+          <div class="model">
+            <h6>Type</h6>
+          </div>
+          <div class="quantity">
+            <h6>Quantity</h6>
+          </div>
+          <div class="price">
+            <h6>Price</h6>
+          </div>
+          <div class="total">
+            <h6>Total</h6>
+          </div>
+        </div>
+        <!--section4-details-->
+        <div class="section4-details" *ngFor="let data of order?.orderedItems; let i = index">
+          <div class="product">
+            <p>{{data.product.productName}}</p>
+          </div>
+          <div class="model">
+            <p>{{data.product.subCategorySlug | slugToNormal}}</p>
+          </div>
+          <div class="quantity">
+            <p>{{data.quantity}}</p>
+          </div>
+          <div class="price">
+            <p>{{data.price * ( (100 - data.discountAmount) / 100 )}}</p>
+          </div>
+          <div class="total">
+            <p>{{(data.price * ( (100 - data.discountAmount) / 100 ) ) * data.quantity}}</p>
+          </div>
+        </div>
+        <!--section4-details-->
+        <div class="section4-details grid-change">
+          <div class="sub-total">
+            <h6>Sub-Total:</h6>
+          </div>
+          <div class="total">
+            <p>{{order?.subTotal}} TK.</p>
+          </div>
+        </div>
+        <!--section4-details-->
+        <div class="section4-details grid-change">
+          <div class="sub-total">
+            <h6>Delivery:</h6>
+          </div>
+          <div class="total">
+            <p>{{order?.shippingFee}} TK.</p>
+          </div>
+        </div>
+        <!--section4-details-->
+        <div class="section4-details grid-change">
+          <div class="total">
+            <h6>Total:</h6>
+          </div>
+          <div class="total">
+            <p>{{order?.totalAmount}} TK.</p>
+          </div>
+        </div>
+        <!--section4-details-->
+        <div class="section4-details grid-change" *ngIf="order?.totalAmount == order?.totalAmountWithDiscount">
+          <div class="total">
+            <h6>Payable Total:</h6>
+          </div>
+          <div class="total">
+            <p>{{order?.totalAmount}} TK.</p>
+          </div>
+        </div>
+        <!--section4-details-->
+        <div class="section4-details grid-change" *ngIf="order?.totalAmount != order?.totalAmountWithDiscount">
+          <div class="total">
+            <h6>Discount:</h6>
+          </div>
+          <div class="total">
+            <p>- {{order?.discount}} TK.</p>
+          </div>
+        </div>
+        <!--section4-details-->
+        <div class="section4-details grid-change" *ngIf="order?.totalAmount != order?.totalAmountWithDiscount">
+          <div class="total">
+            <h6>Payable Total:</h6>
+          </div>
+          <div class="total">
+            <p>{{order?.totalAmountWithDiscount}} TK.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer>
+      <p> * Please call or email us in case of any queries</p>
+    </footer>
+
+
+
+
+  </div>
+</section>

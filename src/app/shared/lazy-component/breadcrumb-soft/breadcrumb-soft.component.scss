@@ -1,0 +1,51 @@
+@import "src/theme/variables";
+
+.breadcrumb-area {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  background-color: #fff;
+  padding: 15px 16px;
+  margin: 20px auto 30px;
+}
+
+.breadcrumb-menu {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.breadcrumb-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumb-menu ul li {
+  display: inline-block;
+  margin-right: 5px;
+  padding: 0;
+}
+
+.breadcrumb-menu ul li a {
+  color: #000;
+  font-weight: 500;
+  font-family: $font-en-primary;
+  display: block;
+  font-style: normal;
+  font-size: 13px;
+  line-height: 22px;
+  transition: all 0.3s linear;
+}
+
+.breadcrumb-menu ul li a span {
+  position: relative;
+  top: 0;
+  margin-left: 5px;
+  font-size: 10px;
+}
+
+.breadcrumb-menu ul li a:hover {
+  color: #3d74d5;
+}

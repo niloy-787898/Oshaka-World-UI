@@ -1,10 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {ResponsePayload} from '../../interfaces/core/response-payload.interface';
-import {FilterData} from '../../interfaces/core/filter-data';
 import {ShippingCharge} from '../../interfaces/common/shipping-charge.interface';
-
 const API_SHOP_INFO = environment.apiBaseLink + '/api/shipping-charge/';
 
 
@@ -28,6 +25,19 @@ export class ShippingChargeService {
       params = params.append('select', select);
     }
     return this.httpClient.get<{ data: ShippingCharge, message: string, success: boolean }>(API_SHOP_INFO + 'get', {params});
+  }
+
+  setExtraPriceInfo(data: ShippingCharge){
+    return  this.httpClient.post<{message: string}>(API_SHOP_INFO + '/set-extra-price-info', data);
+
+  }
+
+  getExtraPriceInfo(){
+    return  this.httpClient.get<{data: ShippingCharge , message: string}>(API_SHOP_INFO + '/get-extra-price-info');
+  }
+
+  editExtraInfo(data: ShippingCharge){
+    return  this.httpClient.put<{ message: string}>(API_SHOP_INFO  + '/edit-extra-info', data);
   }
 
 }

@@ -1,0 +1,36 @@
+<div style="position: relative">
+
+  <div class="header-dialog">
+    <h1 mat-dialog-title>Carousel</h1>
+  </div>
+
+  <form [formGroup]="dataForm" (ngSubmit)="onSubmit()" #templateForm="ngForm" fxLayout="column" fxLayoutAlign="space-around center">
+
+    <div (click)="onHoldInputData()" class="imag-view" [routerLink]="[ id ? '../../../' : '../../', 'image-gallery']"
+         [state]="{url: router.url}">
+      <img [src]="pickedImage" alt="">
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input formControlName="title" matInput placeholder="Enter url" required>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>URL</mat-label>
+      <input formControlName="url" matInput placeholder="Enter category url" required>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">
+      {{id ? 'Edit Carousel' : 'Add Carousel'}}
+    </button>
+  </form>
+</div>
+
+
+<!-- LOADING TEMPLATE -->
+<ngx-spinner style="width: 100vw; height: 100vh" bdColor="rgba(0,0,0,0.25)" size="medium" color="#fff"
+             type="ball-clip-rotate" [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
+

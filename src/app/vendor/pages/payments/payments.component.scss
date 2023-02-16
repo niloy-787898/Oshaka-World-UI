@@ -1,0 +1,71 @@
+@import "src/theme/exports/table-one";
+@import "src/theme/exports/search";
+
+.container-fluid {
+  position: relative;
+  padding:  24px 16px;
+}
+.top-close {
+  text-align: center;
+  //::ng-deep {
+  //  color: ;
+  //}
+}
+.filter-area {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .select-views {
+    display: flex;
+    width: 680px;
+    flex-direction: row;
+    gap: 12px;
+
+    .mat-filter-select {
+      width: 300px;
+    }
+
+    .clear {
+      button {
+        margin-top: 11px;
+        ::ng-deep {
+          span {
+            color: #FFFFFF;
+          }
+        }
+      }
+    }
+  }
+
+  .search-area {
+    margin-top: 6px;
+  }
+}
+
+/*----------------
+TOP ACTION
+------------------*/
+.top-action {
+  text-align: right;
+  margin-top: 16px;
+  padding-right: 16px;
+
+  button {
+    ::ng-deep {
+      span {
+        color: #FFFFFF;
+      }
+    }
+  }
+}
+
+/*----------------
+HEADER TITLE
+------------------*/
+.header {
+  h2 {
+    text-align: center;
+    font-family: $font-en-primary;
+  }
+}

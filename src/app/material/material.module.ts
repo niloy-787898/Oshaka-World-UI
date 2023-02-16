@@ -28,7 +28,6 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 const materials = [
   MatButtonModule,
   MatSidenavModule,
-  MatIconModule,
   MatToolbarModule,
   MatMenuModule,
   MatBadgeModule,

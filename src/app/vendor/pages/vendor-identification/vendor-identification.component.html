@@ -1,0 +1,98 @@
+<div style="position: relative">
+
+  <div class="header-dialog">
+    <h1>Vendor Identification Card</h1>
+  </div>
+
+  <form [formGroup]="dataForm"
+        fxLayout="column"
+        fxLayoutAlign="space-around center">
+
+    <mat-form-field appearance="outline">
+      <mat-label>First and Last Name</mat-label>
+      <input formControlName="fullName" matInput placeholder="Enter First and Last Name" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>National Identity Card No</mat-label>
+      <input formControlName="nidCardNo" matInput placeholder="Enter National Identity Card No" required>
+    </mat-form-field>
+
+    <h3>Upload NID Card Both Side</h3>
+    <div style="width: 100%; display: flex; justify-content:space-evenly ;">
+    <div class="img-thumb">
+
+      <div class="edit-profile-img">
+        <button  (click)="profileImagePicker.click()">
+          <img style="width: 100px;" [src]="imgPlaceHolder" [alt]="'Picked Image'">
+        </button>
+      </div>
+      <input [hidden]="true" #profileImagePicker type="file" (change)="fileChangeEvent($event,'nid1')" accept="image/*"/>
+    </div>
+    <div class="img-thumb">
+
+      <div class="edit-profile-img">
+        <button  (click)="profileImagePicker1.click()">
+          <img style="width: 100px;" [src]="imgPlaceHolder1" [alt]="'Picked Image'">
+        </button>
+      </div>
+      <input [hidden]="true" #profileImagePicker1 type="file" (change)="fileChangeEvent($event,'nid2')" accept="image/*"/>
+    </div>
+  </div>
+    <!-- Trade licence -->
+    <mat-form-field appearance="outline">
+      <mat-label>Trade Licenc No</mat-label>
+      <input formControlName="tradeLicenseNo" matInput placeholder="Enter National Identity Card No" required>
+    </mat-form-field>
+    <h3>Upload Trade Licence Image</h3>
+    <div class="img-thumb">
+
+      <div class="edit-profile-img">
+        <button  (click)="profileImagePicker2.click()">
+          <img style="width: 100px;" [src]="imgPlaceHolder2" [alt]="'Picked Image'">
+        </button>
+      </div>
+      <input [hidden]="true" #profileImagePicker2 type="file" (change)="fileChangeEvent($event,'trade')" accept="image/*"/>
+    </div>
+    <!-- Business Licence -->
+    <mat-form-field appearance="outline">
+      <mat-label>Business Licence No</mat-label>
+      <input formControlName="businessCardNo" matInput placeholder="Enter National Identity Card No" required>
+    </mat-form-field>
+    <h3>Upload Business Licence Image</h3>
+    <div class="img-thumb">
+
+      <div class="edit-profile-img">
+        <button  (click)="profileImagePicker3.click()">
+          <img style="width: 100px;" [src]="imgPlaceHolder3" [alt]="'Picked Image'">
+        </button>
+      </div>
+      <input [hidden]="true" #profileImagePicker3 type="file" (change)="fileChangeEvent($event,'business')" accept="image/*"/>
+    </div>
+
+
+
+
+<!--      <button [fxHide]="!popupOffer" class="submit-btn" mat-raised-button color="warn" type="button" (click)="openConfirmDialog()">-->
+<!--        <mat-icon>delete</mat-icon>-->
+<!--        Delete-->
+<!--      </button>-->
+
+
+    <div>
+      <button (click)="onSubmit()" class="submit-btn" mat-raised-button color="accent" type="submit">
+        <mat-icon>done</mat-icon>
+        Save Data
+      </button>
+      <!-- [fxHide]="vendorIdentification"  -->
+    </div>
+  </form>
+</div>
+
+
+
+
+
+
+
+

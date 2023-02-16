@@ -6,4 +6,6 @@ export interface Tag {
   createdAt?: Date;
   updatedAt?: Date;
   select?: boolean;
+  tagName: string;
+  tagSlug: string;
 }

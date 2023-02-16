@@ -1,0 +1,47 @@
+.header-table {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.logo {
+  width: 120px;
+}
+
+img {
+  width: 120px;
+}
+
+.print-table-container .header .info h2 {
+  font-size: 28px;
+  color: #ed1a51;
+  border-bottom: 2px solid #ed1a51;
+  padding-bottom: 6px;
+}
+
+.print-table-container .header .info .small {
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.print-table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+}
+
+.print-table td, .print-table th {
+  border: 1px solid #ddd;
+  padding: 8px 10px;
+}
+
+.print-table th {
+  padding: 8px 10px;
+  text-align: left;
+  background-color: #ED1A51;
+  color: white;
+}

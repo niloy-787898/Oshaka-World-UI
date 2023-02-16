@@ -1,0 +1,105 @@
+<div class="ss">
+  <div id="recaptcha-container"></div>
+</div> <!-- INVISIBLE RECAPTCHA -->
+
+
+<div class="input-area-step-two">
+
+  <form class="registration-from"  [formGroup]="formData" (ngSubmit)="onSubmitForm()">
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Vendor Type</mat-label>
+      <mat-select formControlName="vendorType" required id="vendorType" placeholder="Vendor Type" >
+        <mat-option *ngFor="let data of vendorTypes" [value]="data.value">
+          {{data.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Shop Name*</mat-label>
+      <input type="text" formControlName="shopName" placeholder="Enter your shop name" id="shopName" matInput>
+      <span class="invalid" *ngIf="shopName.touched && shopName.invalid">This field is required</span>
+    </mat-form-field>
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Shop Area*</mat-label>
+      <mat-select formControlName="shopArea" required id="shopArea" placeholder="Area">
+        <mat-option *ngFor="let data of areas" [value]="data.value">
+          {{data.viewValue}}
+        </mat-option>
+      </mat-select>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Shop Zone*</mat-label>
+      <mat-select formControlName="shopZone" required id="shopZone" placeholder="Zone">
+        <mat-option *ngFor="let data of zones" [value]="data.value">
+          {{data.viewValue}}
+        </mat-option>
+      </mat-select>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Payment Receive Type*</mat-label>
+      <mat-select formControlName="paymentReceiveType" required  placeholder="Payment type">
+        <mat-option *ngFor="let data of paymentReceiveTypes" [value]="data.value">
+          {{data.viewValue}}
+        </mat-option>
+      </mat-select>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Payment Service Name (Name of the Bank or Mobile Banking Service you want to receive payment with.)*</mat-label>
+      <input type="text" formControlName="paymentServiceName" placeholder="Enter Payment Service Name" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Payment Service No (Account or phone number of the selected payment service.)</mat-label>
+      <input type="text" formControlName="paymentServiceNo" placeholder="Enter Payment Service No" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Full Address</mat-label>
+      <textarea type="text" formControlName="address" placeholder="Enter your full address" id="address" matInput></textarea>
+    </mat-form-field>
+
+
+
+
+    <div class="submit-area">
+      <div class="terms-text">
+        <mat-checkbox formControlName="acceptCondition" color="primary"></mat-checkbox>
+        <p>I agree with the <a href="https://cashmanagementbd.com/Privacy-policy.html" target="_blank"> Privacy
+          Policy</a></p>
+      </div>
+      <button
+        [disabled]="!formData.value.acceptCondition || isLoading"
+        class="btn-submit"
+        mat-raised-button
+        color="primary"
+        type="submit">
+        {{isLoading ? 'Please Wait..' : 'Complete'}}
+      </button>
+    </div>
+
+  </form>
+</div>
+
+
+<ng-template #loading>
+  <div class="loading"
+       style="
+       width: 100%;
+       height: 100%;
+       display: grid;
+       place-items: center;">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
+
+
+

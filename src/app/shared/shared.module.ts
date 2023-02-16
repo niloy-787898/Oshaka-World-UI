@@ -13,6 +13,7 @@ import {OutSideClickDirective} from './directives/out-side-click.directive';
 import {ImageLoadErrorDirective} from './directives/image-load-error.directive';
 import {NgModelChangeDebouncedDirective} from './directives/ng-model-change.directive';
 import {ImageProfileErrorDirective} from './directives/image-profile-error.directive';
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import {ImageProfileErrorDirective} from './directives/image-profile-error.direc
     CommonModule,
     MaterialModule,
     FormsModule,
+    MatIconModule,
   ],
   exports: [
     SnackbarNotificationComponent,

@@ -1,0 +1,57 @@
+@import "../step-one/step-one.component";
+.terms-text {
+  display: flex;
+  align-items: center;
+  color: #858585;
+
+  mat-checkbox {
+    margin-right: 8px;
+  }
+
+  a {
+    color: #2AB3FC;
+  }
+}
+
+.dialog-container {
+  width: 100%;
+
+  h4 {
+    font-size: 17px;
+    color: #626262;
+    padding: 0 0 16px 0;
+    font-weight: 500;
+  }
+
+  .verification-form {
+    width: 100%;
+    .mat-data-input-field {
+      width: 100%;
+    }
+  }
+
+  .resent-view {
+    margin-bottom: 10px;
+
+    .count-down {
+      padding-top: 8px;
+      padding-left: 8px;
+      font-family: $font-en-primary;
+      font-size: 15px;
+      color: #636363;
+    }
+  }
+
+  .action {
+    width: 100%;
+    text-align: center;
+    margin: 8px auto;
+    .btn-verify {
+      margin: auto;
+      width: 150px;
+      padding: 5px;
+      font-size: 16px;
+      border-radius: 50px;
+    }
+  }
+}

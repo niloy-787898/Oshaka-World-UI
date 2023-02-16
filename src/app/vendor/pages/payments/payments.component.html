@@ -1,0 +1,64 @@
+<hr class="center-square">
+
+<div class="header">
+    <h2>Total Payment Details</h2>
+</div>
+
+<hr class="center-square">
+
+<div class="table-container">
+    <table>
+        <thead>
+          <tr class="table-head">
+            <th scope="col">{{'Total'}}</th>
+            <th scope="col">{{'Received'}}</th>
+            <th scope="col">{{'Due'}}</th>
+          </tr>
+        </thead> <!-- End Table Head -->
+        <tr>
+          <td [attr.data-label]="'Total'">{{vendor?.totalAmount}}</td>
+          <td [attr.data-label]="'Received'">{{receivedPayment}}</td>
+          <td [attr.data-label]="'Due'">{{vendor?.dueAmount}}</td>
+        </tr><!-- End Table Body -->
+
+    </table>
+</div>
+
+  <hr class="center-square">
+
+<div class="header">
+    <h2>Payment List</h2>
+</div>
+
+<hr class="center-square">
+
+<div class="table-container">
+    <table>
+      <thead>
+      <tr class="table-head">
+        <th scope="col">{{'Date'}}</th>
+        <th scope="col">{{'Amount'}}</th>
+        <th scope="col">{{'Payment By'}}</th>
+        <th scope="col">{{'Payment Method'}}</th>
+        <th scope="col">{{'Payment Method ID'}}</th>
+        <th scope="col">{{'Status'}}</th>
+        <th scope="col">{{'Actions'}}</th>
+      </tr>
+      </thead> <!-- End Table Head -->
+      <tr
+        *ngFor="let data of payments; let i = index">
+        <td [attr.data-label]="'Date'">{{data.date | date}}</td>
+        <td [attr.data-label]="'Amount'">{{data.amount}}</td>
+        <td [attr.data-label]="'Payment By'">{{data.paymentBy.name}}</td>
+        <td [attr.data-label]="'Payment Method'">{{data.paymentMethod}}</td>
+        <td [attr.data-label]="'Payment Method ID'">{{data.paymentMethodId}}</td>
+        <td [attr.data-label]="'Status'">{{data.status | slugToNormal : '_'}}</td>
+        <td [attr.data-label]="'Actions'">
+          <button [disabled]="data.status == 'accepted'" style="margin-right: 5px;" mat-mini-fab color="primary" (click)="openConfirmDialog(data)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </tr><!-- End Table Body -->
+
+    </table>
+</div>

@@ -1,0 +1,42 @@
+@import "src/theme/exports/table-one";
+
+/*----------------
+Filter Section
+------------------*/
+//.filter-area {
+//  width: 100%;
+//
+//  mat-card {
+//    .filter-form-field {
+//      width: 350px;
+//    }
+//  }
+//}
+
+/*----------------
+HEADER TITLE
+------------------*/
+.header {
+  h2 {
+    text-align: center;
+    font-family: $font-en-primary;
+  }
+}
+
+.table-container{
+  button{
+    margin-right: 5px;
+  }
+}
+
+.unpaid {
+  background: #ff6e7b;
+  text-transform: uppercase;
+  color: #57030a;
+}
+
+.paid {
+  background: #01ca75;
+  text-transform: uppercase;
+  color: #00351c;
+}

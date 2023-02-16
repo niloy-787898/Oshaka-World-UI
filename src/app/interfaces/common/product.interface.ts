@@ -1,5 +1,7 @@
 import {Tag} from './tag.interface';
 import {Variation, VariationOption} from './variation.interface';
+import {ProductAttribute} from "./product-attribute";
+
 
 export interface Product {
   _id?: string;
@@ -29,7 +31,11 @@ export interface Product {
   status?: string;
   videoUrl?: string;
   unit?: string;
-
+  filterData: FilterData[];
+  attributes: string[] | ProductAttribute[];
+  ratingReview: any[];
+  productName: string;
+  productSlug: string;
   // Seo
   seoTitle?: string;
   seoDescription?: string;
@@ -55,7 +61,7 @@ export interface Product {
   resetDiscount?: boolean;
 }
 
-interface CatalogInfo {
+export interface CatalogInfo {
   _id: string;
   name: string;
   slug: string;
@@ -101,4 +107,10 @@ interface BrandSubCategory {
 export interface ProductSpecification {
   name?: string;
   value?: string;
+}
+
+export interface FilterData {
+  _id: string;
+  attributeName: string;
+  attributeValues: string;
 }

@@ -4,6 +4,8 @@ import {environment} from '../../../environments/environment';
 import {ResponsePayload} from '../../interfaces/core/response-payload.interface';
 import {Tag} from '../../interfaces/common/tag.interface';
 import {FilterData} from '../../interfaces/core/filter-data';
+import {Pagination} from "../../interfaces/core/pagination";
+
 
 const API_TAG = environment.apiBaseLink + '/api/tag/';
 
@@ -16,6 +18,23 @@ export class TagService {
   constructor(
     private httpClient: HttpClient
   ) {
+  }
+
+
+  getAllTagList(paginate?: Pagination) {
+    return this.httpClient.post<{ data: Tag[], count: number, message: string }>(API_TAG + 'get-all-tags', {paginate});
+  }
+
+  getTagByTagId(id: string) {
+    return this.httpClient.get<{ data: Tag, message?: string }>(API_TAG + 'get-tag-by-tag-id/' + id);
+  }
+
+  editTagData(data: Tag) {
+    return this.httpClient.put<{message?: string}>(API_TAG + 'edit-tag-by-tag', data);
+  }
+
+  deleteTag(id: string) {
+    return this.httpClient.delete<{ message?: string }>(API_TAG + 'delete-tag-by-id/' + id);
   }
 
   /**

@@ -1,0 +1,108 @@
+<div class="filter-area p-1">
+  <mat-card>
+    <h2>Filter Order</h2>
+
+    <div class="filter-container">
+
+      <mat-form-field class="filter-form-field" appearance="outline">
+        <mat-label>Filter Order</mat-label>
+        <mat-select #matSelectFilter (selectionChange)="onFilterSelectChange($event)">
+          <mat-option *ngFor="let c of orderStatus" [value]="c.value">{{c.viewValue}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="filter-date">
+        <mat-form-field class="mat-date-input-field" appearance="outline" (click)="picker.open()">
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [formGroup]="dataFormRange"  [max]="today">
+            <input matStartDate formControlName="start" placeholder="Start date" readonly >
+            <input matEndDate formControlName="end" placeholder="End date" readonly  >
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+
+        </mat-form-field>
+
+        <button style=" margin-left: 12px;" mat-stroked-button color="primary" (click)="onFilterData()">Filter Data
+        </button>
+      </div>
+
+    </div>
+  </mat-card>
+</div>
+
+<div class="p-1">
+  <mat-card class="p-0">
+    <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
+      <h2 class="pl-1">Orders List</h2>
+    </div>
+
+    <div class="clear-filter" *ngIf="filterQuery">
+      <button mat-raised-button color="warn" (click)="clearFiltering()">
+        <mat-icon>close</mat-icon>
+        Clear Filter
+      </button>
+    </div> <!-- END CLEAR BUTTON VIEW -->
+
+    <div class="table-container">
+      <table>
+        <thead>
+        <tr class="table-head">
+          <th scope="col">{{'Order'}}</th>
+          <th scope="col">{{'Date'}}</th>
+          <th scope="col">{{'City'}}</th>
+          <th scope="col">{{'Payment Type'}}</th>
+          <th scope="col">{{'Payment Status'}}</th>
+          <th scope="col">{{'Delivery Status'}}</th>
+          <th scope="col">{{'Total'}}</th>
+          <th scope="col">{{'Receivable'}}</th>
+          <th scope="col">{{'Actions'}}</th>
+        </tr>
+        </thead> <!-- End Table Head -->
+        <tr
+          *ngFor="let data of orders | paginate: { itemsPerPage: productsPerPage, currentPage: currentPage, totalItems: totalProducts }; let i = index">
+          <td [attr.data-label]="'Order'">#{{data._id | slice:-6}}</td>
+          <td [attr.data-label]="'Date'">{{data.checkoutDate | date}}</td>
+          <td [attr.data-label]="'City'">{{data.city}}</td>
+          <td [attr.data-label]="'Payment Type'">{{data.paymentMethod | slugToNormal : '_'}}</td>
+          <td [attr.data-label]="'Payment Status'"
+              [ngClass]="[data.paymentStatus === 'paid' ? 'paid' : 'unpaid']">{{data.paymentStatus | slugToNormal}}</td>
+          <td [attr.data-label]="'Delivery Status'" class="italic"
+              [ngClass]="getDeliveryStatusColor(data)">{{data.deliveryStatus | orderStatus}}</td>
+          <td [attr.data-label]="'Total'">৳ {{data?.deletedProduct == false ? data.totalAmount : (data.totalAmount - data.refundAmount)}}</td>
+          <td [attr.data-label]="'Receivable'">৳ {{(data?.deletedProduct == false ? data.totalAmount : (data.totalAmount - data.refundAmount)) * ( 95 / 100)}}</td>
+          <td [attr.data-label]="'Actions'">
+            <button style="margin-right: 5px;" mat-mini-fab color="primary" (click)="openUpdateOrderDialog(data)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button style="margin-right: 5px;" mat-mini-fab color="accent"
+                    [routerLink]="['order-details', data._id]">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <!--        <button [routerLink]="['/shop/company-edit-info', 'company._id']" mat-mini-fab-->
+            <!--                aria-label="Example icon-button with a heart icon">-->
+            <!--          <mat-icon>edit</mat-icon>-->
+            <!--        </button>-->
+          </td>
+        </tr><!-- End Table Body -->
+
+      </table>
+    </div>
+  </mat-card>
+</div>
+
+
+<div class="pagination-container">
+  <pagination-controls
+    class="product-pagination"
+    [autoHide]="true"
+    [maxSize]="15"
+    (pageChange)="onPageChanged($event)">
+  </pagination-controls>
+</div>     <!-- END PAGINATION -->
+
+
+<!-- LOADING TEMPLATE -->
+<ngx-spinner style="width: 100vw; height: 100vh" bdColor="rgba(0,0,0,0.25)" size="medium" color="#fff"
+             type="ball-clip-rotate" [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
+

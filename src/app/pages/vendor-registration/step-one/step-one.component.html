@@ -1,0 +1,108 @@
+<div class="input-area">
+  <form class="registration-from" [formGroup]="formData" (ngSubmit)="onSubmitForm()">
+
+    <ng-container *ngIf="isPhoneReg">
+      <div class="phone-num">
+        <label for="num"><i [fxHide]="!otpMatched" class="fas fa-check"></i> Phone Number <sup>*</sup></label>
+        <input type="text" formControlName="phoneNo" placeholder="Please enter your phone number" id="num">
+        <span class="invalid" *ngIf="phoneNo.touched && phoneNo.invalid">This field is required</span>
+      </div>
+
+      <div class="resent-view" [fxHide]="!sendVerificationCode">
+        <div class="count-area" [hidden]="countDown === 0">
+          <span class="count-down">{{'0:' + countDown}}</span>
+        </div>
+        <button *ngIf="countDown === 0" mat-button color="primary"
+                (click)="resendLoginCode()">
+          Resend Code
+        </button>
+      </div> <!-- END RESENT AREA -->
+
+      <div class="otp" [fxHide]="otpMatched">
+        <div class="otp-btn" [fxHide]="sendVerificationCode">
+          <button type="button" (click)="onSentOtp()">Get OTP Code</button>
+        </div>
+        <div class="otp-btn" [fxHide]="!sendVerificationCode">
+          <button type="button" class="verify" (click)="verifyOtpCode()">Verify Code</button>
+        </div>
+        <div class="otp-code" [fxHide]="!sendVerificationCode">
+          <input type="text" formControlName="otpCode" placeholder="Please enter six digit code">
+        </div>
+      </div> <!-- OTP AREA -->
+    </ng-container> <!-- END PHONE REG AREA -->
+
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Password*</mat-label>
+      <input [type]="isHiddenPass ? 'password' : 'text'" formControlName="password" matInput placeholder="Minimum 6 characters with a number and latter"
+             id="pass">
+      <mat-error class="invalid" *ngIf="password.touched && password.invalid">This field is required</mat-error>
+      <span (click)="isHiddenPass = !isHiddenPass" class="view">
+        <i [ngClass]="isHiddenPass ? 'fa fa-eye' : 'fas fa-eye-slash'"></i></span>
+    </mat-form-field>
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Confirm Password*</mat-label>
+      <input [type]="isHiddenConPass ? 'password' : 'text'" formControlName="confirmPassword" placeholder="Confirm your password here" matInput
+             id="cPass">
+      <mat-error class="invalid" *ngIf="confirmPassword.touched && confirmPassword.invalid">This field is required</mat-error>
+      <span (click)="isHiddenConPass = !isHiddenConPass" class="view">
+        <i [ngClass]="isHiddenConPass ? 'fa fa-eye' : 'fas fa-eye-slash'"></i></span>
+    </mat-form-field>
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Email*</mat-label>
+      <input type="text" formControlName="email" placeholder="Please enter your phone number" id="email" matInput>
+      <span class="invalid" *ngIf="email.touched && email.invalid">Enter a valid email</span>
+    </mat-form-field>
+
+    <mat-form-field class="mat-data-input-field" appearance="outline">
+      <mat-label>Your Name*</mat-label>
+      <input type="text" formControlName="vendorName" placeholder="Enter your full name" id="vendorName" matInput>
+      <span class="invalid" *ngIf="vendorName.touched && vendorName.invalid">This field is required</span>
+    </mat-form-field>
+
+
+
+    <div class="submit-area">
+      <div class="call-text">
+        <a href="https://cashmanagementbd.com/contact.html" target="_blank">Any questions? <span>Contact us now</span></a>
+        <img class="call-icon" src="/assets/icon/ic_call_circle.svg" alt="">
+      </div>
+      <button class="btn-submit" mat-raised-button color="primary" type="submit">Next</button>
+    </div>
+
+  </form>
+</div>
+
+
+
+
+<!--For Dialog-->
+<!--<ng-template #imgCropperTemplate>-->
+<!--  &lt;!&ndash;        <mat-spinner *ngIf="isLoaded"></mat-spinner>&ndash;&gt;-->
+<!--  <div class="spin" *ngIf="!isLoaded">-->
+<!--    <mat-spinner color="primary"></mat-spinner>-->
+<!--  </div>-->
+<!--  &lt;!&ndash;        <ion-spinner *ngIf="isLoaded" name="dots"></ion-spinner>&ndash;&gt;-->
+<!--  &lt;!&ndash;        <h2 style="color: #ff4b1a">Image Upload</h2>&ndash;&gt;-->
+<!--  <image-cropper-->
+<!--    [roundCropper]="true"-->
+<!--    [imageChangedEvent]="imageChangedEvent"-->
+<!--    [maintainAspectRatio]="true"-->
+<!--    format="jpeg"-->
+<!--    [resizeToWidth]="600"-->
+<!--    [resizeToHeight]="600"-->
+<!--    [imageQuality]="95"-->
+<!--    (imageCropped)="imageCropped($event)"-->
+<!--    (cropperReady)="cropperReady()"-->
+<!--    (loadImageFailed)="loadImageFailed()"-->
+<!--  ></image-cropper>-->
+
+<!--  <div class="upload-dialog-action" *ngIf="isLoaded">-->
+<!--    <button mat-raised-button color="warn" class="btn btn-cancel" (click)="onCloseDialogue()">Close</button>-->
+<!--    <button mat-raised-button color="primary" class="btn btn-save" (click)="uploadProfileImage()">Save</button>-->
+<!--  </div>-->
+<!--</ng-template>-->
+
+

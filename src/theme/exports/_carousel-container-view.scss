@@ -1,0 +1,60 @@
+/**
+CONTAINER WITH SWIPER CAROUSEL
+ */
+.container-with-carousel {
+  width: 100%;
+
+  ::ng-deep {
+    .swiper-slide {
+      padding: 10px 5px;
+    }
+
+    .swiper-button-disabled {
+      display: none;
+      visibility: hidden;
+    }
+
+    .swiper-button-prev, .swiper-button-next {
+      width: 40px;
+      height: 40px;
+      background: #34b200;
+      border-radius: 50%;
+
+      &:after {
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 16px;
+        color: #fff;
+      }
+    }
+
+    .swiper-button-prev {
+      left: 6px;
+
+      &:after {
+        content: "\f053";
+      }
+    }
+
+    .swiper-button-next {
+      right: 6px;
+
+      &:after {
+        content: "\f054";
+      }
+    }
+  }
+
+}
+
+@media only screen and (max-width: 599px) {
+  .container-with-carousel {
+    ::ng-deep {
+      .swiper-button-prev, .swiper-button-next {
+        display: none;
+        visibility: hidden;
+      }
+    }
+
+  }
+}

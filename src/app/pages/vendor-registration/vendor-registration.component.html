@@ -1,0 +1,49 @@
+
+
+<div class="header">
+  <div class="brand">
+    <img routerLink="/" src="/assets/img/logo-main.png" alt="">
+    <a style="color: #0ACAF1;">Oshaka World</a>
+  </div>
+
+</div>
+
+
+<div class="container">
+  <div class="left">
+    <div class="steps">
+      <div class="title">
+        <p>Steps One of Two</p>
+      </div>
+      <div class="view">
+        <div class="step" [ngClass]="{'step-active': !isFirstStepDone, 'step-inactive': isFirstStepDone}">
+          1
+        </div>
+        <div class="step" [ngClass]="{'step-active': isFirstStepDone, 'step-inactive': !isFirstStepDone}">
+          2
+        </div>
+      </div>
+    </div>
+    <div class="img-placeholder">
+      <img src="/assets/img/registration_page.png" alt="">
+    </div>
+
+    <div class="footer">
+      <p>Copyright © Oshaka World.com.bd 2023</p>
+      <ul class="footer-nav">
+        <li><a routerLink="#" target="_blank">Privacy Policy - Terms & Conditions</a></li>
+        <li><a routerLink="#" target="_blank">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="top-tittle">
+      <h1>Registration</h1>
+      <p>Please fill all the field with valid information</p>
+    </div>
+    <app-step-one *ngIf="!isFirstStepDone" (done)="onFirstStepDone()"></app-step-one>
+    <app-step-two *ngIf="isFirstStepDone"></app-step-two>
+  </div>
+</div>
+

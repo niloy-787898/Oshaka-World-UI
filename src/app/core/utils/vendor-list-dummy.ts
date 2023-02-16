@@ -1,0 +1,67 @@
+export const ONLINE_VENDOR_LIST = [
+  {
+    _id: '609738c1181952239c5ab648',
+    vendorName: 'Addidas House',
+    vendorSlug: 'clothing-basket',
+    imgLogo: '/assets/images/top-brands/addidas.png',
+    vendorPriority: 0,
+    vendorType: 1,
+    phoneNo: '01845543789',
+    email: 'clothingbasket@gmail.com',
+    hasVendorAccess: 'true',
+    createdAt: '2021-05-09T01:20:01.351Z',
+    updatedAt: '2021-05-09T01:20:01.351Z'
+  },
+  {
+    _id: '609738c1181952239c5ab648',
+    vendorName: 'Bata Big House',
+    vendorSlug: 'clothing-basket',
+    imgLogo: '/assets/images/top-brands/bata.png',
+    vendorPriority: 0,
+    vendorType: 1,
+    phoneNo: '01845543789',
+    email: 'clothingbasket@gmail.com',
+    hasVendorAccess: 'true',
+    createdAt: '2021-05-09T01:20:01.351Z',
+    updatedAt: '2021-05-09T01:20:01.351Z'
+  },
+  {
+    _id: '609738c1181952239c5ab648',
+    vendorName: 'Startech Dell Home',
+    vendorSlug: 'clothing-basket',
+    imgLogo: '/assets/images/top-brands/dell.png',
+    vendorPriority: 0,
+    vendorType: 1,
+    phoneNo: '01845543789',
+    email: 'clothingbasket@gmail.com',
+    hasVendorAccess: 'true',
+    createdAt: '2021-05-09T01:20:01.351Z',
+    updatedAt: '2021-05-09T01:20:01.351Z'
+  },
+  {
+    _id: '609738c1181952239c5ab648',
+    vendorName: 'Samsung Smart Gallery',
+    vendorSlug: 'clothing-basket',
+    imgLogo: '/assets/images/top-brands/samsung.png',
+    vendorPriority: 0,
+    vendorType: 1,
+    phoneNo: '01845543789',
+    email: 'clothingbasket@gmail.com',
+    hasVendorAccess: 'true',
+    createdAt: '2021-05-09T01:20:01.351Z',
+    updatedAt: '2021-05-09T01:20:01.351Z'
+  },
+  {
+    _id: '609738c1181952239c5ab648',
+    vendorName: 'MI Phone Gallery',
+    vendorSlug: 'clothing-basket',
+    imgLogo: '/assets/images/top-brands/mi.png',
+    vendorPriority: 0,
+    vendorType: 1,
+    phoneNo: '01845543789',
+    email: 'clothingbasket@gmail.com',
+    hasVendorAccess: 'true',
+    createdAt: '2021-05-09T01:20:01.351Z',
+    updatedAt: '2021-05-09T01:20:01.351Z'
+  },
+]

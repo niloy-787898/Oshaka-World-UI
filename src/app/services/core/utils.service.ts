@@ -2,6 +2,8 @@ import {Inject, Injectable} from '@angular/core';
 import * as moment from 'moment';
 import {DOCUMENT} from '@angular/common';
 import {DAYS, MONTHS, YEARS} from "../../core/utils/birthdate";
+import {LocationData} from "../../interfaces/common/locations";
+import {LOCATIONS_DATA} from "../../interfaces/common/location";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,13 @@ export class UtilsService {
   constructor(
     @Inject(DOCUMENT) private document: Document
   ) {
+  }
+
+  /**
+   * LOCATIONS
+   */
+  get locationData(): LocationData[] {
+    return LOCATIONS_DATA;
   }
 
 
@@ -342,6 +351,11 @@ export class UtilsService {
     });
   }
 
-
+  /**
+   * SLUG
+   */
+  convertStringToSlug(data: string) {
+    return data?.trim().replace(/[^A-Z0-9]+/ig, '-').toLowerCase();
+  }
 
 }

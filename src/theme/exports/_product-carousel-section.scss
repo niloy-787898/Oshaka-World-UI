@@ -1,0 +1,154 @@
+@import "../variables";
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+  display: block;
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #000;
+}
+
+span, i {
+  display: inline-block;
+  color: #858585;
+}
+
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.container {
+  display: block;
+  width: 90%;
+  height: auto;
+  margin: auto;
+}
+
+/*** start-main-coding ***/
+
+/*** flash-sale-area ***/
+.flash-sale-area {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  margin-bottom: 6vh;
+  margin-top: 20px;
+}
+
+.flash-sale-main {
+  background-color: #fff;
+  padding: 20px 15px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  box-shadow: 0 5px 8px 0 #d5d5d5;
+  width: 100%;
+  height: auto;
+}
+
+.flash-sale-top {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  margin-bottom: 4vh;
+  padding: 0 5px;
+}
+
+.flash-sale-title {
+  float: left;
+  text-align: left;
+  width: 50%;
+}
+
+.flash-sale-title h2 {
+  color: #303030;
+  font-family: $font-en-primary;
+  font-style: normal;
+  font-size: 24px;
+  display: block;
+  width: 100%;
+  height: auto;
+  font-weight: 600;
+  letter-spacing: 0;
+  position: relative;
+  z-index: 15;
+  padding-bottom: 6px;
+}
+
+.flash-sale-title h2::after {
+  content: "";
+  background-color: #e72e5f;
+  width: 100px;
+  height: 3px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.flash-sale-time {
+  float: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 50%;
+  height: 100%;
+}
+
+.time {
+  display: block;
+  max-width: 25px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.time span {
+  background-color: #e72e5f;
+  color: #fff;
+  width: 25px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-en-primary;
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: 4px;
+}
+
+.doted {
+  max-width: 7px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.doted span {
+  font-size: 16px;
+  color: #e72e5f;
+  font-weight: 600;
+}
+
+//.flash-product-details {
+//  display: grid;
+//  grid-template-columns: repeat(4, 1fr);
+//  grid-template-rows: auto;
+//  grid-gap: 20px 25px;
+//  width: 100%;
+//  height: auto;
+//}

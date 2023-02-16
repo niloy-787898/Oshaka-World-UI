@@ -1,3 +1,6 @@
+import {Product} from "./product.interface";
+import {Vendor} from "./vendor";
+
 export interface Order {
   _id: string;
   orderId: string;
@@ -22,6 +25,7 @@ export interface Order {
   processingDate?: Date;
   shippingDate?: Date;
   deliveringDate?: Date;
+  deliveryStatus: number;
   user?: string;
   coupon?: string;
   couponDiscount?: number;
@@ -29,6 +33,22 @@ export interface Order {
   createdAt?: Date;
   updatedAt?: Date;
   select?: boolean;
+  refundAmount: number;
+  shippingFee: number;
+  totalAmount: number;
+  totalAmountWithDiscount: number;
+  deletedProduct: boolean;
+  paymentMethod: string;
+  alternativePhoneNo?: string;
+  area: string;
+  postCode: string;
+  couponId?: string | any;
+  couponValue?: number;
+  vendors?: string[] | Vendor[];
+  delivered?: boolean;
+  hasPreorderItem?: boolean;
+  orderNotes?: string;
+  sessionkey?: string;
 }
 
 export interface OrderedItem {
@@ -43,6 +63,15 @@ export interface OrderedItem {
   unitPrice: number;
   quantity: number;
   orderType: string;
+  commission?: number;
+  price: number;
+  product: string | Product;
+  deletedProduct?: object;
+  deleteDeliveryStatus?: string;
+  discountType: number;
+  discountAmount?: number;
+  vendor?: string;
+
 }
 
 export interface OrderTimeline {

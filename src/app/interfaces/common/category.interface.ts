@@ -1,3 +1,6 @@
+import {ProductAttribute} from "./product-attribute";
+
+
 export interface Category {
   _id?: string;
   readOnly?: boolean;
@@ -9,4 +12,5 @@ export interface Category {
   createdAt?: Date;
   updatedAt?: Date;
   select?: boolean;
+  attributes: string[] |  ProductAttribute[];
 }

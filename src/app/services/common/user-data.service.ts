@@ -31,6 +31,21 @@ export class UserDataService {
    * deleteUserById
    * deleteMultipleUserById
    */
+  getCustomerLists(pagination?: Pagination) {
+    if (pagination) {
+      let params = new HttpParams();
+      params = params.append('pageSize', pagination.pageSize);
+      params = params.append('page', pagination.currentPage);
+      return this.httpClient.get<{ data: User[], count: number, message?: string }>(API_USER + 'get-all-user-list', {params});
+    } else {
+      return this.httpClient.get<{ data: User[], count: number, message?: string }>(API_USER + 'get-all-user-list');
+    }
+  }
+
+
+  editUserAccess(userId: string, data: object) {
+    return this.httpClient.put<{ message: string }>(API_USER + 'edit-user-access/' + userId, data);
+  }
 
   addUser(data: User) {
     return this.httpClient.post<ResponsePayload>

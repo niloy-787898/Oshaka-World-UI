@@ -4,7 +4,6 @@ import {DownloadJsonDialogComponent} from './download-json-dialog.component';
 import {MaterialModule} from '../../../material/material.module';
 import {SharedModule} from '../../shared.module';
 
-
 @NgModule({
   declarations: [
     DownloadJsonDialogComponent
@@ -12,7 +11,7 @@ import {SharedModule} from '../../shared.module';
   imports: [
     CommonModule,
     SharedModule,
-    MaterialModule
+    MaterialModule,
   ],
   exports: [
     DownloadJsonDialogComponent

@@ -64,7 +64,6 @@ const routes: Routes = [
         loadChildren: () => import('./user/shipping-info/shipping-info.module').then(m => m.ShippingInfoModule),
         canActivate: [UserAuthGuard],
       },
-
       {
         path: 'complete_order',
         loadChildren: () => import('./user/confirmation/confirmation.module').then(m => m.ConfirmationModule),
@@ -89,15 +88,24 @@ const routes: Routes = [
         data: {preload: false, delay: false}
       },
       {
-        pathMatch:'full',
-        path: ':slug',
-        loadChildren: () => import('./promo-product-list/promo-product-list.module').then(m => m.PromoProductListModule)
-      },
-      {
         path: 'offer-product',
         loadChildren: () => import('./promo-offer-product-details/promo-offer-product-details.module').then(m => m.PromoOfferProductDetailsModule)
       },
-
+      {
+        path: 'vendor-registration',
+        loadChildren: () => import('./categories/categories.module').then(m => m.CategoriesModule),
+        data: {preload: false, delay: true}
+      },
+      {
+        path: 'sell-on-rajarhat',
+        loadChildren: () => import('./sell-on/sell-on.module').then(m => m.SellOnModule),
+        data: {preload: true, delay: false}
+      },
+      // {
+      //   pathMatch: 'full',
+      //   path: ':slug',
+      //   loadChildren: () => import('./promo-product-list/promo-product-list.module').then(m => m.PromoProductListModule)
+      // },
     ]
   }
 ];

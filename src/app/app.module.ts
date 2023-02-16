@@ -13,6 +13,8 @@ import {AuthUserInterceptor} from './auth-interceptor/auth-user.interceptor';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environments/environment";
+import {MatIconModule} from "@angular/material/icon";
+
 @NgModule({
   declarations: [
     AppComponent

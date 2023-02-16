@@ -1,0 +1,188 @@
+<div class="ss">
+  <div id="recaptcha-container"></div>
+</div>
+
+<!-- rajarhat-singup-area -->
+<section class="singup-area">
+  <div class="container">
+    <div class="singup-title clearfix">
+      <div class="singup-title-left">
+        <h2>Create Your Oshaka World Merchant/Vendor Account</h2>
+      </div>
+      <div class="singup-title-right">
+        <h3>Already member? <a routerLink="/login"> sign in here.</a></h3>
+      </div>
+    </div>
+
+    <div class="singup-form">
+      <form [formGroup]="formData" (ngSubmit)="onSubmitForm()">
+
+
+        <div class="form-details-left" [fxHide]="selectedStep === 1">
+
+          <ng-container *ngIf="isPhoneReg">
+            <div class="phone-num">
+              <label for="num"><i  class="fas fa-check"></i> Phone Number <sup>*</sup></label>
+              <input type="text" formControlName="phoneNo" placeholder="Please enter your phone number" id="num" digitOnly>
+              <span class="invalid" *ngIf="phoneNo.touched && phoneNo.invalid">This field is required</span>
+            </div>
+
+<!--            <div class="resent-view" [fxHide]="!sendVerificationCode">-->
+<!--              <div class="count-area" [hidden]="countDown === 0">-->
+<!--                <span class="count-down">{{'0:' + countDown}}</span>-->
+<!--              </div>-->
+<!--              <button *ngIf="countDown === 0" mat-button color="primary"-->
+<!--                      (click)="resendLoginCode()">-->
+<!--                Resend Code-->
+<!--              </button>-->
+<!--            </div> &lt;!&ndash; END RESENT AREA &ndash;&gt;-->
+
+<!--            <div class="otp" [fxHide]="otpMatched">-->
+<!--              <div class="otp-btn" [fxHide]="sendVerificationCode">-->
+<!--                <button type="button" (click)="onSentOtp()">Get OTP Code</button>-->
+<!--              </div>-->
+
+<!--              <div class="otp-btn" [fxHide]="!sendVerificationCode">-->
+<!--                <button type="button" class="verify" (click)="verifyOtpCode()">Verify Code</button>-->
+<!--              </div>-->
+<!--              <div class="otp-code" [fxHide]="!sendVerificationCode">-->
+<!--                <input type="text" formControlName="otpCode" placeholder="Please enter six digit code">-->
+<!--              </div>-->
+
+<!--            </div> &lt;!&ndash; OTP AREA &ndash;&gt;-->
+          </ng-container> <!-- END PHONE REG AREA -->
+
+
+          <div class="pass-details">
+            <label for="pass">Password <sup>*</sup></label>
+            <div class="pass">
+              <input [type]="isHiddenPass ? 'password' : 'text'" formControlName="password"
+                     placeholder="Minimum 6 characters with a number and latter"
+                     id="pass">
+              <mat-error class="invalid" *ngIf="password.touched && password.invalid">This field is required</mat-error>
+              <span (click)="isHiddenPass = !isHiddenPass" class="view"><i [ngClass]="isHiddenPass ? 'fa fa-eye' : 'fas fa-eye-slash'"></i></span>
+            </div>
+
+            <label for="cPass" style="margin-top: 12px;">Confirm Password <sup>*</sup></label>
+            <div class="pass">
+              <input [type]="isHiddenConPass ? 'password' : 'text'" formControlName="confirmPassword" placeholder="Confirm your password here"
+                     id="cPass">
+              <mat-error class="invalid" *ngIf="confirmPassword.touched && confirmPassword.invalid">This field is required</mat-error>
+              <span (click)="isHiddenConPass = !isHiddenConPass" class="view"><i [ngClass]="isHiddenConPass ? 'fa fa-eye' : 'fas fa-eye-slash'"></i></span>
+            </div>
+          </div>
+
+          <div class="phone-num">
+            <label for="email"> Email <sup>*</sup></label>
+            <input type="text" formControlName="email" placeholder="Please enter your phone number" id="email">
+            <span class="invalid" *ngIf="email.touched && email.invalid">Enter a valid email</span>
+          </div>
+
+          <div class="phone-num">
+            <label for="vendorName">Your Name<sup>*</sup></label>
+            <input type="text" formControlName="vendorName" placeholder="Enter your full name" id="vendorName">
+            <span class="invalid" *ngIf="vendorName.touched && vendorName.invalid">This field is required</span>
+          </div>
+
+          <div class="next-btn">
+            <button type="button" (click)="checkNextClick()">NEXT</button>
+          </div>
+
+        </div>
+
+        <div class="form-details-right" [fxHide]="selectedStep === 0">
+
+          <div class="select-form">
+            <label for="vendorType">Vendor Type<sup>*</sup></label>
+            <mat-select formControlName="vendorType" required id="vendorType" placeholder="Vendor Type">
+              <mat-option *ngFor="let data of vendorTypes" [value]="data.value">
+                {{data.viewValue}}
+              </mat-option>
+            </mat-select>
+          </div>
+
+          <div class="name">
+            <label for="shopName">Shop Name<sup>*</sup></label>
+            <input type="text" formControlName="shopName" placeholder="Enter your shop name" id="shopName">
+            <span class="invalid" *ngIf="shopName.touched && shopName.invalid">This field is required</span>
+          </div>
+
+          <div class="d-flex">
+            <div class="select-form">
+              <label for="shopArea">Shop Area<sup>*</sup></label>
+              <mat-select formControlName="shopArea" required id="shopArea" placeholder="Area"(selectionChange)="onSelectCity($event)">
+                <mat-option *ngFor="let c of locations" [value]="c">{{c.city}}</mat-option>
+              </mat-select>
+            </div>
+
+            <div class="select-form">
+              <label for="shopZone">Shop Zone<sup>*</sup></label>
+              <mat-select formControlName="shopZone" required id="shopZone" placeholder="Zone"(selectionChange)="onSelectArea($event)">
+                <mat-option *ngFor="let a of areaTemp" [value]="a">{{a.name}}</mat-option>
+              </mat-select>
+            </div>
+
+            <div class="select-form">
+              <label for="shopZone">Payment Receive Type<sup>*</sup></label>
+              <mat-select formControlName="paymentReceiveType" required  placeholder="Payment type">
+                <mat-option *ngFor="let data of paymentReceiveTypes" [value]="data.value">
+                  {{data.viewValue}}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+
+          <div class="phone-num">
+            <label for="vendorName">Payment Service Name (Name of the Bank or Mobile Banking Service you want to receive payment with.)<sup>*</sup></label>
+            <input type="text" formControlName="paymentServiceName" placeholder="Enter Payment Service Name" >
+          </div>
+
+          <div class="phone-num">
+            <label for="vendorName">Payment Service No (Account or phone number of the selected payment service.)<sup>*</sup></label>
+            <input type="text" formControlName="paymentServiceNo" placeholder="Enter Payment Service No">
+          </div>
+
+          <div class="name">
+            <label for="address">Full Address<sup>*</sup></label>
+            <textarea type="text" formControlName="address" placeholder="Enter your full address" id="address"></textarea>
+            <span class="invalid" *ngIf="address.touched && address.invalid">This field is required</span>
+          </div>
+
+          <div class="check-box">
+            <div class="check">
+              <mat-checkbox formControlName="agree" id="check"></mat-checkbox>
+            </div>
+            <div class="check-rules">
+              <label for="check">I want to receive exclusive offers and promotions
+                from Rajarhat</label>
+            </div>
+          </div>
+          <div class="submit-btn">
+            <button style="background: #0A7D78; border: 1px solid #0A7D78; " type="button" (click)="selectedStep = 0">PREVIOUS</button>
+            <button type="submit">SIGN UP</button>
+          </div>
+          <div class="privacy">
+            <p>By clicking "SIGN UP", I agree to Oshaka World <a href="#" target="_blank">terms of use</a>
+              and <a href="#" target="_blank">Privacy Policy</a>
+            </p>
+          </div>
+
+        </div>
+
+
+
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- NGX SPINNER -->
+<ngx-spinner style="width: 100vw; height: 100vh"
+             bdColor = "rgba(0,0,0,0.25)"
+             size = "medium"
+             color = "#fff"
+             type = "ball-clip-rotate"
+             [fullScreen] = "true">
+  <p style="color: white" > Loading... </p>
+</ngx-spinner>

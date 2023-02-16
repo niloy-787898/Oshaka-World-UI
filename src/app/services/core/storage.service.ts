@@ -3,6 +3,7 @@ import {DATABASE_KEY} from '../../core/utils/global-variable';
 import {environment} from '../../../environments/environment';
 import * as CryptoJS from 'crypto-js';
 import {SecretKeyTypeEnum} from '../../enum/secret-key-type.enum';
+import {AdminRoleData} from "../../interfaces/common/admin-role-data";
 
 
 @Injectable({
@@ -155,6 +156,23 @@ export class StorageService {
       }
     }
   }
+
+  /**
+   * LOCAL STORAGE
+   */
+  storeAdminRoleToLocal(data: AdminRoleData) {
+    localStorage.setItem(DATABASE_KEY.adminRoleData, JSON.stringify(data));
+  }
+
+  get adminRoleFromLocal(): AdminRoleData {
+    const data = localStorage.getItem(DATABASE_KEY.adminRoleData);
+    return JSON.parse(data) as AdminRoleData;
+  }
+
+  storeAdminRole(data: AdminRoleData) {
+    sessionStorage.setItem(DATABASE_KEY.adminRoleData, JSON.stringify(data));
+  }
+
 
 
 }

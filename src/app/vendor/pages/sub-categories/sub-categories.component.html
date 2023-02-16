@@ -1,0 +1,27 @@
+
+<div class="header">
+  <h2>Sub Category List</h2>
+</div>
+
+<hr class="center-square">
+
+
+<div class="table-container">
+  <table>
+    <thead>
+    <tr class="table-head">
+      <th scope="col">{{'Sub Category Name'}}</th>
+      <th scope="col">{{'Slug'}}</th>
+      <th scope="col">{{'Category name'}}</th>
+    </tr>
+    </thead> <!-- End Table Head -->
+    <tr *ngFor="let data of subCategories; let i = index">
+      <td [attr.data-label]="'Category Name'">{{data.subCategoryName}}</td>
+      <td [attr.data-label]="'Slug'">{{data.subCategorySlug}}</td>
+      <td [attr.data-label]="'Category name'">{{data.category?.categoryName}}</td>
+    </tr><!-- End Table Body -->
+
+  </table>
+
+</div>
+

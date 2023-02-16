@@ -1,0 +1,71 @@
+<!--<div class="nav">-->
+<!--  <app-breadcrumb-soft></app-breadcrumb-soft>-->
+<!--</div>-->
+
+
+<div style="position: relative">
+
+  <div class="header-dialog">
+    <h1>Vendor & Shop Additional Info</h1>
+  </div>
+
+  <div class="image-header">
+    <div class="image-view">
+      <img [src]="placeholder" alt="">
+    </div>
+    <button mat-raised-button color="primary" (click)="profileImagePicker.click()">Select Image</button>
+    <input [hidden]="true" #profileImagePicker type="file" (change)="fileChangeEvent($event)" accept="image/*"/>
+  </div>
+
+  <form [formGroup]="dataForm" (ngSubmit)="onSubmit()" fxLayout="column" fxLayoutAlign="space-around center">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput placeholder="Email">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Shop Name</mat-label>
+      <input formControlName="shopName" matInput placeholder="Shop Name">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Shop Area</mat-label>
+      <input formControlName="shopArea" matInput placeholder="Shop Area">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Shop Zone</mat-label>
+      <input formControlName="shopZone" matInput placeholder="Shop Zone">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Address</mat-label>
+      <input formControlName="address" matInput placeholder="Address">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Short Description</mat-label>
+      <input formControlName="shortDescription" matInput placeholder="Short Description">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Terms & Conditions</mat-label>
+      <input formControlName="termsAndConditions" matInput placeholder="Terms & Conditions">
+    </mat-form-field>
+
+    <button class="submit-btn" mat-raised-button color="accent" type="submit">
+      <mat-icon>done</mat-icon>
+      Save Data
+    </button>
+  </form>
+</div>
+
+
+
+<!-- LOADING TEMPLATE -->
+<ngx-spinner style="width: 100vw; height: 100vh" bdColor="rgba(0,0,0,0.25)" size="medium" color="#fff"
+             type="ball-clip-rotate" [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
+
+
+
