@@ -6,8 +6,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {NgxSpinnerService} from 'ngx-spinner';
 
 import {MatDialog} from '@angular/material/dialog';
-
-
 import {ImageCropComponent} from '../profile/image-crop/image-crop.component';
 import {Vendor} from "../../../interfaces/common/vendor";
 import {Select} from "../../../interfaces/core/select";

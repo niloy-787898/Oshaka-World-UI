@@ -35,5 +35,4 @@ export class VendorIdentificationService {
     return this.httpClient.put<{ message: string }>(API_VENDOR_IDENTIFICATION + 'update-vendor-identification-data', data);
   }
 
-
 }
