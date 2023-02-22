@@ -161,7 +161,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
         this.getSingleProductById();
       } else {
         // GET ALL SELECTED DATA
-        this.getAllAttributes();
+        // this.getAllAttributes();
         this.getAllCategory();
         // this.getAllSubCategory();
         this.getAllBrands();
@@ -433,37 +433,44 @@ export class AddProductComponent implements OnInit, OnDestroy {
    * GET ATTRIBUTES BY ID
    */
 
-  private getAllAttributes() {
-    this.attributeService.getAllAttributes()
-      .subscribe(res => {
-        this.attributes = res.data;
-        this.filteredAttributesList = this.attributes.slice();
-        if (this.product) {
-          if (this.product.attributes && this.product.attributes.length > 0) {
-            const attributesId = this.product.attributes.map(m => m._id);
-            this.patchFormValueWithArray();
-            this.dataForm.patchValue({attributes: attributesId});
-          }
-        }
-      }, error => {
-        console.log(error);
-      });
-  } // MOST COMPLEX FORM ARRAY
+  // private getAllAttributes() {
+  //   this.attributeService.getAllAttributes()
+  //     .subscribe(res => {
+  //       this.attributes = res.data;
+  //       this.filteredAttributesList = this.attributes.slice();
+  //       if (this.product) {
+  //         if (this.product.attributes && this.product.attributes.length > 0) {
+  //           const attributesId = this.product.attributes.map(m => m._id);
+  //           this.patchFormValueWithArray();
+  //           this.dataForm.patchValue({attributes: attributesId});
+  //         }
+  //       }
+  //     }, error => {
+  //       console.log(error);
+  //     });
+  // } // MOST COMPLEX FORM ARRAY
 
   private getAllCategory() {
-    this.categoryService.getAllCategory()
+
+    const mSelect = {
+      name: 1,
+      slug: 1,
+      image: 1,
+      serial: 1,
+      status: 1,
+      readOnly: 1,
+      createdAt: 1,
+    }
+
+    const filterData: FilterData = {
+      pagination: null,
+      filter: null,
+      select: mSelect,
+      sort: null
+    }
+    this.subDataOne = this.categoryService.getAllCategories(filterData)
       .subscribe(res => {
         this.categories = res.data;
-        this.filteredCatList = this.categories.slice();
-        if (this.product) {
-          const category = this.product?.category as CatalogInfo;
-          // this.categories.forEach(f => {
-          //   this.categoryAttributes = f.attributes as Attribute[];
-          // });
-          // console.log(this.categoryAttributes);
-          this.dataForm.patchValue({category: this.categories.find(f => f._id === category._id)._id});
-          this.getAllSubCategoryByCategoryId(category._id, false);
-        }
       }, error => {
         console.log(error);
       });
@@ -544,20 +551,28 @@ export class AddProductComponent implements OnInit, OnDestroy {
    */
 
   private getAllTags() {
-    this.spinner.show();
-    const pagination: Pagination = {
-      currentPage: String(1),
-      pageSize: String(50)
-    };
-    this.tagService.getAllTagList(pagination)
+    // Select
+    const mSelect = {
+      name: 1,
+      slug: 1
+    }
+
+    const filterData: FilterData = {
+      pagination: null,
+      filter: null,
+      select: mSelect,
+      sort: {name: 1}
+    }
+
+
+    this.subDataSix = this.tagService.getAllTags(filterData, null)
       .subscribe(res => {
         this.tags = res.data;
-        this.spinner.hide();
       }, error => {
-        this.spinner.hide();
         console.log(error);
       });
   }
+  
 
   private addSingleProduct(data: any) {
     this.spinnerService.show();

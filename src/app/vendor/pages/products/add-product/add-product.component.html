@@ -74,13 +74,13 @@
               </mat-form-field>
             </div>
             <!--name-in-bangla-->
-            <div>
+            <!-- <div>
               <mat-form-field appearance="outline">
                 <mat-label>Name in Bangla</mat-label>
                 <input matInput placeholder="name-in-bangla" type="text" formControlName="productNameBangla" required>
                 <mat-error></mat-error>
               </mat-form-field>
-            </div>
+            </div> -->
             <!--sku-->
             <div>
               <mat-form-field appearance="outline">
@@ -159,7 +159,7 @@
                                      [displayMember]="'categoryName'"
                                      (filteredReturn)="filteredCatList = $event"></mat-select-filter>
                   <mat-option *ngFor="let cat of filteredCatList" [value]="cat._id">
-                    {{cat.categoryName}}
+                    {{cat.name}}
                   </mat-option>
                 </mat-select>
                 <mat-error>This field is required</mat-error>
@@ -178,7 +178,7 @@
                                      [displayMember]="'subCategoryName'"
                                      (filteredReturn)="filteredSubCatList = $event"></mat-select-filter>
                   <mat-option *ngFor="let cat of filteredSubCatList" [value]="cat._id">
-                    {{cat.subCategoryName}}
+                    {{cat.name}}
                   </mat-option>
                 </mat-select>
                 <mat-error>This field is required</mat-error>
@@ -206,7 +206,7 @@
                                      [displayMember]="'brandName'"
                                      (filteredReturn)="filteredBrandList = $event"></mat-select-filter>
                   <mat-option *ngFor="let cat of filteredBrandList" [value]="cat._id">
-                    {{cat.brandName}}
+                    {{cat.name}}
                   </mat-option>
                 </mat-select>
                 <mat-error>This field is required</mat-error>
@@ -228,7 +228,7 @@
 
 <!--            </div>-->
 
-            <div>
+            <!-- <div>
               <mat-form-field appearance="outline">
                 <mat-label>Select Attribute</mat-label>
                 <mat-select [disableOptionCentering]="true" #select4 placeholder="Select attributes"
@@ -247,7 +247,7 @@
                 </mat-select>
                 <mat-error>This field is required</mat-error>
               </mat-form-field>
-            </div> <!-- END Attributes -->
+            </div> END Attributes -->
 
           </div>
 
@@ -255,7 +255,7 @@
             <h4 *ngIf="filterDataArray?.controls.length > 0">Select Attribute Data</h4>
           </div>
 
-          <div formArrayName="filterData" class="filter-input-area" fxLayout="row wrap">
+          <!-- <div formArrayName="filterData" class="filter-input-area" fxLayout="row wrap">
             <mat-form-field
               *ngFor="let data of filterDataArray?.controls; let i = index"
               [formGroupName]="i"
@@ -270,7 +270,7 @@
               </mat-select>
               <mat-error>This field is required.</mat-error>
             </mat-form-field>
-          </div>
+          </div> -->
 
           <div fxLayout="row" fxLayoutGap="10px" class="d-flex">
             <!---brand-->
@@ -279,7 +279,7 @@
               <mat-label>Tags</mat-label>
               <mat-select formControlName="tags" multiple>
                 <mat-option *ngFor="let data of tags"
-                            [value]="data._id">{{data.tagName}}</mat-option>
+                            [value]="data._id">{{data.name}}</mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -299,7 +299,7 @@
           <!--soldQuantity-->
           <div>
             <mat-form-field appearance="outline" class="w-50">
-              <mat-label>Commission (in percentage) to be paid to Rajarhat</mat-label>
+              <mat-label>Commission (in percentage) to be paid to Osaka</mat-label>
               <input matInput placeholder="Commission" type="number" required digitOnly
                      formControlName="commission">
               <mat-error></mat-error>
@@ -345,12 +345,12 @@
 <!--            </mat-form-field>-->
 <!--          </div>-->
 
-          <div class="w-100" style="margin-bottom: 16px;">
+          <!-- <div class="w-100" style="margin-bottom: 16px;">
             <label for="deliveryPolicy">Enter Delivery Policy</label>
-            <angular-editor id="deliveryPolicy" formControlName="deliveryPolicy"
+            <angular-editor id="deliveryPolicy" formControlName="description"
                             placeholder="Enter Delivery Policy"
                             [config]="textEditorCtrService.shortDescConfig"></angular-editor>
-          </div>
+          </div> -->
 
           <!--description-->
 <!--          <div class="feathures">-->
@@ -362,12 +362,12 @@
 <!--            </mat-form-field>-->
 <!--          </div>-->
 
-          <div class="w-100" style="margin-bottom: 16px;">
+          <!-- <div class="w-100" style="margin-bottom: 16px;">
             <label for="paymentPolicy">Enter Payment Policy</label>
             <angular-editor id="paymentPolicy" formControlName="paymentPolicy"
                             placeholder="Enter Payment Policy"
                             [config]="textEditorCtrService.shortDescConfig"></angular-editor>
-          </div>
+          </div> -->
 
           <!--description-->
 <!--          <div class="feathures">-->
@@ -378,7 +378,7 @@
 <!--              <mat-error></mat-error>-->
 <!--            </mat-form-field>-->
 <!--          </div>-->
-
+<!-- 
           <div class="w-100" style="margin-bottom: 16px;">
             <label for="warrantyPolicy">Enter Warranty Policy</label>
             <angular-editor id="warrantyPolicy" formControlName="warrantyPolicy"
@@ -391,14 +391,14 @@
             <angular-editor id="warranty-service" formControlName="warrantyServices"
                             placeholder="Enter product warranty services"
                             [config]="textEditorCtrService.shortDescConfig"></angular-editor>
-          </div>
+          </div> -->
 
-          <div class="w-100" style="margin-bottom: 16px;">
+          <!-- <div class="w-100" style="margin-bottom: 16px;">
             <label for="short-desc">Enter product short description</label>
             <angular-editor id="short-desc" formControlName="shortDescription"
                             placeholder="Enter product short description"
                             [config]="textEditorCtrService.shortDescConfig"></angular-editor>
-          </div>
+          </div> -->
 
           <!--          <div class="editor warranty-service" style="margin-bottom: 10px;">-->
           <!--            <ngx-editor-menu [editor]="editorWarrantyService"></ngx-editor-menu>-->
