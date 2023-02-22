@@ -27,6 +27,7 @@ import {HttpClient} from "@angular/common/http";
 import {Category} from "../../../interfaces/common/category.interface";
 import {SubCategory} from "../../../interfaces/common/sub-category.interface";
 import {ProductFilter} from "../../../services/common/product-filter";
+import { MatCheckbox } from '@angular/material/checkbox';
 
 
 @Component({
@@ -36,6 +37,9 @@ import {ProductFilter} from "../../../services/common/product-filter";
 })
 export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  // Selected Data
+  selectedIds: string[] = [];
+  @ViewChild('matCheckbox') matCheckbox: MatCheckbox;
   // Subscriptions
   private subProduct: Subscription;
   private subCat: Subscription;
@@ -57,6 +61,13 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   productsPerPage = 24;
   totalProductsStore = 0;
 
+
+  // Sort
+  sortQuery = {createdAt: -1};
+  activeSort: number = null;
+  activeFilter1: number = null;
+  activeFilter2: number = null;
+
   // SEARCH AREA
   searchProducts: Product[] = [];
   isLoading = false;
@@ -66,11 +77,10 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('searchInput') searchInput: ElementRef;
 
   // Vendor
-
   vendor: Vendor = null;
 
   // Query
-  query: ProductFilter = null;
+  query: any = null;
 
   // Select View Child
   @ViewChild('matCatSelect') matCatSelect: MatSelect;
@@ -78,6 +88,18 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // DOWNLOADABLE
   dataTypeFormat = 'json';
+
+    // Subscriptions
+    private subDataOne: Subscription;
+    private subDataTwo: Subscription;
+    private subDataThree: Subscription;
+    private subDataFour: Subscription;
+    private subDataFive: Subscription;
+    private subDataSix: Subscription;
+    private subDataSeven: Subscription;
+    private subDataEight: Subscription;
+    private subRouteOne: Subscription;
+    private subReload: Subscription;
 
   constructor(
     private productService: ProductService,
@@ -96,8 +118,7 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getLoggedInVendorInfo();
-    this.getAllCategory();
+
     // GET PAGE FROM QUERY PARAM
     this.subAcRoute = this.activatedRoute.queryParams.subscribe((qParam:any) => {
       if (qParam && qParam.page) {
@@ -108,11 +129,8 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.getAllProducts();
     });
 
-    // OBSERVABLE
-    this.reloadService.refreshProduct$
-      .subscribe(() => {
-        this.getAllProducts();
-      });
+    this.getLoggedInVendorInfo();
+    this.getAllCategory();
 
     // // GET
   }
@@ -132,27 +150,45 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.searchProducts = [];
           this.products = this.holdPrevData;
           this.totalProducts = this.totalProductsStore;
-          this.searchProducts = [];
           this.searchQuery = null;
           return EMPTY;
         }
-        this.isLoading = true;
         const pagination: Pagination = {
-          pageSize: this.productsPerPage.toString(),
-          currentPage: this.currentPage.toString()
+          pageSize: Number(this.productsPerPage),
+          currentPage: Number(this.currentPage) - 1
         };
-        return this.productService.getSearchProductVendor(data, this.vendor._id, pagination);
+        // Select
+        const mSelect = {
+          name: 1,
+          slug: 1,
+          images: 1,
+          category: 1,
+          subCategory: 1,
+          brand: 1,
+          unit: 1,
+          costPrice: 1,
+          salePrice: 1,
+          hasVariations: 1,
+          status: 1,
+        }
+
+        const filterData: FilterData = {
+          pagination: pagination,
+          filter: this.query,
+          select: mSelect,
+          sort: this.sortQuery
+        }
+        return this.productService.getAllProducts(filterData, this.searchQuery);
       })
     )
       .subscribe(res => {
-        this.isLoading = false;
         this.searchProducts = res.data;
         this.products = this.searchProducts;
         this.totalProducts = res.count;
         this.currentPage = 1;
         this.router.navigate([], {queryParams: {page: this.currentPage}});
       }, error => {
-        this.isLoading = false;
+        console.log(error)
       });
   }
 
@@ -208,47 +244,108 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getAllProducts() {
     this.spinner.show();
-
     const pagination: Pagination = {
-      pageSize: this.productsPerPage.toString(),
-      currentPage: this.currentPage.toString()
+      pageSize: Number(this.productsPerPage),
+      currentPage: Number(this.currentPage) - 1
     };
-    console.log(pagination);
-    if (this.query == null) {
-      this.query = {...this.query, ...{vendor: this.vendor._id}};
+
+    // FilterData
+    // const mQuery = this.filter.length > 0 ? {$and: this.filter} : null;
+
+    // Select
+    const mSelect = {
+      name: 1,
+      slug: 1,
+      images: 1,
+      category: 1,
+      subCategory: 1,
+      brand: 1,
+      unit: 1,
+      costPrice: 1,
+      salePrice: 1,
+      hasVariations: 1,
+      status: 1,
     }
 
-    this.subProduct = this.productService.getVendorProducts(this.query)
-      .subscribe(res => {
-        this.products = res.data;
-        console.log(res.data);
-        this.holdPrevData = res.data;
-        this.totalProducts = res.count;
-        this.totalProductsStore = res.count;
-        this.spinner.hide();
+    const filterData: FilterData = {
+      pagination: pagination,
+      filter: this.query,
+      select: mSelect,
+      sort: this.sortQuery
+    }
 
+
+    this.subDataOne = this.productService.getAllProducts(filterData, this.searchQuery)
+      .subscribe(res => {
+        this.spinner.hide();
+        this.products = res.data;
+        if (this.products && this.products.length) {
+          this.products.forEach((m, i) => {
+            const index = this.selectedIds.findIndex(f => f === m._id);
+            this.products[i].select = index !== -1;
+          });
+          console.log("this.products ",this.products );
+          
+          this.totalProducts = res.count;
+          if (!this.searchQuery) {
+            this.holdPrevData = res.data;
+            this.totalProductsStore = res.count;
+          }
+
+          this.checkSelectionData();
+        }
       }, error => {
         this.spinner.hide();
         console.log(error);
       });
   }
 
+  private checkSelectionData() {
+    let isAllSelect = true;
+    this.products.forEach(m => {
+      if (!m.select) {
+        isAllSelect = false;
+      }
+    });
+
+    this.matCheckbox.checked = isAllSelect;
+  }
+
   private getAllCategory() {
-    this.subCat = this.categoryService.getAllCategory()
+
+    const mSelect = {
+      name: 1,
+      slug: 1,
+      image: 1,
+      serial: 1,
+      status: 1,
+      readOnly: 1,
+      createdAt: 1,
+    }
+
+    const filterData: FilterData = {
+      pagination: null,
+      filter: null,
+      select: mSelect,
+      sort: null
+    }
+    this.subCat = this.categoryService.getAllCategories(filterData)
       .subscribe(res => {
         this.categories = res.data;
+        console.log("this.categories",this.categories);
       }, error => {
         console.log(error);
       });
   }
 
   private getAllSubCategory(categoryId: string) {
-    this.subSubCat = this.subCategoryService.getSubCategoryByCategoryId(categoryId)
-      .subscribe(res => {
-        this.subCategories = res.data;
-      }, error => {
-        console.log(error);
-      });
+    this.subCategoryService.getSubCategoryByCategoryId(categoryId)
+    .subscribe(res => {
+      this.subCategories = res.data;
+    }, error => {
+      console.log(error);
+    });
+   
   }
 
 
@@ -295,8 +392,8 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (event.isUserInput) {
       const category = event.source.value as Category;
       this.query = {...this.query, ...{vendor: this.vendor._id}};
-      this.query = {...this.query, category: category._id};
-      console.log(this.query);
+      this.query = {...this.query, 'category._id': category._id};
+  
       this.getAllSubCategory(category._id);
       if (this.currentPage > 1) {
         this.router.navigate([], {queryParams: {page: 1}});
@@ -494,24 +591,23 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * CLONE PRODUCT
    */
-  cloneProduct(data: Product) {
-    delete data._id;
-    delete data.ratingReview;
-    delete data.createdAt;
-    delete data.updatedAt;
-    const productNewName = `${data.productName} (Clone) ${Date.now().toString().slice(0, 3)}`
-    data.productName = productNewName;
-    data.productSlug = this.utilsService.transformToSlug(productNewName);
 
-    this.productService.addSingleProduct(data)
+  private cloneSingleProduct(id: string) {
+    this.spinner.show();
+    this.subDataEight = this.productService.cloneSingleProduct(id)
       .subscribe(res => {
-        this.uiService.success('Product Cloned Successfully. Please Check it First');
-        this.reloadService.needRefreshProduct$();
+        this.spinner.hide();
+        if (res.success) {
+          this.uiService.success(res.message);
+          this.reloadService.needRefreshData$();
+        } else {
+          this.uiService.warn(res.message);
+        }
       }, error => {
+        this.spinner.hide();
         console.log(error);
       });
   }
-
 
 
   /**

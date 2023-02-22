@@ -15,6 +15,8 @@ import {Pagination} from "../../../interfaces/core/pagination";
 import {UtilsService} from "../../../services/core/utils.service";
 import {FileUploadService} from "../../../services/gallery/file-upload.service";
 import {ImageFolderService} from "../../../services/gallery/image-folder.service";
+import { FilterData } from 'src/app/interfaces/core/filter-data';
+import { Gallery } from 'src/app/interfaces/gallery/gallery.interface';
 
 @Component({
   selector: 'app-image-gallery',
@@ -43,7 +45,7 @@ export class ImageGalleryComponent implements OnInit, AfterViewInit {
 
 
   private holdPrevData: any[] = [];
-  images: ImageGallery[] = [];
+  images: Gallery[] = [];
   folders: ImageFolder[] = [];
   selectedFolder = null;
 
@@ -125,12 +127,32 @@ export class ImageGalleryComponent implements OnInit, AfterViewInit {
           this.searchQuery = null;
           return EMPTY;
         }
-        this.isLoading = true;
-        const pagination: Pagination = {
-          pageSize: this.productsPerPage.toString(),
-          currentPage: this.currentPage.toString()
+        const pagination: any = {
+          pageSize: this.productsPerPage,
+          currentPage: this.currentPage
         };
-        return this.galleryService.getSearchImages(data, pagination);
+    
+        // FilterData
+        // const mQuery = this.filter.length > 0 ? {$and: this.filter} : null;
+    
+        // Select
+        const mSelect = {
+          name: 1,
+          url: 1,
+          folder: 1,
+          type: 1,
+          size: 1,
+          createdAt: 1,
+        }
+    
+        const filterData: FilterData = {
+          pagination: pagination,
+          filter: null,
+          select: mSelect,
+          sort: null
+        }
+    
+        return this.galleryService.getAllGalleries(filterData)
       })
     )
       .subscribe(res => {
@@ -156,7 +178,21 @@ export class ImageGalleryComponent implements OnInit, AfterViewInit {
    * HTTP REQ HANDLE
    */
   private getAllImageFolderList() {
-    this.imageFolderService.getAllImageFolderList()
+    // Select
+    const mSelect = {
+      name: 1,
+      slug: 1,
+      type: 1,
+      createdAt: 1,
+    }
+
+    const filterData: any = {
+      pagination: null,
+      filter: null,
+      select: mSelect,
+      sort: null
+    }
+    this.imageFolderService.getAllImageFolderList(filterData)
       .subscribe(res => {
         this.folders = res.data;
       }, err => {
@@ -167,11 +203,32 @@ export class ImageGalleryComponent implements OnInit, AfterViewInit {
 
   private getAllGalleryList() {
     this.spinner.show();
-    const pagination: Pagination = {
-      pageSize: this.productsPerPage.toString(),
-      currentPage: this.currentPage.toString()
+    const pagination: any = {
+      pageSize: this.productsPerPage,
+      currentPage: this.currentPage
     };
-    this.galleryService.getAllGalleryList(pagination, this.queryFolder ? this.queryFolder : null)
+
+    // FilterData
+    // const mQuery = this.filter.length > 0 ? {$and: this.filter} : null;
+
+    // Select
+    const mSelect = {
+      name: 1,
+      url: 1,
+      folder: 1,
+      type: 1,
+      size: 1,
+      createdAt: 1,
+    }
+
+    const filterData: FilterData = {
+      pagination: pagination,
+      filter: null,
+      select: mSelect,
+      sort: null
+    }
+
+    this.galleryService.getAllGalleries(filterData)
       .subscribe(res => {
         this.images = res.data;
         this.holdPrevData = res.data;

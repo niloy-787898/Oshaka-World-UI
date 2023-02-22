@@ -96,7 +96,7 @@ export class AddImageFolderComponent implements OnInit {
       .subscribe(res => {
         this.uiService.success(res.message);
         this.dataForm.updateValueAndValidity();
-        this.dataForm.reset(this.dataForm.value);
+        this.dataForm.reset();
       }, error => {
         console.log(error);
       });

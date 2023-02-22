@@ -6,7 +6,7 @@
         <mat-label>Select Category</mat-label>
         <mat-select #matCatSelect>
           <mat-option *ngFor="let data of categories" [value]="data" (onSelectionChange)="onSelectCategory($event)">
-            <span>{{data.categoryName}}</span>
+            <span>{{data.name}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -16,7 +16,7 @@
         <mat-select #matSubCatSelect>
           <mat-option *ngFor="let data of subCategories" [value]="data"
                       (onSelectionChange)="onSelectSubCategory($event)">
-            <span>{{data.subCategoryName}}</span>
+            <span>{{data.name}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -96,15 +96,15 @@
       </thead> <!-- End Table Head -->
       <tr
         *ngFor="let data of products | paginate: { itemsPerPage: productsPerPage, currentPage: currentPage, totalItems: totalProducts }; let i = index">
-        <td [attr.data-label]="'Name'">{{data.productName}}</td>
+        <td [attr.data-label]="'Name'">{{data.name}}</td>
         <td [attr.data-label]="'Image'">
           <img [src]="data?.images && data?.images.length > 0 ? data.images[0] : '/assets/images/placeholder/test.png'"
                [alt]="data.productName">
         </td>
         <td [attr.data-label]="'SKU'">{{data.sku}}</td>
-        <td [attr.data-label]="'Category'">{{data.category?.categoryName}}</td>
-        <td [attr.data-label]="'Retail Price'">৳ {{data.price | number: '': 'bn'}}</td>
-        <td [attr.data-label]="'Sale Price'">৳ {{data | price: 'priceWithDiscount' | number: '': 'bn'}}</td>
+        <td [attr.data-label]="'Category'">{{data.category?.name}}</td>
+        <td [attr.data-label]="'Retail Price'">৳ {{data.costPrice | number: '': 'bn'}}</td>
+        <td [attr.data-label]="'Sale Price'">৳ {{data | salePrice: 'priceWithDiscount' | number: '': 'bn'}}</td>
         <td [attr.data-label]="'Available'">{{data.quantity ? data.quantity : 'N/A'}}</td>
         <td [attr.data-label]="'Details'">
           <a mat-mini-fab color="primary" [href]="'/product-details/' + data.productSlug" target="_blank" mat-icon-button>

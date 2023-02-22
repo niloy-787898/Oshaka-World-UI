@@ -180,7 +180,7 @@ export const menuItemsVendor: MenuAdmin[] = [
   },
   // Parent Gallery
   {
-    id: '4',
+    id: '46x',
     title: 'Image Gallery',
     icon: 'collections',
     hasSubMenu: false,

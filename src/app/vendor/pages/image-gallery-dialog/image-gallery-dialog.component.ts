@@ -1,20 +1,22 @@
-import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {UploadImageComponent} from './upload-image/upload-image.component';
-import {debounceTime, distinctUntilChanged, pluck, switchMap} from 'rxjs/operators';
-import {EMPTY} from 'rxjs';
-import {MatSelectChange} from '@angular/material/select';
-import {NgxSpinnerService} from 'ngx-spinner';
-import {ImageGallery} from "../../../interfaces/gallery/image-gallery";
-import {GalleryService} from "../../../services/gallery/gallery.service";
-import {Pagination} from "../../../interfaces/core/pagination";
-import {ImageFolder} from "../../../interfaces/gallery/image-folder";
-import {UtilsService} from "../../../services/core/utils.service";
-import {ReloadService} from "../../../services/core/reload.service";
-import {FileUploadService} from "../../../services/gallery/file-upload.service";
-import {ImageFolderService} from "../../../services/gallery/image-folder.service";
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { UploadImageComponent } from './upload-image/upload-image.component';
+import { debounceTime, distinctUntilChanged, pluck, switchMap } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { MatSelectChange } from '@angular/material/select';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ImageGallery } from "../../../interfaces/gallery/image-gallery";
+import { GalleryService } from "../../../services/gallery/gallery.service";
+import { Pagination } from "../../../interfaces/core/pagination";
+import { ImageFolder } from "../../../interfaces/gallery/image-folder";
+import { UtilsService } from "../../../services/core/utils.service";
+import { ReloadService } from "../../../services/core/reload.service";
+import { FileUploadService } from "../../../services/gallery/file-upload.service";
+import { ImageFolderService } from "../../../services/gallery/image-folder.service";
+import { FilterData } from 'src/app/interfaces/core/filter-data';
+import { Gallery } from 'src/app/interfaces/gallery/gallery.interface';
 
 
 @Component({
@@ -44,7 +46,7 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
 
 
   private holdPrevData: any[] = [];
-  images: ImageGallery[] = [];
+  images: Gallery[] = [];
   folders: ImageFolder[] = [];
   selectedFolder = null;
 
@@ -74,9 +76,11 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
 
     // GET PAGE FROM QUERY PARAM
-    this.activatedRoute.queryParams.subscribe((qParam : any) => {
+    this.activatedRoute.queryParams.subscribe((qParam: any) => {
       if (qParam && qParam.page) {
         this.currentPage = qParam.page;
+        console.log( this.currentPage);
+        
       } else {
         this.currentPage = 1;
       }
@@ -90,7 +94,7 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
 
     // Get Gallery Data
     this.getAllImageFolderList();
-    // this.getAllGalleryList();
+    
 
     // Data Form for Edit Image Info
     this.dataForm = this.fb.group({
@@ -121,8 +125,8 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
         }
         this.isLoading = true;
         const pagination: Pagination = {
-          pageSize: this.productsPerPage.toString(),
-          currentPage: this.currentPage.toString()
+          pageSize: this.productsPerPage,
+          currentPage: this.currentPage
         };
         return this.galleryService.getSearchImages(data, pagination);
       })
@@ -133,7 +137,7 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
         this.images = this.searchProducts;
         this.totalProducts = res.count;
         this.currentPage = 1;
-        this.router.navigate([], {queryParams: {page: this.currentPage}});
+        this.router.navigate([], { queryParams: { page: this.currentPage } });
       }, () => {
         this.isLoading = false;
       });
@@ -150,7 +154,21 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
    * HTTP REQ HANDLE
    */
   private getAllImageFolderList() {
-    this.imageFolderService.getAllImageFolderList()
+    // Select
+    const mSelect = {
+      name: 1,
+      slug: 1,
+      type: 1,
+      createdAt: 1,
+    }
+
+    const filterData: any = {
+      pagination: null,
+      filter: null,
+      select: mSelect,
+      sort: null
+    }
+    this.imageFolderService.getAllImageFolderList(filterData)
       .subscribe(res => {
         this.folders = res.data;
       }, err => {
@@ -161,11 +179,32 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
 
   private getAllGalleryList() {
     this.spinner.show();
-    const pagination: Pagination = {
-      pageSize: this.productsPerPage.toString(),
-      currentPage: this.currentPage.toString()
+    const pagination: any = {
+      pageSize: this.productsPerPage,
+      currentPage: this.currentPage
     };
-    this.galleryService.getAllGalleryList(pagination, this.queryFolder ? this.queryFolder : null)
+
+    // FilterData
+    // const mQuery = this.filter.length > 0 ? {$and: this.filter} : null;
+
+    // Select
+    const mSelect = {
+      name: 1,
+      url: 1,
+      folder: 1,
+      type: 1,
+      size: 1,
+      createdAt: 1,
+    }
+
+    const filterData: FilterData = {
+      pagination: pagination,
+      filter: null,
+      select: mSelect,
+      sort: null
+    }
+
+    this.galleryService.getAllGalleries(filterData)
       .subscribe(res => {
         this.images = res.data;
         this.holdPrevData = res.data;
@@ -193,7 +232,7 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
    * PAGINATION CHANGE
    */
   public onPageChanged(event: any) {
-    this.router.navigate([], {queryParams: {page: event}});
+    this.router.navigate([], { queryParams: { page: event } });
   }
 
   /**
@@ -211,7 +250,7 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
       this.selectPreview = this.selectedImages[i];
       const folder = this.selectPreview.folder as ImageFolder;
       const dataFolder = this.folders.find(f => f._id === folder._id);
-      this.setImageDataForm({name: this.selectPreview.name, folder: dataFolder});
+      this.setImageDataForm({ name: this.selectPreview.name, folder: dataFolder });
 
       if (this.selectedImages.length === 1) {
       } else {
@@ -242,7 +281,7 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
       this.selectPreview = this.selectedImages[i];
       const folder = this.selectPreview.folder as ImageFolder;
       const dataFolder = this.folders.find(f => f._id === folder._id);
-      this.setImageDataForm({name: this.selectPreview.name, folder: dataFolder});
+      this.setImageDataForm({ name: this.selectPreview.name, folder: dataFolder });
     } else {
       this.selectPreview = undefined;
     }
@@ -289,14 +328,14 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
       return;
     }
     const folder = this.dataForm?.value.folder;
-    const finalData = {...this.dataForm?.value, ...{folder: folder._id}, ...{_id: this.selectedImages[0]._id}};
+    const finalData = { ...this.dataForm?.value, ...{ folder: folder._id }, ...{ _id: this.selectedImages[0]._id } };
     this.editGalleryData(finalData);
 
   }
 
   selectPreviewImage(s: ImageGallery) {
     this.selectPreview = s;
-    this.setImageDataForm({name: this.selectPreview.name, folder: this.selectPreview.folder});
+    this.setImageDataForm({ name: this.selectPreview.name, folder: this.selectPreview.folder });
   }
 
   /**
@@ -310,13 +349,13 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
     this.searchProducts = [];
     this.searchForm?.resetForm();
     this.queryFolder = null;
-    this.router.navigate([], {queryParams: {page: 1}});
+    this.router.navigate([], { queryParams: { page: 1 } });
   }
 
   onFilterSelectChange(event: MatSelectChange) {
     this.queryFolder = event.value;
     if (this.currentPage > 1) {
-      this.router.navigate([], {queryParams: {page: 1}});
+      this.router.navigate([], { queryParams: { page: 1 } });
     } else {
       this.getAllGalleryList();
     }
@@ -326,8 +365,8 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
    * ON CLOSE DIALOG
    */
   onCloseDialog() {
-    this.dialogRef.close({data: this.selectedImages});
-    this.router.navigate([], {queryParams: null});
+    this.dialogRef.close({ data: this.selectedImages });
+    this.router.navigate([], { queryParams: null });
   }
 
 

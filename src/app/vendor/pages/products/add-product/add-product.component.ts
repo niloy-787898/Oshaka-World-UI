@@ -116,7 +116,16 @@ export class AddProductComponent implements OnInit, OnDestroy {
   // Store Product
   id: string = null;
   product: Product = null;
-
+  // Subscriptions
+  private subDataOne: Subscription;
+  private subDataTwo: Subscription;
+  private subDataThree: Subscription;
+  private subDataFour: Subscription;
+  private subDataFive: Subscription;
+  private subDataSix: Subscription;
+  private subDataSeven: Subscription;
+  private subDataEight: Subscription;
+  private subAutoSlug: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -129,6 +138,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService,
     private subCategoryService: SubCategoryService,
     private productService: ProductService,
+    private spinnerService: NgxSpinnerService,
     private tagService: TagService,
     private spinner: NgxSpinnerService,
     private activatedRoute: ActivatedRoute,
@@ -550,15 +560,19 @@ export class AddProductComponent implements OnInit, OnDestroy {
   }
 
   private addSingleProduct(data: any) {
-    this.productService.addSingleProduct({...data, ...{rating: 0, vendor: this.vendor._id}})
+    this.spinnerService.show();
+    this.subDataOne = this.productService.addProduct(data)
       .subscribe(res => {
-        this.spinner.hide();
-        this.uiService.success(res.message);
-        this.storageService.removeSessionData('PRODUCT_INPUT');
-        this.resetForm();
-        // this.resetForm();
+        this.spinnerService.hide();
+        if (res.success) {
+          this.uiService.success(res.message);
+          this.formTemplate.resetForm();
+          this.chooseImage = [];
+        } else {
+          this.uiService.warn(res.message);
+        }
       }, error => {
-        this.spinner.hide();
+        this.spinnerService.hide();
         console.log(error);
       });
   }
@@ -576,17 +590,83 @@ export class AddProductComponent implements OnInit, OnDestroy {
   }
 
   private getSingleProductById() {
-    this.productService.getSingleProductById(this.id)
+    this.spinnerService.show();
+    // const select = 'name email username phoneNo gender role permissions hasAccess'
+    this.subDataTwo = this.productService.getProductById(this.id)
       .subscribe(res => {
-        this.product = res.data;
-        if (this.product) {
-          this.patchFormData();
-          // GET ALL SELECTED DATA
-          this.getAllAttributes();
-          this.getAllCategory();
-          this.getAllBrands();
-          this.getAllTags();
+        this.spinnerService.hide();
+        if (res.success) {
+          this.product = res.data;
+          this.setFormValue();
         }
+      }, error => {
+        this.spinnerService.hide();
+        console.log(error);
+      });
+  }
+  private setFormValue() {
+    this.dataForm.patchValue({
+        ...this.product,
+        ...{
+          category: this.product.category._id,
+          brand: this.product.brand._id,
+        }
+      }
+    );
+
+    if (this.product.subCategory) {
+      this.dataForm.patchValue({
+        subCategory: this.product.subCategory._id,
+      })
+    }
+
+    // Tags
+    if (this.product.tags && this.product.tags.length) {
+      this.dataForm.patchValue({
+        tags: this.product.tags.map(m => m._id)
+      })
+    }
+
+    // Variations
+    if (this.product.specifications && this.product.specifications.length) {
+      this.product.specifications.map(m => {
+        const f = this.fb.group({
+          name: [m.name, Validators.required],
+          value: [m.value, Validators.required],
+        });
+        (this.dataForm?.get('specifications') as FormArray).push(f);
+      });
+    }
+
+    if (this.product.hasVariations) {
+      this.dataForm.patchValue({
+        variations: this.product.variations.map(m => m._id)
+      });
+
+      this.product.variationsOptions.map(m => {
+        const f = this.fb.group({
+          price: [m.price, Validators.required],
+          quantity: [m.quantity, Validators.required],
+          image: [m.image],
+          variations: [m.variations]
+        });
+        (this.dataForm?.get('variationsOptions') as FormArray).push(f);
+      });
+    }
+
+    // Set Image
+    if (this.product.images && this.product.images.length) {
+      this.chooseImage = this.product.images;
+    }
+    // Get Sub Category By Category
+    if (this.product.subCategory) {
+      this.getSubCategoriesByCategoryId(this.product.category._id);
+    }
+  }
+    private getSubCategoriesByCategoryId(categoryId: string) {
+    this.subDataSeven = this.subCategoryService.getSubCategoryByCategoryId(categoryId)
+      .subscribe(res => {
+        this.subCategories = res.data;
       }, error => {
         console.log(error);
       });

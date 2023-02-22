@@ -315,7 +315,7 @@ export class ProductListComponent implements OnInit {
         this.products = res.data;
         this.totalProducts = res.count;
         if (!this.productFilterGroup) {
-          this.productFilterGroup = res.filterGroup;
+          // this.productFilterGroup = res.filterGroup;
         }
         if (this.productFilterGroup) {
           if (this.selectedCategories.length) {

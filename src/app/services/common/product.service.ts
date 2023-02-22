@@ -6,6 +6,7 @@ import {FilterData} from '../../interfaces/core/filter-data';
 import {UiService} from '../core/ui.service';
 import {Pagination} from "../../interfaces/core/pagination";
 import {ProductFilter} from "./product-filter";
+import { ResponsePayload } from 'src/app/interfaces/core/response-payload.interface';
 
 const API_PRODUCT = environment.apiBaseLink + '/api/product/';
 
@@ -22,20 +23,71 @@ export class ProductService {
   }
 
 
-
   /**
+   * addProduct
+   * insertManyProduct
    * getAllProducts
-   * getProductByIds
    * getProductById
+   * updateProductById
+   * updateMultipleProductById
+   * deleteProductById
+   * deleteMultipleProductById
    */
+
+  addProduct(data: Product) {
+    return this.httpClient.post<ResponsePayload>
+    (API_PRODUCT + 'add', data);
+  }
+
+  cloneSingleProduct(id: string) {
+    return this.httpClient.post<ResponsePayload>
+    (API_PRODUCT + 'clone', {id});
+  }
+
+  insertManyProduct(data: Product[], option?: any) {
+    const mData = {data, option}
+    return this.httpClient.post<ResponsePayload>
+    (API_PRODUCT + 'insert-many', mData);
+  }
 
   getAllProducts(filterData: FilterData, searchQuery?: string) {
     let params = new HttpParams();
     if (searchQuery) {
       params = params.append('q', searchQuery);
     }
-    return this.httpClient.post<{ data: Product[], filterGroup: ProductFilterGroup, count: number, success: boolean }>(API_PRODUCT + 'get-all', filterData, {params});
+    return this.httpClient.post<{ data: Product[], count: number, success: boolean }>(API_PRODUCT + 'get-all', filterData, {params});
   }
+
+  getProductById(id: string, select?: string) {
+    let params = new HttpParams();
+    if (select) {
+      params = params.append('select', select);
+    }
+    return this.httpClient.get<{ data: Product, message: string, success: boolean }>(API_PRODUCT + id, {params});
+  }
+
+  updateProductById(id: string, data: Product) {
+    return this.httpClient.put<{ message: string, success: boolean }>(API_PRODUCT + 'update/' + id, data);
+  }
+
+  updateMultipleProductById(ids: string[], data: Product) {
+    const mData = {...{ids: ids}, ...data}
+    return this.httpClient.put<ResponsePayload>(API_PRODUCT + 'update-multiple', mData);
+  }
+
+  deleteProductById(id: string) {
+    return this.httpClient.delete<ResponsePayload>(API_PRODUCT + 'delete/' + id);
+  }
+
+  deleteMultipleProductById(ids: string[]) {
+    return this.httpClient.post<ResponsePayload>(API_PRODUCT + 'delete-multiple', {ids: ids});
+  }
+
+  /**
+   * getAllProducts
+   * getProductByIds
+   * getProductById
+   */
 
 
   getProductByIds(ids: string[], select?: string) {
@@ -46,13 +98,6 @@ export class ProductService {
     return this.httpClient.post<{ data: Product[], count: number, success: boolean }>(API_PRODUCT + 'get-products-by-ids', {ids}, {params});
   }
 
-  getProductById(id: string, select?: string) {
-    let params = new HttpParams();
-    if (select) {
-      params = params.append('select', select);
-    }
-    return this.httpClient.get<{ data: Product, message: string, success: boolean }>(API_PRODUCT+'slug/' + id, {params});
-  }
 
   getProductBySlug(slug: string, select?: string) {
     let params = new HttpParams();
@@ -132,10 +177,6 @@ export class ProductService {
     return this.httpClient.post<{ message: string }>(API_PRODUCT + 'add-single-product', data);
   }
 
-  insertManyProduct(data: any[]) {
-    return this.httpClient.post<{ message: string }>(API_PRODUCT + 'add-multiple-products', data);
-  }
-
 
   getVendorProducts(filter?: ProductFilter) {
     return this.httpClient.post<{ data: Product[], priceRange: any, count: number, message: string }>(API_PRODUCT + 'get-all-products', {filter});
@@ -153,9 +194,6 @@ export class ProductService {
     return this.httpClient.put<{ message: string }>(API_PRODUCT + 'edit-product-by-id', data);
   }
 
-  deleteProductById(id: string) {
-    return this.httpClient.delete<{ message: string }>(API_PRODUCT + 'delete-product-by-id/' + id);
-  }
 
   getRelatedProducts(data: any) {
     return this.httpClient.get<{ data: any, message: string }>(API_PRODUCT + 'get-related-products/' + data.category + '/' + data.subCategory + '/' + data.id);

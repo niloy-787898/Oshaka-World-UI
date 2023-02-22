@@ -110,29 +110,48 @@ export class ProductTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.searchProducts = [];
           this.products = this.holdPrevData;
           this.totalProducts = this.totalProductsStore;
-          this.searchProducts = [];
           this.searchQuery = null;
           return EMPTY;
         }
-        this.isLoading = true;
         const pagination: Pagination = {
-          pageSize: this.productsPerPage.toString(),
-          currentPage: this.currentPage.toString()
+          pageSize: Number(this.productsPerPage),
+          currentPage: Number(this.currentPage) - 1
         };
-        return this.productService.getSearchProduct(data, pagination);
+        // Select
+        const mSelect = {
+          name: 1,
+          slug: 1,
+          images: 1,
+          category: 1,
+          subCategory: 1,
+          brand: 1,
+          unit: 1,
+          costPrice: 1,
+          salePrice: 1,
+          hasVariations: 1,
+          status: 1,
+        }
+
+        const filterData: FilterData = {
+          pagination: pagination,
+          filter: null,
+          select: mSelect,
+          sort: null
+        }
+        return this.productService.getAllProducts(filterData, this.searchQuery);
       })
     )
       .subscribe(res => {
-        this.isLoading = false;
         this.searchProducts = res.data;
         this.products = this.searchProducts;
         this.totalProducts = res.count;
         this.currentPage = 1;
         this.router.navigate([], {queryParams: {page: this.currentPage}});
       }, error => {
-        this.isLoading = false;
+        console.log(error)
       });
   }
+
 
   /**
    * HTTP REQ
