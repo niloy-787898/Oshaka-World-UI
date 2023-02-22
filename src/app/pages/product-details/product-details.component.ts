@@ -482,22 +482,22 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
     switch (type) {
       case 'facebook':
-        searchParams.set('u', 'https://heriken.co/products/details/' + this.product._id);
+        searchParams.set('u', 'https://osaka.co/products/details/' + this.product._id);
         this.navUrl = 'https://www.facebook.com/sharer/sharer.php?' + searchParams;
         break;
 
       case 'twitter':
-        searchParams.set('url', 'https://heriken.co/products/details/' + this.product._id);
+        searchParams.set('url', 'https://osaka.co/products/details/' + this.product._id);
         this.navUrl = 'https://twitter.com/share?' + searchParams;
         break;
 
       case 'whatsapp':
-        searchParams.set('text', 'https://heriken.co/products/details/' + this.product._id);
+        searchParams.set('text', 'https://osaka.co/products/details/' + this.product._id);
         this.navUrl = 'https://web.whatsapp.com/send?' + searchParams;
         break;
 
       case 'linkedin':
-        searchParams.set('url', 'https://heriken.co/products/details/' + this.product._id);
+        searchParams.set('url', 'https://osaka.co/products/details/' + this.product._id);
         this.navUrl = 'https://www.linkedin.com/sharing/share-offsite/?' + searchParams;
         break;
     }

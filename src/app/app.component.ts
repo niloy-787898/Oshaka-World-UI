@@ -3,6 +3,7 @@ import { UserService } from './services/common/user.service';
 import localeBn from '@angular/common/locales/bn';
 import { registerLocaleData } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
+import { VendorService } from './services/common/vendor.service';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +16,12 @@ export class AppComponent {
 
   constructor(
     private userService: UserService,
+    private vendorService: VendorService,
     private router: Router
   ) {
     registerLocaleData(localeBn, 'bn');
     this.userService.autoUserLoggedIn();
+    this.vendorService.autoVendorLoggedIn();
   }
 
 

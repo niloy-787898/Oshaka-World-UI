@@ -143,5 +143,5 @@ export const PAYMENT_METHODS: PaymentMethod[] = [
 
 ]
 
-export const PDF_MAKE_LOGO = 'https://api.heriken.co/api/upload/images/herikenlogo.png';
+export const PDF_MAKE_LOGO = 'https://api.osaka.co/api/upload/images/osakalogo.png';
 
