@@ -7,6 +7,9 @@ import {ImageGallery} from "../../../../interfaces/gallery/image-gallery";
 import {UtilsService} from "../../../../services/core/utils.service";
 import {ReloadService} from "../../../../services/core/reload.service";
 import {GalleryService} from "../../../../services/gallery/gallery.service";
+import { Gallery } from 'src/app/interfaces/gallery/gallery.interface';
+import { FileFolder } from 'src/app/interfaces/gallery/file-folder.interface';
+import { FileTypes } from 'src/app/enum/file-types.enum';
 
 
 
@@ -20,7 +23,7 @@ export class UploadImageComponent implements OnInit {
   // in app.component.ts
   files: File[] = [];
   folders: ImageFolder[] = [];
-  selectedFolder: ImageFolder = null;
+  selectedFolder: FileFolder = null;
 
 
   constructor(
@@ -68,15 +71,15 @@ export class UploadImageComponent implements OnInit {
     }
     this.fileUploadService.uploadMultiImageOriginal(this.files)
       .subscribe(res => {
-        const downloadUrls = res.downloadUrls;
-        const data: ImageGallery[] = downloadUrls.map(m => {
+        const data: Gallery[] = res.map(m => {
           return {
-            url: m,
-            name: this.utilsService.getPopString(m),
+            url: m.url,
+            name: m.name,
+            size: m.size,
             folder: this.selectedFolder,
-          } as ImageGallery;
+            type: FileTypes.IMAGE
+          } as Gallery;
         });
-
         this.addImagesToGallery(data);
 
       }, error => {
@@ -88,8 +91,8 @@ export class UploadImageComponent implements OnInit {
    * HTTP REQ HANDLE
    */
 
-  private addImagesToGallery(data: ImageGallery[]) {
-    this.galleryService.addNewGalleryMultiData(data)
+  private addImagesToGallery(data: Gallery[]) {
+    this.galleryService.insertManyGallery(data)
       .subscribe(res => {
         this.reloadService.needRefreshGallery$();
         this.dialogRef.close();

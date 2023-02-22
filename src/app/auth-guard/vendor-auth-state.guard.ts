@@ -19,6 +19,8 @@ export class VendorAuthStateGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     const isVendor = this.vendorService.getVendorStatus();
+    console.log(isVendor);
+    
     if (!isVendor) {
       return true;
     }

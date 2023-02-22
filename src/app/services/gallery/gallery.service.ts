@@ -3,6 +3,9 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Pagination} from "../../interfaces/core/pagination";
 import {ImageGallery} from "../../interfaces/gallery/image-gallery";
 import {environment} from "../../../environments/environment";
+import { Gallery } from 'src/app/interfaces/gallery/gallery.interface';
+import { ResponsePayload } from 'src/app/interfaces/core/response-payload.interface';
+import { FilterData } from 'src/app/interfaces/core/filter-data';
 
 
 const API_GALLERY = environment.apiBaseLink + '/api/gallery/';
@@ -25,22 +28,18 @@ export class GalleryService {
     return this.http.post<{ message: string }>(API_GALLERY + 'add-new-gallery', data);
   }
 
-  addNewGalleryMultiData(data: ImageGallery[]) {
-    return this.http.post<{ message: string }>(API_GALLERY + 'add-new-gallery-multi', {data});
+  insertManyGallery(data: Gallery[], option?: any) {
+    const mData = {data, option}
+    return this.http.post<ResponsePayload>
+    (API_GALLERY + 'insert-many', mData);
   }
 
-  getAllGalleryList(pagination?: Pagination, queryFolderId?: string) {
-    if (pagination) {
-      let params = new HttpParams();
-      params = params.append('pageSize', pagination.pageSize);
-      params = params.append('page', pagination.currentPage);
-      if (queryFolderId) {
-        params = params.append('folder', queryFolderId);
-      }
-      return this.http.get<{ data: ImageGallery[], count: number, message?: string }>(API_GALLERY + 'get-all-gallery-list', {params});
-    } else {
-      return this.http.get<{ data: ImageGallery[], count: number, message?: string }>(API_GALLERY + 'get-all-gallery-list');
+  getAllGalleries(filterData: FilterData, searchQuery?: string) {
+    let params = new HttpParams();
+    if (searchQuery) {
+      params = params.append('q', searchQuery);
     }
+    return this.http.post<{ data: Gallery[], count: number, success: boolean }>(API_GALLERY + 'get-all', filterData, {params});
   }
 
   getSearchImages(query: string, pagination?: Pagination) {

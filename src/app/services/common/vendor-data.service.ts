@@ -26,7 +26,7 @@ export class VendorDataService {
   }
 
   getLoginVendorInfo() {
-    return this.httpClient.get<{ data: Vendor, message: string }>(API_VENDOR + 'get-logged-in-vendor-data');
+    return this.httpClient.get<{ data: Vendor, message: string }>(API_VENDOR + 'logged-in-vendor-data');
   }
 
   getSingleVendorById(id: string) {

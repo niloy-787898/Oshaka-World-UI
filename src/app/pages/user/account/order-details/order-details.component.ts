@@ -351,7 +351,7 @@ export class OrderDetailsComponent implements OnInit {
             [
               {
                 width: 'auto',
-                text: `www.heriken.co`,
+                text: `www.osaka.co`,
                 style: 'p',
               },
               // {
@@ -530,7 +530,7 @@ export class OrderDetailsComponent implements OnInit {
           ]
         }, // END TOP INFO BORDER
         {
-          text: 'Thank you for your order from www.heriken.co',
+          text: 'Thank you for your order from www.osaka.co',
           style: 'p',
           alignment: 'center',
           margin: [0, 10]

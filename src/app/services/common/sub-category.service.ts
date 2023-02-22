@@ -31,7 +31,7 @@ export class SubCategoryService {
   }
 
   getSubCategoryByCategoryId(id: string) {
-    return this.httpClient.get<{data: SubCategory[], message?: string}>(API_SUB_CATEGORY + 'get-sub-category-by-category-id/' + id);
+    return this.httpClient.get<{data: SubCategory[], message?: string}>(API_SUB_CATEGORY + 'get-all-by-parent/' + id);
   }
 
 }

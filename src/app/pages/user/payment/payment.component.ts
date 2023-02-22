@@ -187,7 +187,7 @@ export class PaymentComponent implements OnInit {
           this.reloadService.needRefreshCart$(false);
           console.log('this.dataForm.value.paymentMethods',this.dataForm.value.paymentMethods, 'res', res)
           if(res.data?.paymentType ==='bkash'){
-            window.open('https://shop.bkash.com/heriken-dot-com01832883232/paymentlink/default-payment','_self')
+            window.open('https://shop.bkash.com/osaka-dot-com01832883232/paymentlink/default-payment','_self')
           }
           else{
             localStorage.removeItem("orderId");

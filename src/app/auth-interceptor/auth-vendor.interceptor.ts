@@ -11,7 +11,7 @@ export class AuthVendorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const authToken = this.vendorService.getVendorToken();
     const authRequest = req.clone({
-      headers: req.headers.set('VendorAuthorization', 'Bearer ' + authToken)
+      headers: req.headers.set('Authorization', 'Bearer ' + authToken)
     });
     return next.handle(authRequest);
   }

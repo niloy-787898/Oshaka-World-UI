@@ -165,9 +165,9 @@ export class VendorService {
     let params = new HttpParams();
     if (select) {
       params = params.append('select', select);
-      return this.httpClient.get<{ data: Vendor }>(API_URL_VENDOR + 'get-logged-in-vendor-data', {params});
+      return this.httpClient.get<{ data: Vendor }>(API_URL_VENDOR + 'logged-in-vendor-data', {params});
     } else {
-      return this.httpClient.get<{ data: Vendor }>(API_URL_VENDOR + 'get-logged-in-vendor-data');
+      return this.httpClient.get<{ data: Vendor }>(API_URL_VENDOR + 'logged-in-vendor-data');
     }
   }
 

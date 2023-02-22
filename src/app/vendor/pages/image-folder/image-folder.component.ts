@@ -55,12 +55,26 @@ export class ImageFolderComponent implements OnInit {
    */
 
   private getAllImageFolderList() {
-    this.imageFolderService.getAllImageFolderList()
-      .subscribe(res => {
-        this.folders = res.data;
-      }, err => {
-        console.log(err);
-      });
+   // Select
+   const mSelect = {
+    name: 1,
+    slug: 1,
+    type: 1,
+    createdAt: 1,
+  }
+
+  const filterData: any = {
+    pagination: null,
+    filter: null,
+    select: mSelect,
+    sort: null
+  }
+  this.imageFolderService.getAllImageFolderList(filterData)
+    .subscribe(res => {
+      this.folders = res.data;
+    }, err => {
+      console.log(err);
+    });
   }
 
   private deleteImageFolderData(id: string) {

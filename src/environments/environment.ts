@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
 
-  // apiBaseLink: 'https://api.heriken.co',
-  // ftpBaseLink: 'https://api.heriken.co',
+  // apiBaseLink: 'https://api.osaka.co',
+  // ftpBaseLink: 'https://api.osaka.co',
 
   apiBaseLink: 'http://localhost:10042',
   ftpBaseLink: 'http://localhost:10042',

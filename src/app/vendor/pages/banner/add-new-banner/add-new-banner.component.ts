@@ -82,7 +82,7 @@ export class AddNewBannerComponent implements OnInit {
         this.dataForm.patchValue(this.storageService.getStoredInput('BANNER_INPUT'));
       }
       if (this.dataForm.value.products && this.dataForm.value.products.length > 0) {
-        this.getSpecificProductsById(this.dataForm.value.products);
+        // this.getSpecificProductsById(this.dataForm.value.products);
       }
       if (history.state.images) {
         this.needSessionDestroy = true;
@@ -141,7 +141,7 @@ export class AddNewBannerComponent implements OnInit {
         if (dialogResult.selectedIds) {
           this.selectedProductIds = dialogResult.selectedIds;
           this.dataForm.patchValue({products: dialogResult.selectedIds});
-          this.getSpecificProductsById(this.selectedProductIds);
+          // this.getSpecificProductsById(this.selectedProductIds);
         }
       }
     });
@@ -207,20 +207,20 @@ export class AddNewBannerComponent implements OnInit {
       });
   }
 
-  private getSpecificProductsById(ids: string[]) {
-    this.spinner.show();
-    const selectProductField = '-attributes -filterData -tags -ratingReview -discussion -warrantyServices -description';
-    this.subProduct = this.productService.getSpecificProductsById(ids, selectProductField)
-      .subscribe(res => {
-        this.products = res.data;
-        console.log('My Product.......');
-        console.log(this.products);
-        this.spinner.hide();
-      }, error => {
-        this.spinner.hide();
-        console.log(error);
-      });
-  }
+  // private getSpecificProductsById(ids: string[]) {
+  //   this.spinner.show();
+  //   const selectProductField = '-attributes -filterData -tags -ratingReview -discussion -warrantyServices -description';
+  //   this.subProduct = this.productService.getSpecificProductsById(ids, selectProductField)
+  //     .subscribe(res => {
+  //       this.products = res.data;
+  //       console.log('My Product.......');
+  //       console.log(this.products);
+  //       this.spinner.hide();
+  //     }, error => {
+  //       this.spinner.hide();
+  //       console.log(error);
+  //     });
+  // }
 
   // tslint:disable-next-line:use-lifecycle-interface
   ngOnDestroy() {

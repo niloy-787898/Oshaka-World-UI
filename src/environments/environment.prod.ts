@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  apiBaseLink: 'https://api.heriken.co',
-  ftpBaseLink: 'https://api.heriken.co',
+  apiBaseLink: 'https://api.osaka.co',
+  ftpBaseLink: 'https://api.osaka.co',
   adminLoginUrl: 'admin/login',
   adminBaseUrl: 'admin',
   userBaseUrl: 'account',

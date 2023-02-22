@@ -3,9 +3,10 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {ImageFolder} from "../../interfaces/gallery/image-folder";
 import {Pagination} from "../../interfaces/core/pagination";
 import {environment} from "../../../environments/environment";
+import { FilterData } from 'src/app/interfaces/common/product.interface';
 
 
-const API_IMAGE_FOLDER = environment.apiBaseLink + '/api/image-folder/';
+const API_IMAGE_FOLDER = environment.apiBaseLink + '/api/file-folder/';
 
 @Injectable({
   providedIn: 'root'
@@ -22,24 +23,19 @@ export class ImageFolderService {
    */
 
   addNewImageFolderData(data: ImageFolder) {
-    return this.http.post<{ message: string }>(API_IMAGE_FOLDER + 'add-new-image-folder', data);
+    return this.http.post<{ message: string }>(API_IMAGE_FOLDER + 'add', data);
   }
 
   addNewImageFolderMultiData(data: ImageFolder[]) {
     return this.http.post<{ message: string }>(API_IMAGE_FOLDER + 'add-new-image-folder-multi', {data});
   }
 
-  getAllImageFolderList(pagination?: Pagination) {
-    if (pagination) {
-      let params = new HttpParams();
-      params = params.append('pageSize', pagination.pageSize);
-      params = params.append('page', pagination.currentPage);
-      return this.http.get<{ data: ImageFolder[], count: number, message?: string }>
-      (API_IMAGE_FOLDER + 'get-all-image-folder-list', {params});
-    } else {
-      return this.http.get<{ data: ImageFolder[], count: number, message?: string }>
-      (API_IMAGE_FOLDER + 'get-all-image-folder-list');
+  getAllImageFolderList(filterData: FilterData, searchQuery?: string) {
+    let params = new HttpParams();
+    if (searchQuery) {
+      params = params.append('q', searchQuery);
     }
+    return this.http.post<{ data: any[], count: number, success: boolean }>(API_IMAGE_FOLDER + 'get-all', filterData, {params});
   }
 
 

@@ -13,7 +13,7 @@ import {AuthUserInterceptor} from './auth-interceptor/auth-user.interceptor';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environments/environment";
-import {MatIconModule} from "@angular/material/icon";
+import { AuthVendorInterceptor } from './auth-interceptor/auth-vendor.interceptor';
 
 @NgModule({
   declarations: [
@@ -33,6 +33,7 @@ import {MatIconModule} from "@angular/material/icon";
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthUserInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthVendorInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]
 })
