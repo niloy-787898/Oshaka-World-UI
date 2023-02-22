@@ -3,7 +3,7 @@
 
 .container-fluid {
   position: relative;
-  padding:  24px 16px;
+  padding: 24px 16px;
 }
 
 .top-close {
@@ -12,6 +12,7 @@
   //  color: ;
   //}
 }
+
 /*----------------
 TOP ACTION
 ------------------*/
@@ -24,7 +25,8 @@ TOP ACTION
 
   .select-area {
     padding-left: 16px;
-    .mat-radio-button ~ .mat-radio-button {
+
+    .mat-radio-button~.mat-radio-button {
       margin-left: 16px;
     }
   }
@@ -37,6 +39,11 @@ TOP ACTION
       }
     }
   }
+}
+
+.table-action {
+  display: flex;
+  justify-content: space-between;
 }
 
 .filter-area {
@@ -57,6 +64,7 @@ TOP ACTION
     .clear {
       button {
         margin-top: 11px;
+
         ::ng-deep {
           span {
             color: #FFFFFF;
@@ -80,6 +88,7 @@ TOP ACTION
 
 .link-hover {
   transition: 0.3s all linear;
+
   &:hover {
     ::ng-deep {
       span {

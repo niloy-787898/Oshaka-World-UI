@@ -1,38 +1,38 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
-import {MatSelectChange} from '@angular/material/select';
+import { MatSelectChange } from '@angular/material/select';
 
-import {NgxSpinnerService} from 'ngx-spinner';
+import { NgxSpinnerService } from 'ngx-spinner';
 
-import {MatDialog} from '@angular/material/dialog';
-import {ImageGalleryDialogComponent} from '../../image-gallery-dialog/image-gallery-dialog.component';
-import {MatOption, MatOptionSelectionChange} from '@angular/material/core';
-import {SubCategoryService} from "../../../../services/common/sub-category.service";
-import {TagService} from "../../../../services/common/tag.service";
-import {CatalogInfo, Product} from "../../../../interfaces/common/product.interface";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Vendor} from "../../../../interfaces/common/vendor";
-import {VendorProductService} from "../../../../services/common/vendor-product.service";
-import {StorageService} from "../../../../services/core/storage.service";
-import {UiService} from "../../../../services/core/ui.service";
-import {Pagination} from "../../../../interfaces/core/pagination";
-import {VendorDataService} from "../../../../services/common/vendor-data.service";
-import {ProductService} from "../../../../services/common/product.service";
-import {Select} from "../../../../interfaces/core/select";
-import {UtilsService} from "../../../../services/core/utils.service";
-import {CategoryService} from "../../../../services/common/category.service";
-import {BrandService} from "../../../../services/common/brand.service";
-import {FilterData} from "../../../../interfaces/core/filter-data";
-import {Brand} from "../../../../interfaces/common/brand.interface";
-import {Category} from "../../../../interfaces/common/category.interface";
-import {SubCategory} from "../../../../interfaces/common/sub-category.interface";
-import {Tag} from "../../../../interfaces/common/tag.interface";
-import {TextEditorCtrService} from "../../../../services/common/text-editor-ctr.service";
-import {ImageGallery} from "../../../../interfaces/gallery/image-gallery";
-import {ProductAttribute} from "../../../../interfaces/common/product-attribute";
-import {AttributeService} from "../../../../services/common/attribute.service";
+import { MatDialog } from '@angular/material/dialog';
+import { ImageGalleryDialogComponent } from '../../image-gallery-dialog/image-gallery-dialog.component';
+import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
+import { SubCategoryService } from "../../../../services/common/sub-category.service";
+import { TagService } from "../../../../services/common/tag.service";
+import { CatalogInfo, Product } from "../../../../interfaces/common/product.interface";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Vendor } from "../../../../interfaces/common/vendor";
+import { VendorProductService } from "../../../../services/common/vendor-product.service";
+import { StorageService } from "../../../../services/core/storage.service";
+import { UiService } from "../../../../services/core/ui.service";
+import { Pagination } from "../../../../interfaces/core/pagination";
+import { VendorDataService } from "../../../../services/common/vendor-data.service";
+import { ProductService } from "../../../../services/common/product.service";
+import { Select } from "../../../../interfaces/core/select";
+import { UtilsService } from "../../../../services/core/utils.service";
+import { CategoryService } from "../../../../services/common/category.service";
+import { BrandService } from "../../../../services/common/brand.service";
+import { FilterData } from "../../../../interfaces/core/filter-data";
+import { Brand } from "../../../../interfaces/common/brand.interface";
+import { Category } from "../../../../interfaces/common/category.interface";
+import { SubCategory } from "../../../../interfaces/common/sub-category.interface";
+import { Tag } from "../../../../interfaces/common/tag.interface";
+import { TextEditorCtrService } from "../../../../services/common/text-editor-ctr.service";
+import { ImageGallery } from "../../../../interfaces/gallery/image-gallery";
+import { ProductAttribute } from "../../../../interfaces/common/product-attribute";
+import { AttributeService } from "../../../../services/common/attribute.service";
 
 
 @Component({
@@ -127,6 +127,37 @@ export class AddProductComponent implements OnInit, OnDestroy {
   private subDataEight: Subscription;
   private subAutoSlug: Subscription;
 
+
+  // Static Data
+  productStatus: Select[] = [
+    { value: 'draft', viewValue: 'Draft' },
+    { value: 'publish', viewValue: 'Publish' },
+  ];
+  emiMonths: Select[] = [
+    {
+      value: 3,
+      viewValue: '3 Months'
+    },
+    {
+      value: 6,
+      viewValue: '6 Months'
+    },
+    {
+      value: 12,
+      viewValue: '12 Months'
+    },
+  ];
+  discountTypes: Select[] = [
+    {
+      value: 1,
+      viewValue: 'Percentage'
+    },
+    {
+      value: 2,
+      viewValue: 'Cash'
+    },
+  ];
+
   constructor(
     private fb: FormBuilder,
     private utilsService: UtilsService,
@@ -161,7 +192,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
         this.getSingleProductById();
       } else {
         // GET ALL SELECTED DATA
-        this.getAllAttributes();
+        // this.getAllAttributes();
         this.getAllCategory();
         // this.getAllSubCategory();
         this.getAllBrands();
@@ -205,6 +236,11 @@ export class AddProductComponent implements OnInit, OnDestroy {
     });
   }
 
+  public setDiscountZero() {
+    this.dataForm.patchValue({ discountAmount: null })
+    this.dataForm.patchValue({ discountType: null })
+  }
+
 
   /**
    * GET IMAGE DATA FROM STATE
@@ -217,7 +253,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
       this.chooseImage = images.map(m => m.url);
     }
     this.dataForm.patchValue(
-      {images: this.chooseImage}
+      { images: this.chooseImage }
     );
   }
 
@@ -227,32 +263,42 @@ export class AddProductComponent implements OnInit, OnDestroy {
    */
   private initFormGroup() {
     this.dataForm = this.fb.group({
-      productName: [null, Validators.required],
-      productSlug: [null, Validators.required],
-      productNameBangla: [null, Validators.required],
-      images: [null],
+      autoSlug: [true],
+      name: [null, Validators.required],
+      slug: [null],
+      description: [null],
+      costPrice: [null, Validators.required],
+      salePrice: [null, Validators.required],
+      hasTax: [null],
+      tax: [null],
       sku: [null],
-      price: [null, Validators.required],
+      emiMonth: [null],
       discountType: [null],
       discountAmount: [null],
-      stockVisibility: [null],
-      productVisibility: [null],
+      images: [null],
       quantity: [null],
-      soldQuantity: [null],
-      category: [null],
-      categorySlug: [null],
+      trackQuantity: [null],
+      seoTitle: [null],
+      seoDescription: [null],
+      seoKeywords: [null],
+      category: [null, Validators.required],
       subCategory: [null],
-      subCategorySlug: [null],
-      brand: [null],
-      brandSlug: [null],
+      brand: [null, Validators.required],
       tags: [null],
-      warrantyServices: [null],
-      shortDescription: [null],
-      description: [null],
-      attributes: [null],
-      deliveryPolicy: [null],
-      paymentPolicy: [null],
-      warrantyPolicy: [null],
+      earnPoint: [null],
+      pointType: [null],
+      pointValue: [null],
+      redeemPoint: [null],
+      redeemType: [null],
+      redeemValue: [null],
+      status: [this.productStatus[1].value, Validators.required],
+      videoUrl: [null],
+      unit: [null],
+      specifications: this.fb.array([]),
+      // Variations
+      hasVariations: [null],
+      variations: [null],
+      variationsOptions: this.fb.array([]),
       shippingCharge: [null],
       commission: [null, Validators.required],
       filterData: this.fb.array([])
@@ -264,35 +310,40 @@ export class AddProductComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.dataForm.invalid) {
-      this.uiService.warn('Please complete all the required field');
+      this.uiService.warn('Please filed all the required field');
       return;
     }
-    this.spinner.show();
-    let subCategorySlug;
-    const rawData = this.dataForm.value;
-    const categorySlug = this.categories.find(f => f._id === rawData.category.categorySlug);
-    if (rawData.subCategory) {
-      subCategorySlug = this.subCategories.find(f => f._id === rawData.subCategory.subCategorySlug);
-    }
-    const brandSlug = this.brands.find(f => f._id === rawData.brand.brandSlug);
-    const images = this.chooseImage;
-    const mData = {
-      categorySlug,
-      subCategorySlug: subCategorySlug ? subCategorySlug : null,
-      brandSlug, images,
-      campaignStartDate: rawData.campaignStartDate ? this.utilsService.getDateWithCurrentTime(rawData.campaignStartDate) : null,
-      campaignEndDate: rawData.campaignEndDate ? this.utilsService.getDateWithCurrentTime(rawData.campaignEndDate) : null
-    };
-    const finalData = {
-      ...rawData,
-      ...mData
-    };
 
-    if (this.id) {
-      const mDataEdit = {...finalData, ...{_id: this.id}};
-      this.editProductById(mDataEdit);
+    // console.log('this.dataForm', this.dataForm.value);
+    const mData = {
+      ...this.dataForm.value,
+      ...{
+        category: {
+          _id: this.dataForm.value.category,
+          name: this.categories.find(f => f._id === this.dataForm.value.category).name,
+          slug: this.categories.find(f => f._id === this.dataForm.value.category).slug,
+        },
+        brand: {
+          _id: this.dataForm.value.brand,
+          name: this.brands.find(f => f._id === this.dataForm.value.brand).name,
+          slug: this.brands.find(f => f._id === this.dataForm.value.brand).slug,
+        },
+      }
+    }
+
+    if (this.dataForm.value.subCategory) {
+      mData.subCategory = {
+        _id: this.dataForm.value.subCategory,
+        name: this.subCategories.find(f => f._id === this.dataForm.value.subCategory).name,
+        slug: this.subCategories.find(f => f._id === this.dataForm.value.subCategory).slug,
+      }
+    }
+
+    if (this.product) {
+      this.updateProductById(mData);
     } else {
-      this.addSingleProduct({...finalData, ...{rating: 0, approval: 'not_approved'}});
+      this.addProduct(mData);
+
     }
 
   }
@@ -303,14 +354,14 @@ export class AddProductComponent implements OnInit, OnDestroy {
    */
   autoGenerateSlug() {
     if (this.autoSlug === true) {
-      this.sub = this.dataForm?.get('productName').valueChanges
+      this.sub = this.dataForm?.get('name').valueChanges
         .pipe(
-        ).subscribe(d => {
-          const slug = this.utilsService.transformToSlug(d ? d : '');
-          this.dataForm?.patchValue({
-            productSlug: slug
-          });
+      ).subscribe(d => {
+        const slug = this.utilsService.transformToSlug(d ? d : '');
+        this.dataForm?.patchValue({
+          slug: slug
         });
+      });
     } else {
       if (this.sub === null || this.sub === undefined) {
         return;
@@ -371,12 +422,12 @@ export class AddProductComponent implements OnInit, OnDestroy {
    * SELECTION CHANGE
    */
 
-  onSelectCategory(event: MatSelectChange) {
-    this.categoryAttributes = this.categories.find(f => f._id === event.value).attributes as ProductAttribute[];
-    this.dataForm.patchValue({subCategory: null});
-    // this.removeAttributesFormArray();
-    this.getAllSubCategoryByCategoryId(event.value, true);
+  onCategorySelect(event: MatSelectChange) {
+    if (event.value) {
+      this.getSubCategoriesByCategoryId(event.value);
+    }
   }
+
 
   onSelectSubCategory(event: MatSelectChange) {
     // this.dataForm.patchValue({filterData: null, attributes: null});
@@ -427,80 +478,27 @@ export class AddProductComponent implements OnInit, OnDestroy {
     this.selectedAttributes = [];
   }
 
-
-  /**
-   * HTTP REQ HANDLE
-   * GET ATTRIBUTES BY ID
-   */
-
-  private getAllAttributes() {
-    this.attributeService.getAllAttributes()
-      .subscribe(res => {
-        this.attributes = res.data;
-        this.filteredAttributesList = this.attributes.slice();
-        if (this.product) {
-          if (this.product.attributes && this.product.attributes.length > 0) {
-            const attributesId = this.product.attributes.map(m => m._id);
-            this.patchFormValueWithArray();
-            this.dataForm.patchValue({attributes: attributesId});
-          }
-        }
-      }, error => {
-        console.log(error);
-      });
-  } // MOST COMPLEX FORM ARRAY
-
   private getAllCategory() {
-    this.categoryService.getAllCategory()
+
+    const mSelect = {
+      name: 1,
+      slug: 1,
+      image: 1,
+      serial: 1,
+      status: 1,
+      readOnly: 1,
+      createdAt: 1,
+    }
+
+    const filterData: FilterData = {
+      pagination: null,
+      filter: null,
+      select: mSelect,
+      sort: null
+    }
+    this.subDataOne = this.categoryService.getAllCategories(filterData)
       .subscribe(res => {
         this.categories = res.data;
-        this.filteredCatList = this.categories.slice();
-        if (this.product) {
-          const category = this.product?.category as CatalogInfo;
-          // this.categories.forEach(f => {
-          //   this.categoryAttributes = f.attributes as Attribute[];
-          // });
-          // console.log(this.categoryAttributes);
-          this.dataForm.patchValue({category: this.categories.find(f => f._id === category._id)._id});
-          this.getAllSubCategoryByCategoryId(category._id, false);
-        }
-      }, error => {
-        console.log(error);
-      });
-  }
-
-  private getAllSubCategory() {
-    this.subCategoryService.getAllSubCategory()
-      .subscribe(res => {
-        this.subCategories = res.data;
-        this.filteredSubCatList = this.subCategories.slice();
-        if (this.product) {
-          const subCategory = this.product?.subCategory as CatalogInfo;
-          if (subCategory) {
-            this.dataForm.patchValue({subCategory: this.subCategories.find(f => f._id === subCategory._id)._id});
-          }
-        }
-      }, error => {
-        console.log(error);
-      });
-  }
-
-  private getAllSubCategoryByCategoryId(categoryId: string, selectionChange: boolean) {
-    this.subCategoryService.getSubCategoryByCategoryId(categoryId)
-      .subscribe(res => {
-        this.subCategories = res.data;
-        this.filteredSubCatList = this.subCategories.slice();
-        // if (this.product) {
-        //   this.subCategories.forEach(f => {
-        //     this.subCategoryAttributes = f.attributes as Attribute[];
-        //   });
-        //   console.log(this.subCategoryAttributes);
-        //   this.hierarchyAttributes();
-        // }
-        if (this.product && !selectionChange) {
-          const subCategory = this.product.subCategory as CatalogInfo;
-          this.dataForm.patchValue({subCategory: this.subCategories.find(f => f._id === subCategory._id)._id});
-        }
       }, error => {
         console.log(error);
       });
@@ -524,7 +522,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
       pagination: null,
       filter: null,
       select: mSelect,
-      sort: {createdAt: -1}
+      sort: { createdAt: -1 }
     }
     this.brandService.getAllBrands(filterData)
       .subscribe(res => {
@@ -532,7 +530,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
         this.filteredBrandList = this.brands.slice();
         if (this.product) {
           const brand = this.product.brand as CatalogInfo;
-          this.dataForm.patchValue({brand: this.brands.find(f => f._id === brand._id)._id});
+          this.dataForm.patchValue({ brand: this.brands.find(f => f._id === brand._id)._id });
         }
       }, error => {
         console.log(error);
@@ -544,22 +542,30 @@ export class AddProductComponent implements OnInit, OnDestroy {
    */
 
   private getAllTags() {
-    this.spinner.show();
-    const pagination: Pagination = {
-      currentPage: String(1),
-      pageSize: String(50)
-    };
-    this.tagService.getAllTagList(pagination)
+    // Select
+    const mSelect = {
+      name: 1,
+      slug: 1
+    }
+
+    const filterData: FilterData = {
+      pagination: null,
+      filter: null,
+      select: mSelect,
+      sort: { name: 1 }
+    }
+
+
+    this.subDataSix = this.tagService.getAllTags(filterData, null)
       .subscribe(res => {
         this.tags = res.data;
-        this.spinner.hide();
       }, error => {
-        this.spinner.hide();
         console.log(error);
       });
   }
 
-  private addSingleProduct(data: any) {
+  private addProduct(data: any) {
+    data={...data,...{vendor:this.vendor._id}}
     this.spinnerService.show();
     this.subDataOne = this.productService.addProduct(data)
       .subscribe(res => {
@@ -577,14 +583,19 @@ export class AddProductComponent implements OnInit, OnDestroy {
       });
   }
 
-  private editProductById(data: any) {
-    this.vendorProductService.editProductById(data)
+  private updateProductById(data: any) {
+    data={...data,...{vendor:this.vendor._id}}
+    this.spinnerService.show();
+    this.subDataThree = this.productService.updateProductById(this.product._id, data)
       .subscribe(res => {
-        this.spinner.hide();
-        this.uiService.success(res.message);
-        this.storageService.removeSessionData('PRODUCT_INPUT');
+        this.spinnerService.hide();
+        if (res.success) {
+          this.uiService.success(res.message);
+        } else {
+          this.uiService.warn(res.message);
+        }
       }, error => {
-        this.spinner.hide();
+        this.spinnerService.hide();
         console.log(error);
       });
   }
@@ -663,7 +674,9 @@ export class AddProductComponent implements OnInit, OnDestroy {
       this.getSubCategoriesByCategoryId(this.product.category._id);
     }
   }
-    private getSubCategoriesByCategoryId(categoryId: string) {
+
+
+  private getSubCategoriesByCategoryId(categoryId: string) {
     this.subDataSeven = this.subCategoryService.getSubCategoryByCategoryId(categoryId)
       .subscribe(res => {
         this.subCategories = res.data;
@@ -679,7 +692,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
     if (this.product) {
       if (this.product.attributes && this.product.attributes.length > 0) {
         const attributesId = this.product.attributes.map(m => m._id);
-        this.dataForm.patchValue({attributes: attributesId});
+        this.dataForm.patchValue({ attributes: attributesId });
         this.patchFormValueWithArray();
       }
     }

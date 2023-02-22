@@ -77,7 +77,7 @@ export class ImageGalleryComponent implements OnInit, AfterViewInit {
     // GET PAGE FROM QUERY PARAM
     this.activatedRoute.queryParams.subscribe((qParam : any)=> {
       if (qParam && qParam.page) {
-        this.currentPage = qParam.page;
+        this.currentPage =parseInt(qParam.page);
       } else {
         this.currentPage = 1;
       }

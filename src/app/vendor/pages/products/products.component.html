@@ -15,7 +15,7 @@
         <mat-label>Sub Category</mat-label>
         <mat-select #matSubCatSelect>
           <mat-option *ngFor="let data of subCategories" [value]="data"
-                      (onSelectionChange)="onSelectSubCategory($event)">
+            (onSelectionChange)="onSelectSubCategory($event)">
             <span>{{data.name}}</span>
           </mat-option>
         </mat-select>
@@ -31,14 +31,8 @@
 
     <div class="search search-area">
       <form class="search-form" #searchForm=ngForm>
-        <input #searchInput
-               style="background: aliceblue;"
-               type="text"
-               placeholder="Search here..."
-               name="searchTerm"
-               autocomplete="off"
-               ngModel
-               required>
+        <input #searchInput style="background: aliceblue;" type="text" placeholder="Search here..." name="searchTerm"
+          autocomplete="off" ngModel required>
         <div class="icon">
           <mat-icon>search</mat-icon>
         </div>
@@ -50,10 +44,10 @@
 
   <div class="top-action">
     <div class="select-area">
-      <mat-radio-group aria-label="Select an option" [(ngModel)]="dataTypeFormat">
+      <!-- <mat-radio-group aria-label="Select an option" [(ngModel)]="dataTypeFormat">
         <mat-radio-button value="json"><span>Json</span></mat-radio-button>
         <mat-radio-button value="excel"><span>Excel</span></mat-radio-button>
-      </mat-radio-group>
+      </mat-radio-group> -->
     </div>
 
     <div class="main">
@@ -61,16 +55,17 @@
         <mat-icon>add</mat-icon>
         Add New Product
       </button>
-      <button mat-raised-button color="accent" style="margin-left: 12px;" (click)="exportDataToFile()">
+      <!-- <button mat-raised-button color="accent" style="margin-left: 12px;" (click)="exportDataToFile()">
         <mat-icon>file_download</mat-icon>
         {{dataTypeFormat ==='json' ? 'Export as Json' : 'Export as Excel'}}
       </button>
       <button [disabled]="dataTypeFormat ==='excel'" mat-raised-button color="warn" style="margin-left: 12px;" (click)="pickInput.click()">
         <mat-icon>file_upload</mat-icon>
         {{dataTypeFormat ==='json' ? 'Import Json' : 'Import Excel'}}
-      </button>
+      </button> -->
 
-      <input #pickInput fxHide type="file" (change)="onFileChange($event)" [accept]="dataTypeFormat ==='json' ? 'application/JSON' : '.xlsx, .xls, .csv' " />
+      <input #pickInput fxHide type="file" (change)="onFileChange($event)"
+        [accept]="dataTypeFormat ==='json' ? 'application/JSON' : '.xlsx, .xls, .csv' " />
     </div>
 
   </div>
@@ -78,46 +73,62 @@
 
 
   <hr class="center-square">
+  <div class="table-action">
+    <div class="left" >
+    
+    </div>
 
-
+    <div class="right" *ngIf="selectedIds && selectedIds.length">
+      <button  mat-stroked-button color="warn"
+        (click)="openConfirmDialog('delete')" matTooltip="Delete">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
   <div class="table-container">
     <table>
       <thead>
-      <tr class="table-head">
-        <th scope="col">{{'Name'}}</th>
-        <th scope="col">{{'Image'}}</th>
-        <th scope="col">{{'SKU'}}</th>
-        <th scope="col">{{'Category'}}</th>
-        <th scope="col">{{'Retail Price'}}</th>
-        <th scope="col">{{'Sale Price'}}</th>
-        <th scope="col">{{'Available'}}</th>
-        <th scope="col">{{'Action'}}</th>
-      </tr>
+        <tr class="table-head">
+          <th class="t-checkbox">
+            <mat-checkbox #matCheckbox (change)="onAllSelectChange($event)"></mat-checkbox>
+          </th>
+          <th scope="col">{{'Name'}}</th>
+          <th scope="col">{{'Image'}}</th>
+          <th scope="col">{{'SKU'}}</th>
+          <th scope="col">{{'Category'}}</th>
+          <th scope="col">{{'Retail Price'}}</th>
+          <th scope="col">{{'Sale Price'}}</th>
+          <th scope="col">{{'Available'}}</th>
+          <th scope="col">{{'Action'}}</th>
+        </tr>
       </thead> <!-- End Table Head -->
       <tr
         *ngFor="let data of products | paginate: { itemsPerPage: productsPerPage, currentPage: currentPage, totalItems: totalProducts }; let i = index">
+        <td class="t-checkbox">
+          <mat-checkbox class="t-mat-checkbox" [(ngModel)]="data.select"
+            (ngModelChange)="onCheckChange($event, i, data._id)"></mat-checkbox>
+        </td>
         <td [attr.data-label]="'Name'">{{data.name}}</td>
         <td [attr.data-label]="'Image'">
           <img [src]="data?.images && data?.images.length > 0 ? data.images[0] : '/assets/images/placeholder/test.png'"
-               [alt]="data.productName">
+            [alt]="data.productName">
         </td>
         <td [attr.data-label]="'SKU'">{{data.sku}}</td>
         <td [attr.data-label]="'Category'">{{data.category?.name}}</td>
         <td [attr.data-label]="'Retail Price'">৳ {{data.costPrice | number: '': 'bn'}}</td>
-        <td [attr.data-label]="'Sale Price'">৳ {{data | salePrice: 'priceWithDiscount' | number: '': 'bn'}}</td>
-        <td [attr.data-label]="'Available'">{{data.quantity ? data.quantity : 'N/A'}}</td>
+        <td [attr.data-label]="'Sale Price'">৳ {{data | price: 'salePrice' | number: '': 'bn'}}</td>
+        <td [attr.data-label]="'Available'">{{data.quantity ? data.quantity : '0'}}</td>
         <td [attr.data-label]="'Details'">
-          <a mat-mini-fab color="primary" [href]="'/product-details/' + data.productSlug" target="_blank" mat-icon-button>
+          <!-- <a mat-mini-fab color="primary" [href]="'/product-details/' + data.productSlug" target="_blank"
+            mat-icon-button>
             <mat-icon style="color: #FFFFFF">visibility</mat-icon>
-          </a>
-          <button (click)="cloneProduct(data)"  mat-mini-fab color="accent" style="margin-left: 4px;">
+          </a> -->
+          <button (click)="openConfirmDialog('clone', data._id)" mat-mini-fab color="accent" style="margin-left: 4px;">
             <mat-icon>content_copy</mat-icon>
           </button>
-          <button [routerLink]="['../../', 'add-product', 'edit', data._id]" mat-mini-fab color="accent" style="margin-left: 4px;">
+          <button [routerLink]="['../../', 'add-product', 'edit', data._id]" mat-mini-fab color="accent"
+            style="margin-left: 4px;">
             <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-mini-fab color="warn" style="margin-left: 4px;" (click)="openConfirmDialog(data._id)">
-            <mat-icon>delete</mat-icon>
           </button>
         </td>
       </tr><!-- End Table Body -->
@@ -128,7 +139,7 @@
 
   <div class="pagination-container">
     <pagination-controls [autoHide]="true" (pageChange)="currentPage = $event"></pagination-controls>
-  </div>     <!-- END PAGINATION -->
+  </div> <!-- END PAGINATION -->
 
 </div>
 
