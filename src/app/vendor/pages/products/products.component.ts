@@ -1,33 +1,33 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {EMPTY, Subscription} from 'rxjs';
-import {NgForm} from '@angular/forms';
-import {MatSelect} from '@angular/material/select';
-import {NgxSpinnerService} from 'ngx-spinner';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EMPTY, Subscription } from 'rxjs';
+import { NgForm } from '@angular/forms';
+import { MatSelect } from '@angular/material/select';
+import { NgxSpinnerService } from 'ngx-spinner';
 import * as XLSX from 'xlsx';
-import {debounceTime, distinctUntilChanged, pluck, switchMap} from 'rxjs/operators';
-import {MatOption, MatOptionSelectionChange} from '@angular/material/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ConfirmDialogComponent} from '../../../shared/components/ui/confirm-dialog/confirm-dialog.component';
+import { debounceTime, distinctUntilChanged, pluck, switchMap } from 'rxjs/operators';
+import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../shared/components/ui/confirm-dialog/confirm-dialog.component';
 import {
   DownloadJsonDialogComponent
 } from '../../../shared/dialog-view/download-json-dialog/download-json-dialog.component';
-import {Product} from "../../../interfaces/common/product.interface";
-import {Vendor} from "../../../interfaces/common/vendor";
-import {CategoryService} from "../../../services/common/category.service";
-import {SubCategoryService} from "../../../services/common/sub-category.service";
-import {ProductService} from "../../../services/common/product.service";
-import {UiService} from "../../../services/core/ui.service";
-import {Pagination} from "../../../interfaces/core/pagination";
-import {VendorDataService} from "../../../services/common/vendor-data.service";
-import {UtilsService} from "../../../services/core/utils.service";
-import {ReloadService} from "../../../services/core/reload.service";
-import {FilterData} from "../../../interfaces/core/filter-data";
-import {HttpClient} from "@angular/common/http";
-import {Category} from "../../../interfaces/common/category.interface";
-import {SubCategory} from "../../../interfaces/common/sub-category.interface";
-import {ProductFilter} from "../../../services/common/product-filter";
-import { MatCheckbox } from '@angular/material/checkbox';
+import { Product } from "../../../interfaces/common/product.interface";
+import { Vendor } from "../../../interfaces/common/vendor";
+import { CategoryService } from "../../../services/common/category.service";
+import { SubCategoryService } from "../../../services/common/sub-category.service";
+import { ProductService } from "../../../services/common/product.service";
+import { UiService } from "../../../services/core/ui.service";
+import { Pagination } from "../../../interfaces/core/pagination";
+import { VendorDataService } from "../../../services/common/vendor-data.service";
+import { UtilsService } from "../../../services/core/utils.service";
+import { ReloadService } from "../../../services/core/reload.service";
+import { FilterData } from "../../../interfaces/core/filter-data";
+import { HttpClient } from "@angular/common/http";
+import { Category } from "../../../interfaces/common/category.interface";
+import { SubCategory } from "../../../interfaces/common/sub-category.interface";
+import { ProductFilter } from "../../../services/common/product-filter";
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 
 
 @Component({
@@ -63,7 +63,7 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   // Sort
-  sortQuery = {createdAt: -1};
+  sortQuery = { createdAt: -1 };
   activeSort: number = null;
   activeFilter1: number = null;
   activeFilter2: number = null;
@@ -89,17 +89,17 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   // DOWNLOADABLE
   dataTypeFormat = 'json';
 
-    // Subscriptions
-    private subDataOne: Subscription;
-    private subDataTwo: Subscription;
-    private subDataThree: Subscription;
-    private subDataFour: Subscription;
-    private subDataFive: Subscription;
-    private subDataSix: Subscription;
-    private subDataSeven: Subscription;
-    private subDataEight: Subscription;
-    private subRouteOne: Subscription;
-    private subReload: Subscription;
+  // Subscriptions
+  private subDataOne: Subscription;
+  private subDataTwo: Subscription;
+  private subDataThree: Subscription;
+  private subDataFour: Subscription;
+  private subDataFive: Subscription;
+  private subDataSix: Subscription;
+  private subDataSeven: Subscription;
+  private subDataEight: Subscription;
+  private subRouteOne: Subscription;
+  private subReload: Subscription;
 
   constructor(
     private productService: ProductService,
@@ -120,7 +120,7 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
 
     // GET PAGE FROM QUERY PARAM
-    this.subAcRoute = this.activatedRoute.queryParams.subscribe((qParam:any) => {
+    this.subAcRoute = this.activatedRoute.queryParams.subscribe((qParam: any) => {
       if (qParam && qParam.page) {
         this.currentPage = qParam.page;
       } else {
@@ -186,7 +186,7 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.products = this.searchProducts;
         this.totalProducts = res.count;
         this.currentPage = 1;
-        this.router.navigate([], {queryParams: {page: this.currentPage}});
+        this.router.navigate([], { queryParams: { page: this.currentPage } });
       }, error => {
         console.log(error)
       });
@@ -196,7 +196,7 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.vendorDataService.getLoginVendorInfo()
       .subscribe(res => {
         this.vendor = res.data;
-        this.query = {...this.query, ...{vendor: this.vendor._id}};
+        this.query = { ...this.query, ...{ vendor: this.vendor._id } };
         console.log("Query from get logged in vendor info", this.query)
         this.getAllProducts();
       }, err => {
@@ -204,23 +204,48 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  /**
+
+    /**
    * COMPONENT DIALOG VIEW
    */
-  public openConfirmDialog(id: any) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      maxWidth: '400px',
-      data: {
-        title: 'Confirm Delete',
-        message: 'Are you sure you want delete this product?'
+    public openConfirmDialog(type: string, data?: any) {
+      switch(type) {
+        case 'delete': {
+          const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            maxWidth: '400px',
+            data: {
+              title: 'Confirm Delete',
+              message: 'Are you sure you want delete this data?'
+            }
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            if (dialogResult) {
+              this.deleteMultipleProductById();
+            }
+          });
+          break;
+        }
+        case 'clone': {
+          const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            maxWidth: '400px',
+            data: {
+              title: 'Confirm Clone',
+              message: 'Are you sure you want clone this data?'
+            }
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            if (dialogResult) {
+              this.cloneSingleProduct(data);
+            }
+          });
+          break;
+        }
+        default: {
+          break;
+        }
       }
-    });
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {
-        this.deleteProductById(id);
-      }
-    });
-  }
+  
+    }
 
   public openConfirmUploadDialog(data: Product[]) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -261,6 +286,8 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
       subCategory: 1,
       brand: 1,
       unit: 1,
+      sku:1,
+      quantity:1,
       costPrice: 1,
       salePrice: 1,
       hasVariations: 1,
@@ -284,8 +311,8 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
             const index = this.selectedIds.findIndex(f => f === m._id);
             this.products[i].select = index !== -1;
           });
-          console.log("this.products ",this.products );
-          
+          console.log("this.products ", this.products);
+
           this.totalProducts = res.count;
           if (!this.searchQuery) {
             this.holdPrevData = res.data;
@@ -300,6 +327,36 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
+  /**
+   * ON Select Check
+   * onCheckChange()
+   * onAllSelectChange()
+   * checkSelectionData()
+   */
+  onCheckChange(event: any, index: number, id: string) {
+    if (event) {
+      this.selectedIds.push(id);
+    } else {
+      const i = this.selectedIds.findIndex(f => f === id);
+      this.selectedIds.splice(i, 1);
+    }
+  }
+
+  onAllSelectChange(event: MatCheckboxChange) {
+    const currentPageIds = this.products.map(m => m._id);
+    if (event.checked) {
+      this.selectedIds = this.utilsService.mergeArrayString(this.selectedIds, currentPageIds)
+      this.products.forEach(m => {
+        m.select = true;
+      })
+    } else {
+      currentPageIds.forEach(m => {
+        this.products.find(f => f._id === m).select = false;
+        const i = this.selectedIds.findIndex(f => f === m);
+        this.selectedIds.splice(i, 1);
+      })
+    }
+  }
   private checkSelectionData() {
     let isAllSelect = true;
     this.products.forEach(m => {
@@ -310,7 +367,6 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.matCheckbox.checked = isAllSelect;
   }
-
   private getAllCategory() {
 
     const mSelect = {
@@ -332,7 +388,7 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subCat = this.categoryService.getAllCategories(filterData)
       .subscribe(res => {
         this.categories = res.data;
-        console.log("this.categories",this.categories);
+        console.log("this.categories", this.categories);
       }, error => {
         console.log(error);
       });
@@ -340,12 +396,12 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getAllSubCategory(categoryId: string) {
     this.subCategoryService.getSubCategoryByCategoryId(categoryId)
-    .subscribe(res => {
-      this.subCategories = res.data;
-    }, error => {
-      console.log(error);
-    });
-   
+      .subscribe(res => {
+        this.subCategories = res.data;
+      }, error => {
+        console.log(error);
+      });
+
   }
 
 
@@ -362,13 +418,61 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  private deleteProductById(productId: string) {
+
+  private deleteMultipleProductById() {
     this.spinner.show();
-    this.productService.deleteProductById(productId)
+    this.subDataFour= this.productService.deleteMultipleProductById(this.selectedIds)
       .subscribe(res => {
-        this.uiService.success(res.message);
-        this.reloadService.needRefreshProduct$();
         this.spinner.hide();
+        if (res.success) {
+          this.selectedIds = [];
+          this.uiService.success(res.message);
+          // fetch Data
+          if (this.currentPage > 1) {
+            this.router.navigate([], {queryParams: {page: 1}});
+          } else {
+            this.getAllProducts();
+          }
+        } else {
+          this.uiService.warn(res.message)
+        }
+
+      }, error => {
+        this.spinner.hide()
+        console.log(error);
+      });
+  }
+
+  private updateMultipleProductById(data: any) {
+    this.spinner.show();
+    this.subDataThree = this.productService.updateMultipleProductById(this.selectedIds, data)
+      .subscribe(res => {
+        this.spinner.hide();
+        if (res.success) {
+          this.selectedIds = [];
+          this.uiService.success(res.message);
+          this.reloadService.needRefreshData$();
+        } else {
+          this.uiService.warn(res.message)
+        }
+      }, error => {
+        this.spinner.hide()
+        console.log(error);
+      });
+
+  }
+
+  private cloneSingleProduct(id: string) {
+    this.spinner.show();
+    this.subDataEight = this.productService.cloneSingleProduct(id)
+      .subscribe(res => {
+        this.spinner.hide();
+        if (res.success) {
+          this.uiService.success(res.message);
+          this.reloadService.needRefreshData$();
+        } else {
+          this.uiService.warn(res.message);
+        }
       }, error => {
         this.spinner.hide();
         console.log(error);
@@ -376,11 +480,12 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
+
   /**
    * PAGINATION CHANGE
    */
   public onPageChanged(event: any) {
-    this.router.navigate([], {queryParams: {page: event}});
+    this.router.navigate([], { queryParams: { page: event } });
   }
 
 
@@ -391,12 +496,12 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   onSelectCategory(event: MatOptionSelectionChange) {
     if (event.isUserInput) {
       const category = event.source.value as Category;
-      this.query = {...this.query, ...{vendor: this.vendor._id}};
-      this.query = {...this.query, 'category._id': category._id};
-  
+      this.query = { ...this.query, ...{ vendor: this.vendor._id } };
+      this.query = { ...this.query, 'category._id': category._id };
+
       this.getAllSubCategory(category._id);
       if (this.currentPage > 1) {
-        this.router.navigate([], {queryParams: {page: 1}});
+        this.router.navigate([], { queryParams: { page: 1 } });
       } else {
         this.getAllProducts();
       }
@@ -406,10 +511,10 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   onSelectSubCategory(event: MatOptionSelectionChange) {
     if (event.isUserInput) {
       let subCategory = event.source.value as SubCategory;
-      this.query = {...this.query, ...{vendor: this.vendor._id}};
-      this.query = {...this.query, ...{subCategory: subCategory._id}};
+      this.query = { ...this.query, ...{ vendor: this.vendor._id } };
+      this.query = { ...this.query, ...{ subCategory: subCategory._id } };
       if (this.currentPage > 1) {
-        this.router.navigate([], {queryParams: {page: 1}});
+        this.router.navigate([], { queryParams: { page: 1 } });
       } else {
         this.getAllProducts();
       }
@@ -422,8 +527,8 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   onClearFilter() {
     this.matCatSelect.options.forEach((data: MatOption) => data.deselect());
     this.matSubCatSelect.options.forEach((data: MatOption) => data.deselect());
-    this.query = {...this.query, ...{vendor: this.vendor._id}};
-    this.router.navigate([], {queryParams: {page: null}, queryParamsHandling: 'merge'});
+    this.query = { ...this.query, ...{ vendor: this.vendor._id } };
+    this.router.navigate([], { queryParams: { page: null }, queryParamsHandling: 'merge' });
     this.getAllProducts();
   }
 
@@ -440,7 +545,7 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.dataTypeFormat === 'excel') {
       reader.onload = (event) => {
         const data = reader.result;
-        workBook = XLSX.read(data, {type: 'binary'});
+        workBook = XLSX.read(data, { type: 'binary' });
         jsonData = workBook.SheetNames.reduce((initial, name) => {
           const sheet = workBook.Sheets[name];
           initial[name] = XLSX.utils.sheet_to_json(sheet);
@@ -453,11 +558,11 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
           const dataNameFieldString = m.productName.toString().trim();
           return {
             ...m,
-            ...{productSlug: this.utilsService.transformToSlug(dataNameFieldString)},
-            ...{attributes: m.attributes ? m.attributes.toString().trim().split('#') : null},
-            ...{images: m.images ? m.images.toString().trim().split('#') : null},
-            ...{tags: m.tags ? m.tags.toString().trim().split('#') : null},
-            ...{filterData: []}
+            ...{ productSlug: this.utilsService.transformToSlug(dataNameFieldString) },
+            ...{ attributes: m.attributes ? m.attributes.toString().trim().split('#') : null },
+            ...{ images: m.images ? m.images.toString().trim().split('#') : null },
+            ...{ tags: m.tags ? m.tags.toString().trim().split('#') : null },
+            ...{ filterData: [] }
           } as Category;
         });
         this.openConfirmUploadDialog(mData);
@@ -471,7 +576,7 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
           const dataNameFieldString = m.productName.toString().trim();
           return {
             ...m,
-            ...{productSlug: this.utilsService.transformToSlug(dataNameFieldString)}
+            ...{ productSlug: this.utilsService.transformToSlug(dataNameFieldString) }
           } as Category;
         });
         this.openConfirmUploadDialog(mProducts);
@@ -574,7 +679,7 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(res => {
         const allData = res.data as Product[];
 
-        const blob = new Blob([JSON.stringify(allData, null, 2)], {type: 'application/json'});
+        const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
         this.dialog.open(DownloadJsonDialogComponent, {
           maxWidth: '500px',
           data: {
@@ -591,23 +696,6 @@ export class ProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * CLONE PRODUCT
    */
-
-  private cloneSingleProduct(id: string) {
-    this.spinner.show();
-    this.subDataEight = this.productService.cloneSingleProduct(id)
-      .subscribe(res => {
-        this.spinner.hide();
-        if (res.success) {
-          this.uiService.success(res.message);
-          this.reloadService.needRefreshData$();
-        } else {
-          this.uiService.warn(res.message);
-        }
-      }, error => {
-        this.spinner.hide();
-        console.log(error);
-      });
-  }
 
 
   /**
