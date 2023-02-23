@@ -204,12 +204,9 @@ export class ImageGalleryComponent implements OnInit, AfterViewInit {
   private getAllGalleryList() {
     this.spinner.show();
     const pagination: any = {
-      pageSize: this.productsPerPage,
-      currentPage: this.currentPage
+      pageSize: Number(this.productsPerPage),
+      currentPage: Number(this.currentPage) - 1
     };
-
-    // FilterData
-    // const mQuery = this.filter.length > 0 ? {$and: this.filter} : null;
 
     // Select
     const mSelect = {
@@ -231,6 +228,7 @@ export class ImageGalleryComponent implements OnInit, AfterViewInit {
     this.galleryService.getAllGalleries(filterData)
       .subscribe(res => {
         this.images = res.data;
+    
         this.holdPrevData = res.data;
         this.totalProducts = res.count;
         this.totalProductsStore = res.count;

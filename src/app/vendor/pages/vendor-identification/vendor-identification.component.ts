@@ -1,70 +1,68 @@
-import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {NgxSpinnerService} from 'ngx-spinner';
+import { NgxSpinnerService } from 'ngx-spinner';
 
-import {MatDialog} from '@angular/material/dialog';
-import {ImageCropComponent} from '../profile/image-crop/image-crop.component';
-import {Vendor} from "../../../interfaces/common/vendor";
-import {Select} from "../../../interfaces/core/select";
-import {UiService} from "../../../services/core/ui.service";
-import {VendorIdentificationService} from "../../../services/common/vendor-identification.service";
-import {StorageService} from "../../../services/core/storage.service";
-import {TagService} from "../../../services/common/tag.service";
-import {UtilsService} from "../../../services/core/utils.service";
-import {UserDataService} from "../../../services/common/user-data.service";
-import {VendorService} from "../../../services/common/vendor.service";
-import {ReloadService} from "../../../services/core/reload.service";
-import {FileUploadService} from "../../../services/gallery/file-upload.service";
-import {VendorIdentification} from "../../../interfaces/common/vendor-identification";
-import {FileData} from "../../../interfaces/gallery/file-data";
+import { MatDialog } from '@angular/material/dialog';
+import { ImageCropComponent } from '../profile/image-crop/image-crop.component';
+import { Vendor } from "../../../interfaces/common/vendor";
+import { Select } from "../../../interfaces/core/select";
+import { UiService } from "../../../services/core/ui.service";
+import { VendorIdentificationService } from "../../../services/common/vendor-identification.service";
+import { StorageService } from "../../../services/core/storage.service";
+import { TagService } from "../../../services/common/tag.service";
+import { UtilsService } from "../../../services/core/utils.service";
+import { VendorDataService } from "../../../services/common/vendor-data.service";
+import { VendorService } from "../../../services/common/vendor.service";
+import { ReloadService } from "../../../services/core/reload.service";
+import { FileUploadService } from "../../../services/gallery/file-upload.service";
+import { VendorIdentification } from "../../../interfaces/common/vendor-identification";
+import { FileData } from "../../../interfaces/gallery/file-data";
 
 
-let chooseImages=[];
+let chooseImages = [];
 @Component({
   selector: 'app-vendor-identification',
   templateUrl: './vendor-identification.component.html',
   styleUrls: ['./vendor-identification.component.scss']
 })
 export class VendorIdentificationComponent implements OnInit {
-  user: VendorIdentification = null;
-
   dataForm?: FormGroup;
 
   socialLinksArray?: FormArray;
 
   vendorIdentification: VendorIdentification;
-  hasVendorIdentificationInfo:Boolean=false;
+  hasVendorIdentificationInfo: Boolean = false;
 
   isLoading = false;
   file: any = null;
   newFileName: string;
   // Store Data from param
   id?: string;
-  vendorId:string;
+  vendorId: string;
   //vendor
-  vendor:Vendor;
+  vendor: Vendor;
   idType: Select[] = [
-    {value: 'nid-card', viewValue: 'NID Card - For little business holder'},
-    {value: 'business-license-no', viewValue: 'Business Licence Number - For big business'},
+    { value: 'nid-card', viewValue: 'NID Card - For little business holder' },
+    { value: 'business-license-no', viewValue: 'Business Licence Number - For big business' },
   ];
 
   // Image Holder
-  imgPlaceHolder = '/assets/svg/user.svg';
-  imgPlaceHolder1 = '/assets/svg/user.svg';
-  imgPlaceHolder2='/assets/svg/user.svg';
-  imgPlaceHolder3='/assets/svg/user.svg';
+  imgPlaceHolder = '/assets/svg/vendor.svg';
+  imgPlaceHolder1 = '/assets/svg/vendor.svg';
+  imgPlaceHolder2 = '/assets/svg/vendor.svg';
+  imgPlaceHolder3 = '/assets/svg/vendor.svg';
 
   placeholder = '/assets/images/avatar/image-upload.jpg';
-  tradeLisence?: any;
-  businessLisence?: any;
+  tradeLicenseImage?: any;
+  businessCardImage?: any;
 
   imageChangedEvent: any = null;
   imgBlob: any = null;
-  nidImageFront?: any;
-  nidImageBack?: any;
+  nidCardImageFront?: any;
+  nidCardImageBack?: any;
   // // Destroy Session
   needSessionDestroy = false;
 
@@ -80,10 +78,10 @@ export class VendorIdentificationComponent implements OnInit {
     private storageService: StorageService,
     // public textEditorCtrService: TextEditorCtrService,
     private reloadService: ReloadService,
-    private utilsService:UtilsService,
-    private fileUploadService:FileUploadService,
-    private userDataService:UserDataService,
-    private vendorService:VendorService
+    private utilsService: UtilsService,
+    private fileUploadService: FileUploadService,
+    private vendorDataService: VendorDataService,
+    private vendorService: VendorService
   ) { }
 
   ngOnInit(): void {
@@ -91,9 +89,9 @@ export class VendorIdentificationComponent implements OnInit {
     // INIT FORM
     this.initFormGroup();
 
-   // this.chooseNIDImage.push(this.placeholder);
-    this.tradeLisence=this.placeholder
-    this.businessLisence=this.placeholder
+    // this.chooseNIDImage.push(this.placeholder);
+    this.tradeLicenseImage = this.placeholder
+    this.businessCardImage = this.placeholder
     // Image From state
     /* if (!this.id) {
       if (this.storageService.getStoredInput('VENDOR_IDENTIFICATION_INPUT')) {
@@ -104,20 +102,20 @@ export class VendorIdentificationComponent implements OnInit {
          this.needSessionDestroy = true;
         chooseImages.push(history.state.images[0])
         //console.log(chooseImages) */
-        // this.nidImageFront2 = history.state.images[1].url;
-       /*  this.dataForm.patchValue(
-          {nidCardImages: this.chooseNIDImage},
-        );
-        this.chooseNIDImage.push(chooseImages[0]?chooseImages[0].url:this.placeholder)
-        this.chooseNIDImage.push(chooseImages[1]?chooseImages[1].url:this.placeholder)
-        this.tradeLisence=chooseImages[2]?chooseImages[2].url:this.placeholder
-        this.businessLisence=chooseImages[3]?chooseImages[3].url:this.placeholder
-        // this.dataForm.patchValue(
-        //   {idBackSide: this.nidImageFront2},
-        // );
-      //}
+    // this.nidCardImageFront2 = history.state.images[1].url;
+    /*  this.dataForm.patchValue(
+       {nidCardImages: this.chooseNIDImage},
+     );
+     this.chooseNIDImage.push(chooseImages[0]?chooseImages[0].url:this.placeholder)
+     this.chooseNIDImage.push(chooseImages[1]?chooseImages[1].url:this.placeholder)
+     this.tradeLicenseImage=chooseImages[2]?chooseImages[2].url:this.placeholder
+     this.businessCardImage=chooseImages[3]?chooseImages[3].url:this.placeholder
+     // this.dataForm.patchValue(
+     //   {idBackSide: this.nidCardImageFront2},
+     // );
+   //}
 
-    } */
+ } */
 
     // GET DATA
     this.getVendorIdentificationData();
@@ -133,12 +131,12 @@ export class VendorIdentificationComponent implements OnInit {
       idType: [null],
       fullName: [null],
       nidCardNo: [null],
-      nidCardImageFront:[null],
-      nidCardImageBack:[null],
-      businessCardNo:[null],
-      businessCardImage:[null],
-      tradeLicenseNo:[null],
-      tradeLicenseImage:[null],
+      nidCardImageFront: [null],
+      nidCardImageBack: [null],
+      businessCardNo: [null],
+      businessCardImage: [null],
+      tradeLicenseNo: [null],
+      tradeLicenseImage: [null],
 
     });
   }
@@ -152,16 +150,16 @@ export class VendorIdentificationComponent implements OnInit {
   //   }
   //   if (history.state.images) {
   //     this.needSessionDestroy = true;
-  //     this.nidImageFront = history.state.images[0].url;
+  //     this.nidCardImageFront = history.state.images[0].url;
   //     this.dataForm.patchValue(
-  //       {idFontSide: this.nidImageFront}
+  //       {idFontSide: this.nidCardImageFront}
   //     );
   //   } else {
-  //     this.nidImageFront = this.placeholder;
+  //     this.nidCardImageFront = this.placeholder;
   //   }
   // }
 
-  onHoldInputData(type:string) {
+  onHoldInputData(type: string) {
 
     this.needSessionDestroy = false;
     this.storageService.storeInputData(this.dataForm?.value, 'VENDOR_IDENTIFICATION_INPUT');
@@ -175,23 +173,23 @@ export class VendorIdentificationComponent implements OnInit {
       return;
     }
     //const nidImages=this.chooseNIDImage;
-      ////console.log(this.dataForm.value);
+    ////console.log(this.dataForm.value);
     if (this.vendorIdentification) {
       //this.dataForm.value.nidCardImages=nidImages;
-      this.dataForm.value.nidCardImageFront=this.nidImageFront;
-      this.dataForm.value.nidCardImageBack=this.nidImageBack;
-      this.dataForm.value.tradeLicenseImage=this.tradeLisence;
-      this.dataForm.value.businessCardImage=this.businessLisence;
+      this.dataForm.value.nidCardImageFront = this.nidCardImageFront;
+      this.dataForm.value.nidCardImageBack = this.nidCardImageBack;
+      this.dataForm.value.tradeLicenseImage = this.tradeLicenseImage;
+      this.dataForm.value.businessCardImage = this.businessCardImage;
 
       //console.log(this.dataForm.value);
-      const finalData = {...this.dataForm.value, ...{_id: this.vendorIdentification._id}};
+      const finalData = { ...this.dataForm.value };
       this.updateVendorIdentificationData(finalData);
     } else {
-      this.dataForm.value.nidCardImageFront=this.nidImageFront;
-      this.dataForm.value.nidCardImageBack=this.nidImageBack;
-      this.dataForm.value.tradeLicenseImage=this.tradeLisence;
-      this.dataForm.value.businessCardImage=this.businessLisence;
-      const finalData = { ...this.dataForm.value};
+      this.dataForm.value.nidCardImageFront = this.nidCardImageFront;
+      this.dataForm.value.nidCardImageBack = this.nidCardImageBack;
+      this.dataForm.value.tradeLicenseImage = this.tradeLicenseImage;
+      this.dataForm.value.businessCardImage = this.businessCardImage;
+      const finalData = { ...this.dataForm.value };
       this.addVendorIdentificationData(this.dataForm.value);
     }
 
@@ -206,7 +204,7 @@ export class VendorIdentificationComponent implements OnInit {
         this.spinner.hide();
         this.storageService.removeSessionData('VENDOR_IDENTIFICATION_INPUT');
         this.reloadService.needRefreshVendorIdentification$();
-       // this.addIdentificationDataToVendor();
+        // this.addIdentificationDataToVendor();
       }, err => {
         this.spinner.hide();
         //console.log(err);
@@ -221,20 +219,22 @@ export class VendorIdentificationComponent implements OnInit {
         this.spinner.hide();
         if (res.data) {
           this.vendorIdentification = res.data;
+          console.log(this.vendorIdentification);
+
           //console.log(res.data);
           ////console.log(this.vendorIdentification);
-         /*  this.chooseNIDImage = res.data?.nidCardImageFront; */
-          // this.nidImageFront2 = res.data?.idBackSide;
+          /*  this.chooseNIDImage = res.data?.nidCardImageFront; */
+          // this.nidCardImageFront2 = res.data?.idBackSide;
           this.dataForm.patchValue(this.vendorIdentification);
 
-          this.imgPlaceHolder=res.data.nidCardImageFront;
-          this.imgPlaceHolder1=res.data.nidCardImageBack;
-          this.imgPlaceHolder2=res.data.tradeLicenseImage;
-          this.imgPlaceHolder3=res.data.businessCardImage;
+          this.imgPlaceHolder = res.data.nidCardImageFront;
+          this.imgPlaceHolder1 = res.data.nidCardImageBack;
+          this.imgPlaceHolder2 = res.data.tradeLicenseImage;
+          this.imgPlaceHolder3 = res.data.businessCardImage;
 
-          this.hasVendorIdentificationInfo=true;
+          this.hasVendorIdentificationInfo = true;
         }
-        else{
+        else {
           ////console.log("ELSE");
         }
       }, err => {
@@ -243,10 +243,10 @@ export class VendorIdentificationComponent implements OnInit {
       });
   }
 
-  private getVendorInfo(){
-    this.vendorService.getLoggedInVendor().subscribe(res=>{
-      this.vendorId=res.data._id;
-      this.vendor =  res.data;
+  private getVendorInfo() {
+    this.vendorService.getLoggedInVendor().subscribe(res => {
+      this.vendorId = res.data._id;
+      this.vendor = res.data;
       ////console.log(res.data);
 
     })
@@ -255,7 +255,7 @@ export class VendorIdentificationComponent implements OnInit {
   private updateVendorIdentificationData(data: VendorIdentification) {
     this.spinner.show();
     //console.log(data);
-    this.vendorIdentificationService.updateVendorIdentificationData(data)
+    this.vendorIdentificationService.updateVendorIdentificationData(this.vendorIdentification._id,data)
       .subscribe(res => {
         this.uiService.success(res.message);
         this.storageService.removeSessionData('VENDOR_IDENTIFICATION_INPUT');
@@ -268,249 +268,258 @@ export class VendorIdentificationComponent implements OnInit {
       });
   }
 
-  private addIdentificationDataToVendor(){
-    this.vendor.vendorIdentification=this.id;
+  private addIdentificationDataToVendor() {
+    this.vendor.vendorIdentification = this.id;
     //console.log(this.vendor)
   }
-   /**
-   * GET IMAGE DATA FROM STATE
-   */
+  /**
+  * GET IMAGE DATA FROM STATE
+  */
 
 
-    fileChangeEvent (event: any , type?:string) {
-      this.file = (event.target as HTMLInputElement).files[0];
-      // File Name Modify...
-      const originalNameWithoutExt = this.file.name.toLowerCase().split(' ').join('-').split('.').shift();
-      const fileExtension = this.file.name.split('.').pop();
-      // Generate new File Name..
+  fileChangeEvent(event: any, type?: string) {
+    this.file = (event.target as HTMLInputElement).files[0];
+    const originalNameWithoutExt = this.file.name.toLowerCase().split(' ').join('-').split('.').shift();
+    const fileExtension = this.file.name.split('.').pop();
+    this.newFileName = `${Date.now().toString()}_${originalNameWithoutExt}.${fileExtension}`;
+    const reader = new FileReader();
+    reader.readAsDataURL(this.file);
+    reader.onload = () => {
+      let p = reader.result as string;
+    };
 
-      this.newFileName = `${Date.now().toString()}_${originalNameWithoutExt}.${fileExtension}`;
-      //console.log(this.newFileName)
-      const reader = new FileReader();
-      reader.readAsDataURL(this.file);
-      //console.log(reader);
-      reader.onload = () => {
-        let p =reader.result as string;
-        //this.imgPlaceHolder = reader.result as string;
-        //console.log(p);
-      };
-
-      // Open Upload Dialog
-      if (event.target.files[0]) {
-        if(type=="nid1"){
+    // Open Upload Dialog
+    if (event.target.files[0]) {
+      if (type == "nid1") {
         this.openComponentDialog(event);
-        }
-        else if(type=="nid2"){
-          this.openComponentDialog1(event);
-        }
-        else if(type == "trade"){
-          this.openComponentDialog2(event);
-        }
-        else if (type==='business'){
-          this.openComponentDialog3(event);
-        }
-
       }
-
-      // NGX Image Cropper Event..
-      this.imageChangedEvent = event;
+      else if (type == "nid2") {
+        this.openComponentDialog1(event);
+      }
+      else if (type == "trade") {
+        this.openComponentDialog2(event);
+      }
+      else if (type === 'business') {
+        this.openComponentDialog3(event);
+      }
     }
-    public openComponentDialog(data?: any) {
-      const dialogRef = this.dialog.open(ImageCropComponent, {
-        data,
-        panelClass: ['theme-dialog'],
-        autoFocus: false,
-        disableClose: true,
-        width: '680px',
-        minHeight: '400px',
-        maxHeight: '600px'
-      });
 
-      dialogRef.afterClosed().subscribe(dialogResult => {
-        ////console.log(dialogResult);
-        if (dialogResult) {
-          if (dialogResult.imgBlob) {
-            this.imgBlob = dialogResult.imgBlob;
-          }
-          if (dialogResult.croppedImage) {
-            this.nidImageFront = dialogResult.croppedImage;
-            this.imgPlaceHolder = this.nidImageFront;
+    // NGX Image Cropper Event..
+    this.imageChangedEvent = event;
+  }
+  public openComponentDialog(data?: any) {
+    const dialogRef = this.dialog.open(ImageCropComponent, {
+      data,
+      panelClass: ['theme-dialog'],
+      autoFocus: false,
+      disableClose: true,
+      width: '680px',
+      minHeight: '400px',
+      maxHeight: '600px'
+    });
 
-            if (this.nidImageFront) {
-              this.imageUploadOnServer("nidImageFront");
-            }
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      ////console.log(dialogResult);
+      if (dialogResult) {
+        if (dialogResult.imgBlob) {
+          this.imgBlob = dialogResult.imgBlob;
+        }
+        if (dialogResult.croppedImage) {
+          this.nidCardImageFront = dialogResult.croppedImage;
+          this.imgPlaceHolder = this.nidCardImageFront;
+
+          if (this.nidCardImageFront) {
+            this.imageUploadOnServer("nidCardImageFront");
           }
         }
-      });
-    }
-    public openComponentDialog1(data?: any) {
-      const dialogRef = this.dialog.open(ImageCropComponent, {
-        data,
-        panelClass: ['theme-dialog'],
-        autoFocus: false,
-        disableClose: true,
-        width: '680px',
-        minHeight: '400px',
-        maxHeight: '600px'
-      });
+      }
+    });
+  }
+  public openComponentDialog1(data?: any) {
+    const dialogRef = this.dialog.open(ImageCropComponent, {
+      data,
+      panelClass: ['theme-dialog'],
+      autoFocus: false,
+      disableClose: true,
+      width: '680px',
+      minHeight: '400px',
+      maxHeight: '600px'
+    });
 
-      dialogRef.afterClosed().subscribe(dialogResult => {
-        if (dialogResult) {
-          if (dialogResult.imgBlob) {
-            this.imgBlob = dialogResult.imgBlob;
-          }
-          if (dialogResult.croppedImage) {
-            this.nidImageBack = dialogResult.croppedImage;
-            this.imgPlaceHolder1 = this.nidImageBack;
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        if (dialogResult.imgBlob) {
+          this.imgBlob = dialogResult.imgBlob;
+        }
+        if (dialogResult.croppedImage) {
+          this.nidCardImageBack = dialogResult.croppedImage;
+          this.imgPlaceHolder1 = this.nidCardImageBack;
 
-            if (this.nidImageBack) {
-              this.imageUploadOnServer("nidImageBack");
-            }
+          if (this.nidCardImageBack) {
+            this.imageUploadOnServer("nidCardImageBack");
           }
         }
-      });
-    }
-    /*  */
-    public openComponentDialog2(data?: any) {
-      const dialogRef = this.dialog.open(ImageCropComponent, {
-        data,
-        panelClass: ['theme-dialog'],
-        autoFocus: false,
-        disableClose: true,
-        width: '680px',
-        minHeight: '400px',
-        maxHeight: '600px'
-      });
+      }
+    });
+  }
+  /*  */
+  public openComponentDialog2(data?: any) {
+    const dialogRef = this.dialog.open(ImageCropComponent, {
+      data,
+      panelClass: ['theme-dialog'],
+      autoFocus: false,
+      disableClose: true,
+      width: '680px',
+      minHeight: '400px',
+      maxHeight: '600px'
+    });
 
-      dialogRef.afterClosed().subscribe(dialogResult => {
-        if (dialogResult) {
-          if (dialogResult.imgBlob) {
-            this.imgBlob = dialogResult.imgBlob;
-          }
-          if (dialogResult.croppedImage) {
-            this.tradeLisence = dialogResult.croppedImage;
-            this.imgPlaceHolder2 = this.tradeLisence;
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        if (dialogResult.imgBlob) {
+          this.imgBlob = dialogResult.imgBlob;
+        }
+        if (dialogResult.croppedImage) {
+          this.tradeLicenseImage = dialogResult.croppedImage;
+          this.imgPlaceHolder2 = this.tradeLicenseImage;
 
-            if (this.tradeLisence) {
-              //console.log("367")
-              this.imageUploadOnServer("tradeLisence");
-            }
+          if (this.tradeLicenseImage) {
+            //console.log("367")
+            this.imageUploadOnServer("tradeLicenseImage");
           }
         }
-      });
-    }
-    /*  */
-    public openComponentDialog3(data?: any) {
-      const dialogRef = this.dialog.open(ImageCropComponent, {
-        data,
-        panelClass: ['theme-dialog'],
-        autoFocus: false,
-        disableClose: true,
-        width: '680px',
-        minHeight: '400px',
-        maxHeight: '600px'
-      });
+      }
+    });
+  }
+  /*  */
+  public openComponentDialog3(data?: any) {
+    const dialogRef = this.dialog.open(ImageCropComponent, {
+      data,
+      panelClass: ['theme-dialog'],
+      autoFocus: false,
+      disableClose: true,
+      width: '680px',
+      minHeight: '400px',
+      maxHeight: '600px'
+    });
 
-      dialogRef.afterClosed().subscribe(dialogResult => {
-        if (dialogResult) {
-          if (dialogResult.imgBlob) {
-            this.imgBlob = dialogResult.imgBlob;
-          }
-          if (dialogResult.croppedImage) {
-            this.businessLisence = dialogResult.croppedImage;
-            this.imgPlaceHolder3 = this.businessLisence;
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        if (dialogResult.imgBlob) {
+          this.imgBlob = dialogResult.imgBlob;
+        }
+        if (dialogResult.croppedImage) {
+          this.businessCardImage = dialogResult.croppedImage;
+          this.imgPlaceHolder3 = this.businessCardImage;
 
-            if (this.businessLisence) {
-              this.imageUploadOnServer("businessLisence");
-            }
+          if (this.businessCardImage) {
+            this.imageUploadOnServer("businessCardImage");
           }
         }
-      });
-    }
-    imageUploadOnServer(imageName:string) {
-      //console.log(this.newFileName);
-      const data: FileData = {
-        fileName: this.newFileName,
-        file: this.imgBlob,
-        folderPath: 'admins'
-      };
-      this.fileUploadService.uploadSingleImage(data)
-        .subscribe(res => {
-         // this.removeImageFiles();
-          //console.log(res.downloadUrl);
-          if(this.hasVendorIdentificationInfo){
-          if (imageName === 'nidImageFront' &&   this.vendorIdentification.nidCardImageFront) {
-            this.nidImageFront=res.downloadUrl;
+      }
+    });
+  }
+  imageUploadOnServer(imageName: string) {
+    //console.log(this.newFileName);
+    const data: FileData = {
+      fileName: this.newFileName,
+      file: this.imgBlob,
+      folderPath: 'admins'
+    };
+    this.fileUploadService.uploadSingleImage(data)
+      .subscribe(res => {
+        // this.removeImageFiles();
+        //console.log(res.url);
+        if (this.hasVendorIdentificationInfo) {
+          if (imageName === 'nidCardImageFront' && this.vendorIdentification.nidCardImageFront) {
+            this.nidCardImageFront = res.url;
             this.removeOldImageFromServer(this.vendorIdentification.nidCardImageFront);
           }
-          else if (imageName === 'nidImageBack' && this.vendorIdentification.nidCardImageBack) {
-            this.nidImageBack=res.downloadUrl;
+          else if (imageName === 'nidCardImageBack' && this.vendorIdentification.nidCardImageBack) {
+            this.nidCardImageBack = res.url;
             this.removeOldImageFromServer(this.vendorIdentification.nidCardImageBack);
           }
-          else if (imageName === 'businessLisence' && this.vendorIdentification.businessCardImage) {
-            this.businessLisence=res.downloadUrl;
+          else if (imageName === 'businessCardImage' && this.vendorIdentification.businessCardImage) {
+            this.businessCardImage = res.url;
             this.removeOldImageFromServer(this.vendorIdentification.businessCardImage);
           }
-          else if (imageName === 'tradeLisence' && this.vendorIdentification.tradeLicenseImage) {
-            this.tradeLisence=res.downloadUrl;
+          else if (imageName === 'tradeLicenseImage' && this.vendorIdentification.tradeLicenseImage) {
+            this.tradeLicenseImage = res.url;
             this.removeOldImageFromServer(this.vendorIdentification.tradeLicenseImage);
           }
-          this.editLoggedInUserData({profileImg: res.downloadUrl});
+
+
+          if (imageName === 'nidCardImageFront') {
+            this.nidCardImageFront = res.url;
+            this.editLoggedInVendorData({ nidCardImageFront: res.url });
+          }
+          else if (imageName === 'nidCardImageBack') {
+            this.nidCardImageBack = res.url;
+            this.editLoggedInVendorData({ nidCardImageBack: res.url });
+          }
+          else if (imageName === 'businessCardImage') {
+            this.businessCardImage = res.url;
+            this.editLoggedInVendorData({ businessCardImage: res.url });
+          }
+          else if (imageName === 'tradeLicenseImage') {
+            this.tradeLicenseImage = res.url;
+            this.editLoggedInVendorData({ tradeLicenseImage: res.url });
+          }
         }
-        else{
-          if (imageName === 'nidImageFront' ) {
-            this.nidImageFront=res.downloadUrl;
-           // this.removeOldImageFromServer(this.vendorIdentification.nidCardImageFront);
+        else {
+          if (imageName === 'nidCardImageFront') {
+            this.nidCardImageFront = res.url;
+            // this.removeOldImageFromServer(this.vendorIdentification.nidCardImageFront);
           }
-          else if (imageName === 'nidImageBack' ) {
-            this.nidImageBack=res.downloadUrl;
-           // this.removeOldImageFromServer(this.vendorIdentification.nidCardImageBack);
+          else if (imageName === 'nidCardImageBack') {
+            this.nidCardImageBack = res.url;
+            // this.removeOldImageFromServer(this.vendorIdentification.nidCardImageBack);
           }
-          else if (imageName === 'businessLisence' ) {
-            this.businessLisence=res.downloadUrl;
+          else if (imageName === 'businessCardImage') {
+            this.businessCardImage = res.url;
             //this.removeOldImageFromServer(this.vendorIdentification.businessCardImage);
           }
-          else if (imageName === 'tradeLisence' ) {
+          else if (imageName === 'tradeLicenseImage') {
             //console.log("Trade ")
-            //console.log(res.downloadUrl);
-            this.tradeLisence=res.downloadUrl;
-           // this.removeOldImageFromServer(this.vendorIdentification.tradeLicenseImage);
+            //console.log(res.url);
+            this.tradeLicenseImage = res.url;
+            // this.removeOldImageFromServer(this.vendorIdentification.tradeLicenseImage);
           }
         }
-        }, error => {
-          //console.log(error);
-        });
-    }
-
-    private removeImageFiles() {
-      this.file = null;
-      this.newFileName = null;
-      this.nidImageFront = null;
-      this.nidImageBack = null;
-      this.businessLisence = null;
-      this.tradeLisence = null;
-      this.imgBlob = null;
-    }
-
-    removeOldImageFromServer(imgUrl: string) {
-      this.fileUploadService.removeSingleFile(imgUrl)
-        .subscribe(res => {
-          //console.log(res.message);
-        }, error => {
-          //console.log(error);
-        });
-    }
-
-    editLoggedInUserData(data: any) {
-      //console.log(data)
-      this.vendorIdentificationService.updateVendorIdentificationData(data)
-        .subscribe((res) => {
-          ////console.log(res)
-          this.uiService.success(res.message);
-          this.reloadService.needRefreshUser$();
-        }, error => {
-          //console.log(error);
-        });
-    }
-
+      }, error => {
+        //console.log(error);
+      });
   }
+
+  private removeImageFiles() {
+    this.file = null;
+    this.newFileName = null;
+    this.nidCardImageFront = null;
+    this.nidCardImageBack = null;
+    this.businessCardImage = null;
+    this.tradeLicenseImage = null;
+    this.imgBlob = null;
+  }
+
+  removeOldImageFromServer(imgUrl: string) {
+    this.fileUploadService.removeSingleFile(imgUrl)
+      .subscribe(res => {
+        //console.log(res.message);
+      }, error => {
+        //console.log(error);
+      });
+  }
+
+  editLoggedInVendorData(data: any) {
+    //console.log(data)
+    this.vendorIdentificationService.updateVendorIdentificationData(this.vendorIdentification._id,data)
+      .subscribe((res) => {
+        ////console.log(res)
+        this.uiService.success(res.message);
+        this.reloadService.needRefreshVendors$();
+      }, error => {
+        //console.log(error);
+      });
+  }
+
+}

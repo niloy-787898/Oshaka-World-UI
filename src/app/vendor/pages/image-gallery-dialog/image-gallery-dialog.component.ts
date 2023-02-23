@@ -180,8 +180,8 @@ export class ImageGalleryDialogComponent implements OnInit, AfterViewInit {
   private getAllGalleryList() {
     this.spinner.show();
     const pagination: any = {
-      pageSize: this.productsPerPage,
-      currentPage: this.currentPage
+      pageSize: Number(this.productsPerPage),
+      currentPage: Number(this.currentPage) - 1
     };
 
     // FilterData

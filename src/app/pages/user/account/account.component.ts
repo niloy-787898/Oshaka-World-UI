@@ -107,7 +107,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         if (this.user.profileImg) {
           this.removeOldImageFromServer(this.user.profileImg);
         }
-        this.updateLoggedInUserInfo({profileImg: res.downloadUrl});
+        this.updateLoggedInUserInfo({profileImg: res.url});
       }, error => {
         console.log(error);
       });
