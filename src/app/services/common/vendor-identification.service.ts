@@ -31,8 +31,8 @@ export class VendorIdentificationService {
     return this.httpClient.get<{ data: VendorIdentification, message?: string }>(API_VENDOR_IDENTIFICATION + 'get-vendor-identification-data');
   }
 
-  updateVendorIdentificationData(data: VendorIdentification) {
-    return this.httpClient.put<{ message: string }>(API_VENDOR_IDENTIFICATION + 'update-vendor-identification-data', data);
+  updateVendorIdentificationData(id,data: VendorIdentification) {
+    return this.httpClient.put<{ message: string }>(API_VENDOR_IDENTIFICATION + 'update-vendor-identification-data/'+id, data);
   }
 
 }

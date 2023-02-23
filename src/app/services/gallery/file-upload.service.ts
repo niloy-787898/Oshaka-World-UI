@@ -69,9 +69,7 @@ export class FileUploadService {
     const data = new FormData();
     data.append('folderPath', fileData.folderPath);
     data.append('image', fileData.file, fileData.fileName);
-    console.log(data)
-
-    return this.httpClient.post<{ message: string, downloadUrl: string }>(API_UPLOAD + 'single-image-original', data);
+    return this.httpClient.post<{ message: string, url: string }>(API_UPLOAD + 'single-image', data);
 
   }
 

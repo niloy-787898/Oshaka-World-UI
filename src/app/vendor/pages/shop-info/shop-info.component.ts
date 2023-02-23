@@ -201,7 +201,7 @@ export class ShopInfoComponent implements OnInit {
     this.fileUploadService.uploadSingleImage(data)
       .subscribe(res => {
         this.removeImageFiles();
-        const url = res.downloadUrl;
+        const url = res.url;
         this.placeholder = url;
         console.log(url)
         if (this.vendor.shopLogo) {

@@ -172,7 +172,7 @@ export class ProfileComponent implements OnInit {
         if (this.vendor.profileImg) {
           this.removeOldImageFromServer(this.vendor.profileImg);
         }
-        this.editVendorOwnProfileInfo(res.downloadUrl);
+        this.editVendorOwnProfileInfo(res.url);
       }, error => {
         console.log(error);
       });
