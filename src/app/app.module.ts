@@ -33,7 +33,7 @@ import { AuthVendorInterceptor } from './auth-interceptor/auth-vendor.intercepto
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthUserInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: AuthVendorInterceptor, multi: true},
+    // {provide: HTTP_INTERCEPTORS, useClass: AuthVendorInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]
 })
